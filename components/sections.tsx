@@ -1,5 +1,6 @@
 "use client"
 
+import { useCallback, useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
 import {
   LayoutDashboard,
@@ -274,6 +275,62 @@ function Pricing({ onNavigate }: { onNavigate: (id: string) => void }) {
 }
 
 function Contact({ onNavigate }: { onNavigate: (id: string) => void }) {
+  const [email, setEmail] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState(false)
+
+  const validateEmail = (value: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError("")
+
+    if (!email.trim()) {
+      setError("Please enter your work email")
+      return
+    }
+
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email address")
+      return
+    }
+
+    setIsLoading(true)
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+    setSuccess(true)
+    setIsLoading(false)
+  }
+
+  if (success) {
+    return (
+      <section
+        id="contact"
+        className="relative flex min-h-screen w-full items-center justify-center px-4 py-28"
+      >
+        <motion.div
+          variants={reveal}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+          className="mx-auto w-full max-w-3xl overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.04] p-8 text-center shadow-2xl backdrop-blur-2xl md:p-14"
+        >
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-accent-purple backdrop-blur">
+            Contact
+          </span>
+          <h2 className="mt-5 text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+            Ready to build your smart campus?
+          </h2>
+          <p className="mx-auto mt-4 max-w-lg text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
+            Demo request submitted successfully! Our team will contact you soon.
+          </p>
+        </motion.div>
+      </section>
+    )
+  }
+
   return (
     <section
       id="contact"
@@ -297,22 +354,34 @@ function Contact({ onNavigate }: { onNavigate: (id: string) => void }) {
         </p>
 
         <form
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={handleSubmit}
           className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row"
         >
-          <input
-            type="email"
-            required
-            placeholder="Enter your work email"
-            aria-label="Work email"
-            className="w-full rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none backdrop-blur transition-colors focus:border-brand/60"
-          />
+          <div className="w-full">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value)
+                if (error) setError("")
+              }}
+              placeholder="Enter your work email"
+              aria-label="Work email"
+              className={`w-full rounded-full border bg-white/5 px-5 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none backdrop-blur transition-colors focus:border-brand/60 ${
+                error ? "border-red-400" : "border-white/15"
+              }`}
+            />
+            {error && <p className="mt-1.5 text-left text-xs text-red-400">{error}</p>}
+          </div>
           <button
             type="submit"
-            className="group flex shrink-0 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-brand to-accent-purple px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand/25 transition-all duration-300 hover:shadow-xl hover:shadow-brand/40 active:scale-95"
+            disabled={isLoading}
+            className="group flex shrink-0 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-brand to-accent-purple px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand/25 transition-all duration-300 hover:shadow-xl hover:shadow-brand/40 active:scale-95 disabled:opacity-70"
           >
-            Book a Demo
-            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+            {isLoading ? "Submitting..." : "Book a Demo"}
+            {!isLoading && (
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+            )}
           </button>
         </form>
         <p className="mt-4 text-xs text-muted-foreground">

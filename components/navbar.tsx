@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { GraduationCap, ArrowRight } from "lucide-react"
+import Link from "next/link"
 
 const links = [
   { label: "Home", id: "home" },
@@ -49,13 +50,21 @@ export function Navbar({ onNavigate }: { onNavigate: (id: string) => void }) {
         </ul>
 
         {/* Right CTA */}
-        <button
-          onClick={() => onNavigate("contact")}
-          className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-brand to-accent-purple px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-brand/20 transition-all duration-300 hover:shadow-xl hover:shadow-brand/30 active:scale-95"
-        >
-          Request Demo
-          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-        </button>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/login"
+            className="rounded-full px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-white/10"
+          >
+            Login
+          </Link>
+          <button
+            onClick={() => onNavigate("contact")}
+            className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-brand to-accent-purple px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-brand/20 transition-all duration-300 hover:shadow-xl hover:shadow-brand/30 active:scale-95"
+          >
+            Request Demo
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+          </button>
+        </div>
       </nav>
     </motion.header>
   )

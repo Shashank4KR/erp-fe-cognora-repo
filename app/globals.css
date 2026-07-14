@@ -50,6 +50,21 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* Bright purple accent system (restored) */
+@theme {
+  --color-purple-50: #f5f3ff;
+  --color-purple-100: #ede9fe;
+  --color-purple-200: #ddd6fe;
+  --color-purple-300: #c4b5fd;
+  --color-purple-400: #a78bfa;
+  --color-purple-500: #8b5cf6;
+  --color-purple-600: #7c3aed;
+  --color-purple-700: #6d28d9;
+  --color-purple-800: #5b21b6;
+  --color-purple-900: #4c1d95;
+  --color-purple-950: #2e1065;
+}
+
 :root {
   color-scheme: dark;
   --background: oklch(0.16 0.03 265);
@@ -168,4 +183,44 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/*
+ * The app's default theme is dark (--foreground is a light color), so form
+ * controls and table cells that don't set an explicit color inherit that light
+ * foreground and become invisible on the dashboard's white/light surfaces.
+ * Force readable dark text and muted placeholders on those light surfaces.
+ * Tailwind color utilities (text-slate-*, etc.) keep higher specificity, so
+ * this only affects elements that currently rely on inheritance.
+ */
+input,
+textarea,
+select,
+table td {
+  color: #0f172a;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
+
+input:disabled,
+textarea:disabled,
+select:disabled {
+  color: #475569;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: #0f172a;
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+option {
+  color: #0f172a;
 }
