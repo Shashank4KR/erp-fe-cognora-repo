@@ -1,51 +1,26 @@
-import type { TimetableCreate, TimetableResponse, TimetableUpdate } from "@/types/entities/timetable";
-
-export type ServiceError = Error & { status?: number };
-
-async function parseError(response: Response): Promise<ServiceError> {
-  const status = response.status;
-  const text = await response.text();
-  let message = `Request failed with status ${status}`;
-
-  if (text) {
-    try {
-      const data = JSON.parse(text) as {
-        detail?: unknown;
-        message?: unknown;
-      };
-      const detail = data.detail ?? data.message;
-      if (typeof detail === "string" && detail.length > 0) {
-        message = detail;
-      } else if (Array.isArray(detail)) {
-        message = detail
-          .map((d) => (typeof d === "object" && d && "msg" in d ? String((d as { msg: unknown }).msg) : JSON.stringify(d)))
-          .join("; ");
-      } else {
-        message = text;
-      }
-    } catch {
-      message = text;
-    }
-  }
-
-  const error = new Error(message) as ServiceError;
-  error.status = status;
-  return error;
-}
+import type {
+  TimetableCreate,
+  TimetableResponse,
+  TimetableUpdate,
+} from "@/types/entities/timetable";
 
 const BASE = "/api/timetables";
 
-export async function listTimetables(token: string): Promise<TimetableResponse[]> {
+export async function listTimetables(
+  token: string,
+): Promise<TimetableResponse[]> {
   const response = await fetch(`${BASE}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
   if (!response.ok) {
-    throw await parseError(response);
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to fetch timetables.");
   }
 
   const text = await response.text();
-  return text ? (JSON.parse(text) as TimetableResponse[]) : [];
+  if (!text) return [];
+  return JSON.parse(text) as TimetableResponse[];
 }
 
 export async function getTimetable(
@@ -57,14 +32,11 @@ export async function getTimetable(
   });
 
   if (!response.ok) {
-    throw await parseError(response);
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to fetch timetable.");
   }
 
-  const text = await response.text();
-  if (!text) {
-    throw new Error("Timetable response was empty.");
-  }
-  return JSON.parse(text) as TimetableResponse;
+  return (await response.json()) as TimetableResponse;
 }
 
 export async function createTimetable(
@@ -81,14 +53,11 @@ export async function createTimetable(
   });
 
   if (!response.ok) {
-    throw await parseError(response);
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to create timetable.");
   }
 
-  const text = await response.text();
-  if (!text) {
-    throw new Error("Timetable creation response was empty.");
-  }
-  return JSON.parse(text) as TimetableResponse;
+  return (await response.json()) as TimetableResponse;
 }
 
 export async function updateTimetable(
@@ -106,23 +75,42 @@ export async function updateTimetable(
   });
 
   if (!response.ok) {
-    throw await parseError(response);
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to update timetable.");
+  }
+
+  return (await response.json()) as TimetableResponse;
+}
+
+export async function getClassTimetable(
+  token: string,
+  classId: string,
+): Promise<TimetableResponse[]> {
+  const response = await fetch(`/api/classes/${classId}/timetable`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to fetch class timetable.");
   }
 
   const text = await response.text();
-  if (!text) {
-    throw new Error("Timetable update response was empty.");
-  }
-  return JSON.parse(text) as TimetableResponse;
+  if (!text) return [];
+  return JSON.parse(text) as TimetableResponse[];
 }
 
-export async function deleteTimetable(token: string, id: string): Promise<void> {
+export async function deleteTimetable(
+  token: string,
+  id: string,
+): Promise<void> {
   const response = await fetch(`${BASE}/${id}`, {
     method: "DELETE",
     headers: { Authorization: `Bearer ${token}` },
   });
 
   if (!response.ok) {
-    throw await parseError(response);
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to delete timetable.");
   }
 }

@@ -39,6 +39,4 @@ export type StudentResponse = {
   roll_no?: string | null;
   joining_date?: string | null;
   photo?: string | null;
-  created_at?: string;
-  updated_at?: string;
 };

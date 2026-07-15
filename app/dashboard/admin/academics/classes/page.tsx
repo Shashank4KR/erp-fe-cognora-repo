@@ -17,6 +17,8 @@ import {
   createClass,
   updateClass,
   deleteClass,
+  getClassSubjects,
+  getClassTeachers,
 } from "@/lib/services/classService";
 import { listTeachers } from "@/lib/services/teacherService";
 import { listUsers } from "@/lib/services/userService";
@@ -65,6 +67,8 @@ export default function ClassesPage() {
   const [deletingItem, setDeletingItem] = useState<ClassResponse | null>(null);
 
   const [selectedClass, setSelectedClass] = useState<ClassResponse | null>(null);
+  const [directClassSubjects, setDirectClassSubjects] = useState<{ id: string; subject_name: string }[]>([]);
+  const [directClassTeachers, setDirectClassTeachers] = useState<{ id: string; employee_id: string }[]>([]);
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -140,6 +144,36 @@ export default function ClassesPage() {
   useEffect(() => {
     loadAll();
   }, [loadAll]);
+
+  useEffect(() => {
+    if (!selectedClass || !token) {
+      setDirectClassSubjects([]);
+      setDirectClassTeachers([]);
+      return;
+    }
+    let cancelled = false;
+    const loadDirect = async () => {
+      try {
+        const [subjectsData, teachersData] = await Promise.all([
+          getClassSubjects(token, selectedClass.id),
+          getClassTeachers(token, selectedClass.id),
+        ]);
+        if (!cancelled) {
+          setDirectClassSubjects(subjectsData);
+          setDirectClassTeachers(teachersData);
+        }
+      } catch {
+        if (!cancelled) {
+          setDirectClassSubjects([]);
+          setDirectClassTeachers([]);
+        }
+      }
+    };
+    loadDirect();
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedClass?.id, token]);
 
   const userEmailById = useMemo(() => {
     const map = new Map<string, string>();
@@ -550,6 +584,8 @@ export default function ClassesPage() {
               subjectOptions={subjectOptions}
               teacherOptions={teacherOptions}
               timetables={selectedClassTimetables}
+              directClassSubjects={directClassSubjects}
+              directClassTeachers={directClassTeachers}
               onAssignSubjects={handleAssignSubjects}
               onRemoveSubject={handleRemoveSubject}
               onAssignTeacher={handleAssignTeacher}

@@ -9,6 +9,7 @@ export default function ClassSubjectsTab({
   teacherSubjects,
   teachers,
   subjectOptions,
+  directClassSubjects,
   onAssign,
   onRemove,
 }: {
@@ -18,6 +19,7 @@ export default function ClassSubjectsTab({
   teacherSubjects: { id: string; teacher_id: string; subject_id: string; class_id: string }[];
   teachers: { id: string; employee_id: string; user_id: string }[];
   subjectOptions: { id: string; label: string }[];
+  directClassSubjects: { id: string; subject_name: string }[];
   onAssign: (classId: string, subjectIds: string[]) => Promise<void>;
   onRemove: (mappingId: string) => Promise<void>;
 }) {
@@ -28,6 +30,15 @@ export default function ClassSubjectsTab({
   const teacherCountBySubject: Record<string, number> = {};
   teacherSubjects.forEach((ts) => {
     teacherCountBySubject[ts.subject_id] = (teacherCountBySubject[ts.subject_id] || 0) + 1;
+  });
+
+  const mappingBySubjectId = new Map(
+    classSubjects.map((cs) => [cs.subject_id, cs.id]),
+  );
+
+  const directSubjects = directClassSubjects.filter((ds) => {
+    const subj = subjectById.get(ds.id);
+    return !!subj;
   });
 
   const available = subjectOptions.filter(
@@ -63,7 +74,7 @@ export default function ClassSubjectsTab({
 
   return (
     <div className="space-y-4">
-      {classSubjects.length === 0 ? (
+      {directSubjects.length === 0 ? (
         <p className="text-sm text-slate-500 py-4 text-center">
           No Subjects are assigned to this Class yet.
         </p>
@@ -80,22 +91,27 @@ export default function ClassSubjectsTab({
               </tr>
             </thead>
             <tbody>
-              {classSubjects.map((cs) => {
-                const subj = subjectById.get(cs.subject_id);
-                const teacherCount = teacherCountBySubject[cs.subject_id] || 0;
+              {directSubjects.map((ds) => {
+                const subj = subjectById.get(ds.id);
+                const mappingId = mappingBySubjectId.get(ds.id);
+                const teacherCount = teacherCountBySubject[ds.id] || 0;
                 return (
-                  <tr key={cs.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition">
+                  <tr key={ds.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition">
                     <td className="px-4 py-3 font-medium text-slate-900">{subj?.subject_code || "—"}</td>
-                    <td className="px-4 py-3">{subj?.subject_name || "—"}</td>
+                    <td className="px-4 py-3">{subj?.subject_name || ds.subject_name}</td>
                     <td className="px-4 py-3 text-slate-600">—</td>
                     <td className="px-4 py-3 text-slate-600">{teacherCount}</td>
                     <td className="px-4 py-3 text-right">
-                      <button
-                        onClick={() => handleRemove(cs.id)}
-                        className="text-xs text-red-600 hover:text-red-700 font-medium"
-                      >
-                        Remove
-                      </button>
+                      {mappingId ? (
+                        <button
+                          onClick={() => handleRemove(mappingId)}
+                          className="text-xs text-red-600 hover:text-red-700 font-medium"
+                        >
+                          Remove
+                        </button>
+                      ) : (
+                        <span className="text-xs text-slate-400">—</span>
+                      )}
                     </td>
                   </tr>
                 );

@@ -1,4 +1,3 @@
-import type { ClassCreate, ClassResponse } from "@/types/entities/class";
 import type { ClassSubjectResponse } from "@/types/entities/class-subject";
 
 const BASE = "/api/class-subjects";

@@ -4,12 +4,14 @@ interface BarChartProps {
   data: { label: string; value: number }[];
   color?: string;
   height?: number;
+  unit?: "currency" | "percent" | "number";
 }
 
 export default function BarChart({
   data,
   color = "#7c3aed",
   height = 170,
+  unit = "currency",
 }: BarChartProps) {
   const width = 400;
   const paddingLeft = 52;
@@ -26,7 +28,9 @@ export default function BarChart({
   const slot = chartWidth / data.length;
   const barWidth = Math.min(36, slot * 0.55);
 
-  const formatTick = (v: number) => {
+  const formatTick = (v: number): string => {
+    if (unit === "percent") return `${Math.round(v)}%`;
+    if (unit === "number") return v >= 1000 ? `${v / 1000}k` : `${v}`;
     if (v >= 1000) return `₹${v / 1000}k`;
     return `₹${v}`;
   };

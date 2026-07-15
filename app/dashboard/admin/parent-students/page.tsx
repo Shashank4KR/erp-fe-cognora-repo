@@ -121,7 +121,7 @@ export default function ParentStudentsPage() {
 
   const openEdit = (item: ParentStudentResponse) => {
     setEditingItem(item);
-    setFormData({ parent_id: item.parent_id, student_id: item.student_id, relationship: item.relationship });
+    setFormData({ parent_id: item.parent_id, student_id: item.student_id, relationship: item.relationship ?? "" });
     setFormError(null);
     setSuccess(null);
     setIsFormOpen(true);
@@ -211,7 +211,7 @@ export default function ParentStudentsPage() {
     return (
       (parent?.username.toLowerCase().includes(term) ?? false) ||
       (student?.username.toLowerCase().includes(term) ?? false) ||
-      item.relationship.toLowerCase().includes(term)
+      (item.relationship?.toLowerCase().includes(term) ?? false)
     );
   });
 

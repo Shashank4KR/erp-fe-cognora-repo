@@ -6,7 +6,6 @@ import StatGrid from "@/components/dashboard/role-dashboards/StatGrid";
 import QuickActions from "@/components/dashboard/role-dashboards/QuickActions";
 import DashboardCard from "@/components/dashboard/role-dashboards/DashboardCard";
 import InfoList from "@/components/dashboard/role-dashboards/InfoList";
-import AttendanceDonut from "@/components/dashboard/role-dashboards/AttendanceDonut";
 import { ROLE_CONFIGS } from "@/lib/dashboard/role-dashboards/config";
 import {
   studentStats,
@@ -40,10 +39,7 @@ export default function StudentDashboardPage() {
         </DashboardCard>
 
         <DashboardCard title="Attendance">
-          <AttendanceDonut
-            percentage={94}
-            breakdown={studentAttendanceBreakdown}
-          />
+          <p className="text-sm text-slate-500">Attendance overview is not available yet.</p>
         </DashboardCard>
 
         <DashboardCard

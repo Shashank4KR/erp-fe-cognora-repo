@@ -21,6 +21,8 @@ interface ClassDetailsPanelProps {
   subjectOptions: { id: string; label: string }[];
   teacherOptions: { id: string; label: string }[];
   timetables: { day_of_week: string; start_time: string; end_time: string; room_no: string | null; period_no: number | null; subject_id: string; teacher_id: string }[];
+  directClassSubjects: { id: string; subject_name: string }[];
+  directClassTeachers: { id: string; employee_id: string }[];
   onAssignSubjects: (classId: string, subjectIds: string[]) => Promise<void>;
   onRemoveSubject: (mappingId: string) => Promise<void>;
   onAssignTeacher: (classId: string, teacherId: string) => Promise<void>;
@@ -39,6 +41,8 @@ export default function ClassDetailsPanel({
   subjectOptions,
   teacherOptions,
   timetables,
+  directClassSubjects,
+  directClassTeachers,
   onAssignSubjects,
   onRemoveSubject,
   onAssignTeacher,
@@ -118,6 +122,7 @@ export default function ClassDetailsPanel({
               teacherSubjects={teacherSubjects}
               teachers={teachers}
               subjectOptions={subjectOptions}
+              directClassSubjects={directClassSubjects}
               onAssign={onAssignSubjects}
               onRemove={onRemoveSubject}
             />
@@ -131,6 +136,7 @@ export default function ClassDetailsPanel({
               teachers={teachers}
               classOptions={classOptions}
               teacherOptions={teacherOptions}
+              directClassTeachers={directClassTeachers}
               onAssignTeacher={onAssignTeacher}
               onRemoveTeacherSubject={onRemoveTeacherSubject}
             />

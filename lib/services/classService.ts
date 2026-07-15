@@ -1,4 +1,6 @@
 import type { ClassCreate, ClassResponse, ClassUpdate } from "@/types/entities/class";
+import type { ClassSubjectSummary } from "@/types/entities/class-subject-summary";
+import type { ClassTeacherSummary } from "@/types/entities/class-teacher-summary";
 
 const BASE = "/api/classes";
 
@@ -84,4 +86,36 @@ export async function deleteClass(token: string, id: string): Promise<void> {
     const data = (await response.json()) as { detail?: string };
     throw new Error(data.detail ?? "Failed to delete class.");
   }
+}
+
+export async function getClassSubjects(
+  token: string,
+  classId: string,
+): Promise<ClassSubjectSummary[]> {
+  const response = await fetch(`${BASE}/${classId}/subjects`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to fetch class subjects.");
+  }
+
+  return (await response.json()) as ClassSubjectSummary[];
+}
+
+export async function getClassTeachers(
+  token: string,
+  classId: string,
+): Promise<ClassTeacherSummary[]> {
+  const response = await fetch(`${BASE}/${classId}/teachers`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to fetch class teachers.");
+  }
+
+  return (await response.json()) as ClassTeacherSummary[];
 }

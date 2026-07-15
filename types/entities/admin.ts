@@ -9,6 +9,4 @@ export type AdminResponse = {
   user_id: string;
   admin_name: string;
   phone?: string | null;
-  created_at?: string;
-  updated_at?: string;
 };

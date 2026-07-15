@@ -4,11 +4,13 @@ import { useState, useEffect, useMemo } from "react";
 import Card from "@/components/shared/Card";
 import SectionHeader from "@/components/shared/SectionHeader";
 import Modal from "@/components/shared/Modal";
-import { Plus, Search, Pencil, Trash2, Loader2 } from "lucide-react";
-import { listTeachers, createTeacher, updateTeacher, deleteTeacher } from "@/lib/services/teacherService";
+import { Plus, Search, Pencil, Trash2, Loader2, Eye } from "lucide-react";
+import { listTeachers, createTeacher, updateTeacher, deleteTeacher, getTeacherClasses, getTeacherSubjects } from "@/lib/services/teacherService";
 import { listUsers, createUser } from "@/lib/services/userService";
 import { listDepartments } from "@/lib/services/departmentService";
 import type { TeacherResponse } from "@/types/entities/teacher";
+import type { ClassResponse } from "@/types/entities/class";
+import type { SubjectResponse } from "@/types/entities/subject";
 import { shortId } from "@/lib/utils/id";
 
 type TeacherUserOption = { id: string; username: string; email: string };
@@ -27,8 +29,14 @@ export default function TeachersPage() {
 
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isViewOpen, setIsViewOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<TeacherResponse | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [viewingItem, setViewingItem] = useState<TeacherResponse | null>(null);
+  const [viewingClasses, setViewingClasses] = useState<ClassResponse[]>([]);
+  const [viewingSubjects, setViewingSubjects] = useState<SubjectResponse[]>([]);
+  const [viewLoading, setViewLoading] = useState(false);
+  const [viewError, setViewError] = useState<string | null>(null);
 
   const [mode, setMode] = useState<"link" | "create">("link");
   const [selectedUserId, setSelectedUserId] = useState("");
@@ -120,6 +128,27 @@ export default function TeachersPage() {
   const openDelete = (id: string) => {
     setDeletingId(id);
     setIsDeleteOpen(true);
+  };
+
+  const openView = async (item: TeacherResponse) => {
+    setViewingItem(item);
+    setViewLoading(true);
+    setViewError(null);
+    setViewingClasses([]);
+    setViewingSubjects([]);
+    setIsViewOpen(true);
+    try {
+      const [classesData, subjectsData] = await Promise.all([
+        getTeacherClasses(token, item.id),
+        getTeacherSubjects(token, item.id),
+      ]);
+      setViewingClasses(classesData);
+      setViewingSubjects(subjectsData);
+    } catch (err) {
+      setViewError(err instanceof Error ? err.message : "Failed to load teacher details.");
+    } finally {
+      setViewLoading(false);
+    }
   };
 
   const handleUserSubmit = async (e: React.FormEvent) => {
@@ -330,6 +359,13 @@ export default function TeachersPage() {
                         <td className="px-4 py-3">{item.address ?? "-"}</td>
                         <td className="px-4 py-3 text-right">
                           <div className="flex items-center justify-end gap-2">
+                            <button
+                              onClick={() => openView(item)}
+                              className="p-2 rounded-lg hover:bg-purple-50 text-slate-600 hover:text-[#6d28d9] transition"
+                              title="View"
+                            >
+                              <Eye className="h-4 w-4" />
+                            </button>
                             <button
                               onClick={() => openEdit(item)}
                               className="p-2 rounded-lg hover:bg-purple-50 text-slate-600 hover:text-[#6d28d9] transition"
@@ -664,6 +700,95 @@ export default function TeachersPage() {
                 )}
               </button>
             </div>
+          </div>
+        </Modal>
+
+        {/* Teacher Detail Modal */}
+        <Modal
+          open={isViewOpen}
+          onClose={() => setIsViewOpen(false)}
+          title={viewingItem ? `Teacher Details — ${viewingItem.employee_id}` : "Teacher Details"}
+          maxWidth="max-w-2xl"
+        >
+          <div className="space-y-4">
+            {viewError && (
+              <p className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+                {viewError}
+              </p>
+            )}
+            {viewLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-6 w-6 animate-spin text-[#6d28d9]" />
+              </div>
+            ) : viewingItem ? (
+              <>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs font-medium text-slate-500 mb-1">Teacher ID</p>
+                    <p className="text-sm font-mono text-slate-900">{shortId(viewingItem.id)}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-slate-500 mb-1">Employee ID</p>
+                    <p className="text-sm font-medium text-slate-900">{viewingItem.employee_id}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-slate-500 mb-1">User ID</p>
+                    <p className="text-sm font-mono text-slate-900">{shortId(viewingItem.user_id)}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-slate-500 mb-1">Department</p>
+                    <p className="text-sm text-slate-900">{departmentName(viewingItem.department_id)}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-slate-500 mb-1">Qualification</p>
+                    <p className="text-sm text-slate-900">{viewingItem.qualification || "—"}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-slate-500 mb-1">Join Date</p>
+                    <p className="text-sm text-slate-900">{viewingItem.join_date || "—"}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-slate-500 mb-1">Phone</p>
+                    <p className="text-sm text-slate-900">{viewingItem.phone || "—"}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-slate-500 mb-1">Address</p>
+                    <p className="text-sm text-slate-900">{viewingItem.address || "—"}</p>
+                  </div>
+                </div>
+
+                <div className="border-t border-slate-200 pt-4">
+                  <h4 className="text-sm font-semibold text-slate-900 mb-2">Assigned Classes</h4>
+                  {viewingClasses.length === 0 ? (
+                    <p className="text-sm text-slate-500">No classes assigned to this teacher yet.</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {viewingClasses.map((cls) => (
+                        <div key={cls.id} className="rounded-lg border border-slate-100 px-4 py-2.5">
+                          <span className="text-sm font-medium text-slate-900">{cls.class_name} — {cls.section}</span>
+                          <span className="text-xs text-slate-500 ml-2">{cls.academic_year}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div className="border-t border-slate-200 pt-4">
+                  <h4 className="text-sm font-semibold text-slate-900 mb-2">Assigned Subjects</h4>
+                  {viewingSubjects.length === 0 ? (
+                    <p className="text-sm text-slate-500">No subjects assigned to this teacher yet.</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {viewingSubjects.map((subj) => (
+                        <div key={subj.id} className="rounded-lg border border-slate-100 px-4 py-2.5">
+                          <span className="text-sm font-medium text-slate-900">{subj.subject_code} — {subj.subject_name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : null}
           </div>
         </Modal>
       </div>

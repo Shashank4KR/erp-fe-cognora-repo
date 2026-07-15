@@ -68,7 +68,7 @@ export const MODULES: ModuleCard[] = [
     title: "Attendance Management",
     description: "Track and manage student and staff attendance.",
     icon: CheckCircle,
-    href: "/dashboard/admin/attendance",
+    href: "/dashboard/admin/academics/attendance",
     color: "#0891b2",
     bg: "#ecfeff",
   },
@@ -202,7 +202,7 @@ export type QuickAccess = {
 
 export const QUICK_ACCESS: QuickAccess[] = [
   { label: "Add Student", icon: Users, href: "/dashboard/admin/students" },
-  { label: "Mark Attendance", icon: CheckCircle, href: "/dashboard/admin/attendance" },
+  { label: "Mark Attendance", icon: CheckCircle, href: "/dashboard/admin/academics/attendance" },
   { label: "Create Notice", icon: MessageSquare, href: "/dashboard/admin/communication" },
   { label: "Collect Fees", icon: Wallet, href: "/dashboard/admin/fees" },
   { label: "View Reports", icon: BarChart3, href: "/dashboard/admin/reports" },

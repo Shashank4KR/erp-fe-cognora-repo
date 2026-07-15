@@ -14,6 +14,7 @@ export default function ClassTeachersTab({
   teachers,
   classOptions,
   teacherOptions,
+  directClassTeachers,
   onAssignTeacher,
   onRemoveTeacherSubject,
 }: {
@@ -24,6 +25,7 @@ export default function ClassTeachersTab({
   teachers: DrawerTeacher[];
   classOptions: { id: string; label: string }[];
   teacherOptions: { id: string; label: string }[];
+  directClassTeachers: { id: string; employee_id: string }[];
   onAssignTeacher: (classId: string, teacherId: string) => Promise<void>;
   onRemoveTeacherSubject: (mappingId: string) => Promise<void>;
 }) {
@@ -38,8 +40,9 @@ export default function ClassTeachersTab({
   const teacherLabel = (id: string) =>
     teacherLabelById.get(id) ?? teacherById.get(id)?.employee_id ?? id;
 
+  const assignedTeacherIds = new Set(directClassTeachers.map((dt) => dt.id));
   const classTeacherSubjects = teacherSubjects.filter(
-    (ts) => ts.class_id === selectedClass.id,
+    (ts) => ts.class_id === selectedClass.id && assignedTeacherIds.has(ts.teacher_id),
   );
 
   const handleAssign = async () => {
@@ -99,7 +102,7 @@ export default function ClassTeachersTab({
           </button>
         </div>
 
-        {classTeacherSubjects.length === 0 && !showAssign && (
+        {directClassTeachers.length === 0 && !showAssign && (
           <p className="text-sm text-slate-500">No teachers assigned to subjects in this class yet.</p>
         )}
 

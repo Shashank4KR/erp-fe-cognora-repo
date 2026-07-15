@@ -3,7 +3,6 @@ import DashboardHeader from "@/components/shared/layout/Header";
 import MainLayout from "@/components/shared/layout/MainLayout";
 import DashboardOverview from "@/components/dashboard/DashboardOverview";
 import StatsCards from "@/components/dashboard/StatsCards";
-import AttendanceOverview from "@/components/dashboard/AttendanceOverview";
 import FeesCollectionOverview from "@/components/dashboard/FeesCollectionOverview";
 import RecentActivities from "@/components/dashboard/RecentActivities";
 import UpcomingEvents from "@/components/dashboard/UpcomingEvents";
@@ -26,7 +25,6 @@ export default function DashboardPage() {
 
           {/* Charts Row */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <AttendanceOverview />
             <FeesCollectionOverview />
           </div>
 
