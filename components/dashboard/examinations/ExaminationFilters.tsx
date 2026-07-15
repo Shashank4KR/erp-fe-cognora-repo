@@ -42,8 +42,8 @@ export default function ExaminationFilters({
   return (
     <div className="mb-6">
       <div className="bg-white rounded-lg border border-slate-200 p-4">
-        <div className="flex flex-wrap items-end gap-4">
-          <div className="flex-1 min-w-[140px]">
+        <div className="grid grid-cols-[repeat(8,minmax(0,1fr))] items-end gap-3">
+          <div className="col-span-1">
             <Dropdown
               label="Academic Year"
               value={academicYear}
@@ -51,7 +51,7 @@ export default function ExaminationFilters({
               onChange={onAcademicYearChange}
             />
           </div>
-          <div className="flex-1 min-w-[140px]">
+          <div className="col-span-1">
             <Dropdown
               label="Exam Type"
               value={examType}
@@ -67,7 +67,7 @@ export default function ExaminationFilters({
               onChange={onExamTypeChange}
             />
           </div>
-          <div className="flex-1 min-w-[140px]">
+          <div className="col-span-1">
             <Dropdown
               label="Class / Grade"
               value={classGrade}
@@ -84,7 +84,7 @@ export default function ExaminationFilters({
               onChange={onClassGradeChange}
             />
           </div>
-          <div className="flex-1 min-w-[140px]">
+          <div className="col-span-1">
             <Dropdown
               label="Term"
               value={term}
@@ -92,7 +92,7 @@ export default function ExaminationFilters({
               onChange={onTermChange}
             />
           </div>
-          <div className="flex-1 min-w-[140px]">
+          <div className="col-span-1">
             <Dropdown
               label="Status"
               value={status}
@@ -100,7 +100,7 @@ export default function ExaminationFilters({
               onChange={onStatusChange}
             />
           </div>
-          <div className="flex-1 min-w-[160px]">
+          <div className="col-span-1">
             <label className="mb-2 block text-xs font-semibold text-slate-700">Date Range</label>
             <div className="relative">
               <input
@@ -111,17 +111,19 @@ export default function ExaminationFilters({
               <CalendarIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#7c3aed]" />
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="col-span-1">
             <button
               onClick={onSearch}
-              className="inline-flex items-center gap-2 rounded-lg border border-[#7c3aed] bg-white px-4 py-2 text-sm font-semibold text-[#7c3aed] hover:bg-purple-50 transition"
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#7c3aed] bg-white px-3 py-2 text-sm font-semibold text-[#7c3aed] hover:bg-purple-50 transition whitespace-nowrap h-10"
             >
               <Search className="h-4 w-4" />
               Search
             </button>
+          </div>
+          <div className="col-span-1">
             <button
-              onClick={() => { onFilter(); setFilterPanelOpen((p) => !p); }}
-              className="inline-flex items-center gap-2 rounded-lg border border-[#7c3aed] bg-white px-4 py-2 text-sm font-semibold text-[#7c3aed] hover:bg-purple-50 transition"
+              onClick={onFilter}
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#7c3aed] bg-white px-3 py-2 text-sm font-semibold text-[#7c3aed] hover:bg-purple-50 transition whitespace-nowrap h-10"
             >
               <Filter className="h-4 w-4" />
               Filters

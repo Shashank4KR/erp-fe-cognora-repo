@@ -196,11 +196,11 @@ export default function ExaminationsPage() {
             <ExaminationOverviewChart />
             <ResultsStatusChart />
             <StudentsAppearedCard />
-            <TopSubjectsCard />
           </div>
 
-          <div className="mt-6">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mt-6">
             <ExaminationQuickActions onAction={handleQuickAction} />
+            <TopSubjectsCard />
           </div>
         </div>
       </div>
