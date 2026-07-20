@@ -14,6 +14,8 @@ interface CalendarProps {
   onSelect?: (date: Date) => void;
   events?: CalendarEvent[];
   showEventDots?: boolean;
+  rangeStart?: Date;
+  rangeEnd?: Date;
 }
 
 const WEEKDAYS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
@@ -38,6 +40,8 @@ export default function Calendar({
   onSelect,
   events = [],
   showEventDots = false,
+  rangeStart,
+  rangeEnd,
 }: CalendarProps) {
   const base = initialDate ?? selectedDate ?? new Date(2025, 4, 21);
   const [view, setView] = useState(
@@ -62,6 +66,16 @@ export default function Calendar({
     a.getFullYear() === year &&
     a.getMonth() === month &&
     a.getDate() === d;
+
+  const dateOnly = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+
+  const isInRange = (d: number) => {
+    if (!rangeStart || !rangeEnd) return false;
+    const current = dateOnly(new Date(year, month, d));
+    const start = dateOnly(rangeStart);
+    const end = dateOnly(rangeEnd);
+    return current >= start && current <= end;
+  };
 
   const eventForDay = (d: number) => events.find((e) => e.day === d);
 
@@ -108,7 +122,7 @@ export default function Calendar({
         {WEEKDAYS.map((w) => (
           <div
             key={w}
-            className="py-1 text-center text-xs font-medium text-slate-400"
+            className="py-1 text-center text-xs font-medium text-slate-600"
           >
             {w}
           </div>
@@ -117,6 +131,7 @@ export default function Calendar({
         {cells.map((day, i) => {
           if (day === null) return <div key={`empty-${i}`} />;
           const selected = isSameDay(selectedDate, day);
+          const inRange = isInRange(day);
           const today = isSameDay(new Date(), day);
           const evt = eventForDay(day);
           return (
@@ -126,6 +141,8 @@ export default function Calendar({
               className={`relative flex h-9 items-center justify-center rounded-lg text-sm transition ${
                 selected
                   ? "bg-purple-600 font-semibold text-white"
+                  : inRange
+                  ? "bg-purple-50 text-purple-700"
                   : today
                   ? "bg-purple-50 font-semibold text-purple-700 hover:bg-purple-100"
                   : "text-slate-700 hover:bg-slate-100"

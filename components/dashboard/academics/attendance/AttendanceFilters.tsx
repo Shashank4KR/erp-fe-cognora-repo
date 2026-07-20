@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { CalendarIcon, X } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { CalendarIcon, Search, X } from "lucide-react";
 import Dropdown from "@/components/shared/Dropdown";
+import DatePicker from "@/components/shared/DatePicker";
+import type { AttendanceStatus } from "@/types/entities/attendance";
 
 interface AttendanceFiltersProps {
   onSearch: () => void;
@@ -23,6 +25,13 @@ interface AttendanceFiltersProps {
   subject: string;
   onSubjectChange: (value: string) => void;
   subjectLoading: boolean;
+  statusFilter: AttendanceStatus | "";
+  onStatusFilter: (status: AttendanceStatus) => void;
+  onResetFilters: () => void;
+  searchTerm: string;
+  onSearchChange: (value: string) => void;
+  calendarOpen?: boolean;
+  onCalendarOpenChange?: (open: boolean) => void;
 }
 
 export default function AttendanceFilters({
@@ -44,8 +53,23 @@ export default function AttendanceFilters({
   subject,
   onSubjectChange,
   subjectLoading,
+  statusFilter,
+  onStatusFilter,
+  onResetFilters,
+  searchTerm,
+  onSearchChange,
+  calendarOpen,
+  onCalendarOpenChange,
 }: AttendanceFiltersProps) {
   const [filterPanelOpen, setFilterPanelOpen] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const dateContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (searchTerm && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [searchTerm]);
 
   return (
     <div className="mb-6">
@@ -58,6 +82,7 @@ export default function AttendanceFilters({
               options={academicYearOptions}
               onChange={onAcademicYearChange}
               disabled={academicYearLoading || academicYearOptions.length === 0}
+              placeholder="Select academic year"
             />
           </div>
           <div className="flex-1 min-w-[140px]">
@@ -69,18 +94,14 @@ export default function AttendanceFilters({
               disabled={classLoading || classOptions.length === 0}
             />
           </div>
-          <div className="flex-1 min-w-[160px]">
+          <div className="flex-1 min-w-[160px]" ref={dateContainerRef}>
             <label className="mb-2 block text-xs font-semibold text-slate-700">Date</label>
-            <div className="relative">
-              <input
-                type="text"
-                value={date}
-                onChange={(e) => onDateChange(e.target.value)}
-                placeholder="DD MMM YYYY"
-                className="h-10 w-full rounded-lg border border-slate-200 bg-white pl-9 pr-4 text-sm font-medium text-slate-700 outline-none focus:border-[#7c3aed] focus:ring-2 focus:ring-purple-100 cursor-pointer"
-              />
-              <CalendarIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#7c3aed]" />
-            </div>
+            <DatePicker
+              value={date}
+              onChange={onDateChange}
+              open={calendarOpen}
+              onOpenChange={onCalendarOpenChange}
+            />
           </div>
           <div className="flex-1 min-w-[140px]">
             <Dropdown
@@ -88,9 +109,11 @@ export default function AttendanceFilters({
               value={viewType}
               options={["Daily View", "Weekly View", "Monthly View"]}
               onChange={onViewTypeChange}
+              disabled
             />
+            <p className="mt-1 text-[10px] font-medium text-slate-400">Coming soon</p>
           </div>
-          <div className="flex-1 min-w-[160px]">
+          <div className="flex-1 min-w-[140px]">
             <Dropdown
               label="Subject (Optional)"
               value={subject}
@@ -101,6 +124,7 @@ export default function AttendanceFilters({
           </div>
           <div className="flex items-center gap-2">
             <button
+              type="button"
               onClick={onSearch}
               className="inline-flex items-center gap-2 rounded-lg border border-[#7c3aed] bg-white px-4 py-2 text-sm font-semibold text-[#7c3aed] hover:bg-purple-50 transition"
             >
@@ -111,6 +135,7 @@ export default function AttendanceFilters({
               Search
             </button>
             <button
+              type="button"
               onClick={() => { onFilter(); setFilterPanelOpen((p) => !p); }}
               className="inline-flex items-center gap-2 rounded-lg border border-[#7c3aed] bg-white px-4 py-2 text-sm font-semibold text-[#7c3aed] hover:bg-purple-50 transition"
             >
@@ -126,6 +151,7 @@ export default function AttendanceFilters({
       {filterPanelOpen && (
         <div className="mt-3 bg-white rounded-lg border border-slate-200 p-4 relative">
           <button
+            type="button"
             onClick={() => setFilterPanelOpen(false)}
             className="absolute top-3 right-3 p-1 rounded-lg hover:bg-slate-100 text-slate-400 transition"
             aria-label="Close filters"
@@ -134,23 +160,43 @@ export default function AttendanceFilters({
           </button>
           <p className="text-xs font-semibold text-slate-700 mb-3">Additional Filters</p>
           <div className="flex flex-wrap gap-3">
-            {["Present Only", "Absent Only", "Late Only", "Low Attendance"].map((filter) => (
+            {[
+              { label: "Present Only", status: "PRESENT" as AttendanceStatus },
+              { label: "Absent Only", status: "ABSENT" as AttendanceStatus },
+              { label: "Late Only", status: "LATE" as AttendanceStatus },
+            ].map(({ label, status }) => (
               <button
-                key={filter}
-                className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-[#7c3aed] hover:border-[#7c3aed] transition"
+                key={label}
+                type="button"
+                onClick={() => onStatusFilter(status)}
+                className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition ${
+                  statusFilter === status
+                    ? "border-[#7c3aed] bg-purple-50 text-[#7c3aed]"
+                    : "border-slate-200 text-slate-600 hover:bg-purple-50 hover:text-[#7c3aed] hover:border-[#7c3aed]"
+                }`}
               >
-                {filter}
+                {label}
               </button>
             ))}
+            <button
+              type="button"
+              disabled
+              title="Coming soon"
+              className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 opacity-60 cursor-not-allowed transition"
+            >
+              Low Attendance
+            </button>
           </div>
           <div className="flex items-center justify-end gap-2 mt-4">
             <button
-              onClick={() => setFilterPanelOpen(false)}
+              type="button"
+              onClick={() => { onResetFilters(); setFilterPanelOpen(false); }}
               className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition"
             >
               Reset
             </button>
             <button
+              type="button"
               onClick={() => setFilterPanelOpen(false)}
               className="rounded-lg bg-[#7c3aed] px-4 py-2 text-sm font-semibold text-white hover:brightness-110 transition"
             >

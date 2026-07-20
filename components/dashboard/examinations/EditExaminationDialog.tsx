@@ -2,109 +2,112 @@
 
 import { useState, useEffect } from "react";
 import Modal from "@/components/shared/Modal";
-import { ExaminationRow, EXAM_TYPE_COLORS } from "@/lib/fixtures/examinations-reference-fixture";
-import { EXAM_TYPE_OPTIONS, CLASS_GRADE_OPTIONS, TERM_OPTIONS, STATUS_OPTIONS } from "@/lib/fixtures/examinations-reference-fixture";
+import { EXAM_TYPE_OPTIONS } from "@/lib/fixtures/examinations-reference-fixture";
+import DatePicker from "@/components/shared/DatePicker";
+import type { ClassResponse } from "@/types/entities/class";
+import type { ExaminationRow } from "@/lib/fixtures/examinations-reference-fixture";
 
 interface EditExaminationDialogProps {
   open: boolean;
   onClose: () => void;
   row: ExaminationRow | null;
-  onSave: (row: ExaminationRow) => void;
+  classes: ClassResponse[];
+  onSave: (payload: {
+    exam_name: string;
+    exam_type: string;
+    class_id: string;
+    start_date: string;
+    end_date: string;
+    max_marks: number;
+  }) => Promise<void>;
+  loading?: boolean;
+  error?: string | null;
 }
 
-export default function EditExaminationDialog({ open, onClose, row, onSave }: EditExaminationDialogProps) {
-  const [examCode, setExamCode] = useState("");
+export default function EditExaminationDialog({
+  open,
+  onClose,
+  row,
+  classes,
+  onSave,
+  loading = false,
+  error = null,
+}: EditExaminationDialogProps) {
   const [examName, setExamName] = useState("");
   const [type, setType] = useState("");
-  const [classGrade, setClassGrade] = useState("");
-  const [term, setTerm] = useState("");
-  const [schedule, setSchedule] = useState("");
-  const [subjects, setSubjects] = useState("");
-  const [students, setStudents] = useState("");
-  const [status, setStatus] = useState<"Upcoming" | "Ongoing" | "Completed">("Upcoming");
+  const [classId, setClassId] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [maxMarks, setMaxMarks] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (row) {
-      setExamCode(row.examCode);
       setExamName(row.examName);
       setType(row.type);
-      setClassGrade(row.classGrade);
-      setTerm(row.term);
-      setSchedule(row.schedule);
-      setSubjects(row.subjects);
-      setStudents(String(row.students));
-      setStatus(row.status);
+      setClassId(row.classId);
+      setStartDate(row.startDate);
+      setEndDate(row.endDate);
+      setMaxMarks(String(row.maxMarks));
       setErrors({});
     }
   }, [row]);
 
+  useEffect(() => {
+    if (!open) {
+      setErrors({});
+    }
+  }, [open]);
+
   const validate = () => {
     const next: Record<string, string> = {};
-    if (!examCode.trim()) next.examCode = "Exam Code is required";
     if (!examName.trim()) next.examName = "Examination Name is required";
     if (!type) next.type = "Type is required";
-    if (!classGrade) next.classGrade = "Class / Grade is required";
-    if (!term) next.term = "Term is required";
-    if (!schedule.trim()) next.schedule = "Schedule is required";
-    if (!subjects.trim()) next.subjects = "Subjects are required";
-    if (!students.trim() || isNaN(Number(students))) next.students = "Valid student count is required";
+    if (!classId) next.classId = "Class / Grade is required";
+    if (!startDate) next.startDate = "Start Date is required";
+    if (!endDate) next.endDate = "End Date is required";
+    if (startDate && endDate && endDate < startDate) next.endDate = "End Date cannot be before Start Date";
+    if (!maxMarks || Number(maxMarks) <= 0) next.maxMarks = "Max Marks must be greater than 0";
     setErrors(next);
     return Object.keys(next).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validate() || !row) return;
-    onSave({
-      ...row,
-      examCode: examCode.trim(),
-      examName: examName.trim(),
-      type,
-      classGrade,
-      term,
-      schedule: schedule.trim(),
-      subjects: subjects.trim(),
-      students: Number(students),
-      status,
+    await onSave({
+      exam_name: examName.trim(),
+      exam_type: type,
+      class_id: classId,
+      start_date: startDate,
+      end_date: endDate,
+      max_marks: Number(maxMarks),
     });
-    handleClose();
   };
 
   const handleClose = () => {
-    setExamCode("");
-    setExamName("");
-    setType("");
-    setClassGrade("");
-    setTerm("");
-    setSchedule("");
-    setSubjects("");
-    setStudents("");
-    setStatus("Upcoming");
-    setErrors({});
+    if (loading) return;
     onClose();
   };
+
+  const classOptions = classes.map((c) => ({ id: c.id, label: `${c.class_name} — ${c.section}` }));
 
   if (!row) return null;
 
   return (
-    <Modal open={open} onClose={handleClose} title={`Edit Examination — ${row.examCode}`} maxWidth="max-w-lg">
+    <Modal open={open} onClose={handleClose} title={`Edit Examination — ${row.displayCode}`} maxWidth="max-w-lg">
       <div className="space-y-4">
-        <div>
-          <label className="mb-2 block text-xs font-semibold text-slate-700">Exam Code</label>
-          <input
-            type="text"
-            value={examCode}
-            onChange={(e) => setExamCode(e.target.value)}
-            className={`h-10 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-purple-100 ${errors.examCode ? "border-red-300 focus:border-red-500" : "border-slate-200 focus:border-[#7c3aed]"}`}
-          />
-          {errors.examCode && <p className="text-xs text-red-600 mt-1">{errors.examCode}</p>}
-        </div>
+        {error && (
+          <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-600">
+            {error}
+          </div>
+        )}
         <div>
           <label className="mb-2 block text-xs font-semibold text-slate-700">Examination Name</label>
           <input
             type="text"
             value={examName}
             onChange={(e) => setExamName(e.target.value)}
+            disabled={loading}
             className={`h-10 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-purple-100 ${errors.examName ? "border-red-300 focus:border-red-500" : "border-slate-200 focus:border-[#7c3aed]"}`}
           />
           {errors.examName && <p className="text-xs text-red-600 mt-1">{errors.examName}</p>}
@@ -114,6 +117,7 @@ export default function EditExaminationDialog({ open, onClose, row, onSave }: Ed
           <select
             value={type}
             onChange={(e) => setType(e.target.value)}
+            disabled={loading}
             className={`h-10 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-purple-100 ${errors.type ? "border-red-300 focus:border-red-500" : "border-slate-200 focus:border-[#7c3aed]"}`}
           >
             {EXAM_TYPE_OPTIONS.map((opt) => (
@@ -125,82 +129,64 @@ export default function EditExaminationDialog({ open, onClose, row, onSave }: Ed
         <div>
           <label className="mb-2 block text-xs font-semibold text-slate-700">Class / Grade</label>
           <select
-            value={classGrade}
-            onChange={(e) => setClassGrade(e.target.value)}
-            className={`h-10 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-purple-100 ${errors.classGrade ? "border-red-300 focus:border-red-500" : "border-slate-200 focus:border-[#7c3aed]"}`}
+            value={classId}
+            onChange={(e) => setClassId(e.target.value)}
+            disabled={loading}
+            className={`h-10 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-purple-100 ${errors.classId ? "border-red-300 focus:border-red-500" : "border-slate-200 focus:border-[#7c3aed]"}`}
           >
-            {CLASS_GRADE_OPTIONS.map((opt) => (
-              <option key={opt} value={opt}>{opt}</option>
+            {classOptions.map((opt) => (
+              <option key={opt.id} value={opt.id}>{opt.label}</option>
             ))}
           </select>
-          {errors.classGrade && <p className="text-xs text-red-600 mt-1">{errors.classGrade}</p>}
+          {errors.classId && <p className="text-xs text-red-600 mt-1">{errors.classId}</p>}
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="mb-2 block text-xs font-semibold text-slate-700">Exam Period Start</label>
+            <DatePicker
+              value={startDate}
+              onChange={setStartDate}
+              open={undefined}
+              onOpenChange={undefined}
+            />
+            {errors.startDate && <p className="text-xs text-red-600 mt-1">{errors.startDate}</p>}
+          </div>
+          <div>
+            <label className="mb-2 block text-xs font-semibold text-slate-700">Exam Period End</label>
+            <DatePicker
+              value={endDate}
+              onChange={setEndDate}
+              open={undefined}
+              onOpenChange={undefined}
+            />
+            {errors.endDate && <p className="text-xs text-red-600 mt-1">{errors.endDate}</p>}
+          </div>
         </div>
         <div>
-          <label className="mb-2 block text-xs font-semibold text-slate-700">Term</label>
-          <select
-            value={term}
-            onChange={(e) => setTerm(e.target.value)}
-            className={`h-10 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-purple-100 ${errors.term ? "border-red-300 focus:border-red-500" : "border-slate-200 focus:border-[#7c3aed]"}`}
-          >
-            {TERM_OPTIONS.map((opt) => (
-              <option key={opt} value={opt}>{opt}</option>
-            ))}
-          </select>
-          {errors.term && <p className="text-xs text-red-600 mt-1">{errors.term}</p>}
-        </div>
-        <div>
-          <label className="mb-2 block text-xs font-semibold text-slate-700">Schedule</label>
-          <input
-            type="text"
-            value={schedule}
-            onChange={(e) => setSchedule(e.target.value)}
-            className={`h-10 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-purple-100 ${errors.schedule ? "border-red-300 focus:border-red-500" : "border-slate-200 focus:border-[#7c3aed]"}`}
-          />
-          {errors.schedule && <p className="text-xs text-red-600 mt-1">{errors.schedule}</p>}
-        </div>
-        <div>
-          <label className="mb-2 block text-xs font-semibold text-slate-700">Subjects</label>
-          <input
-            type="text"
-            value={subjects}
-            onChange={(e) => setSubjects(e.target.value)}
-            className={`h-10 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-purple-100 ${errors.subjects ? "border-red-300 focus:border-red-500" : "border-slate-200 focus:border-[#7c3aed]"}`}
-          />
-          {errors.subjects && <p className="text-xs text-red-600 mt-1">{errors.subjects}</p>}
-        </div>
-        <div>
-          <label className="mb-2 block text-xs font-semibold text-slate-700">Students</label>
+          <label className="mb-2 block text-xs font-semibold text-slate-700">Maximum Marks</label>
           <input
             type="number"
-            value={students}
-            onChange={(e) => setStudents(e.target.value)}
-            className={`h-10 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-purple-100 ${errors.students ? "border-red-300 focus:border-red-500" : "border-slate-200 focus:border-[#7c3aed]"}`}
+            value={maxMarks}
+            onChange={(e) => setMaxMarks(e.target.value)}
+            disabled={loading}
+            className={`h-10 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-purple-100 ${errors.maxMarks ? "border-red-300 focus:border-red-500" : "border-slate-200 focus:border-[#7c3aed]"}`}
           />
-          {errors.students && <p className="text-xs text-red-600 mt-1">{errors.students}</p>}
-        </div>
-        <div>
-          <label className="mb-2 block text-xs font-semibold text-slate-700">Status</label>
-          <select
-            value={status}
-            onChange={(e) => setStatus(e.target.value as "Upcoming" | "Ongoing" | "Completed")}
-            className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm outline-none focus:ring-2 focus:ring-purple-100 focus:border-[#7c3aed]"
-          >
-            {STATUS_OPTIONS.map((opt) => (
-              <option key={opt} value={opt}>{opt}</option>
-            ))}
-          </select>
+          {errors.maxMarks && <p className="text-xs text-red-600 mt-1">{errors.maxMarks}</p>}
         </div>
         <div className="flex items-center justify-end gap-2 pt-2">
           <button
             onClick={handleClose}
-            className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition"
+            disabled={loading}
+            className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition disabled:opacity-50"
           >
             Cancel
           </button>
           <button
             onClick={handleSubmit}
-            className="rounded-lg bg-[#7c3aed] px-4 py-2 text-sm font-semibold text-white hover:brightness-110 transition"
+            disabled={loading}
+            className="rounded-lg bg-[#7c3aed] px-4 py-2 text-sm font-semibold text-white hover:brightness-110 transition disabled:opacity-50 inline-flex items-center gap-2"
           >
+            {loading && <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" strokeDasharray="32" strokeDashoffset="32" /></svg>}
             Save Changes
           </button>
         </div>

@@ -12,6 +12,16 @@ import {
   Settings,
   LayoutGrid,
   CalendarClock,
+  TrendingUp,
+  CircleDollarSign,
+  Wallet,
+  FileText,
+  Receipt,
+  Megaphone,
+  Truck,
+  BedDouble,
+  UtensilsCrossed,
+  Wrench,
   type LucideIcon,
 } from "lucide-react";
 
@@ -39,9 +49,76 @@ export const MENU_ITEMS: MenuItemType[] = [
       ],
     },
   { label: "Examinations", icon: ClipboardList, href: "/dashboard/admin/examinations" },
-  { label: "Finance", icon: DollarSign, href: "/dashboard/admin/finance" },
-  { label: "Communication", icon: MessageSquare, href: "/dashboard/admin/communication" },
+  { label: "Finance", icon: DollarSign, href: "/dashboard/admin/finance", children: [
+    { label: "Finance Overview", icon: TrendingUp, href: "/dashboard/admin/finance/overview" },
+    { label: "Fees Management", icon: CircleDollarSign, href: "/dashboard/admin/finance/fees-management" },
+    { label: "Expenses Management", icon: Receipt, href: "/dashboard/admin/finance/expenses" },
+    { label: "Invoices", icon: FileText, href: "/dashboard/admin/finance/invoices" },
+    { label: "Transactions", icon: Wallet, href: "/dashboard/admin/finance/transactions" },
+    { label: "Salary Management", icon: Wallet, href: "/dashboard/admin/finance/salary-management" },
+  ]},
+  {
+    label: "Communication",
+    icon: MessageSquare,
+    href: "/dashboard/admin/communication",
+    children: [
+      {
+        label: "Communications & Announcements",
+        icon: MessageSquare,
+        href: "/dashboard/admin/communication/communications-announcements",
+      },
+      {
+        label: "Communication Statistics",
+        icon: BarChart3,
+        href: "/dashboard/admin/communication/statistics",
+      },
+    ],
+  },
   { label: "Library", icon: Library, href: "/dashboard/admin/library" },
+  {
+    label: "Transport",
+    icon: Truck,
+    href: "/dashboard/admin/transport",
+    children: [
+      {
+        label: "Transport Management",
+        icon: Truck,
+        href: "/dashboard/admin/transport/management",
+      },
+    ],
+  },
+  {
+    label: "Hostel",
+    icon: BedDouble,
+    href: "/dashboard/admin/hostel",
+    children: [
+      {
+        label: "Hostel Management",
+        icon: BedDouble,
+        href: "/dashboard/admin/hostel/management",
+      },
+      {
+        label: "Rooms Management",
+        icon: BedDouble,
+        href: "/dashboard/admin/hostel/rooms",
+      },
+      {
+        label: "Hostel Students",
+        icon: Users,
+        href: "/dashboard/admin/hostel/students",
+      },
+      {
+        label: "Mess Management",
+        icon: UtensilsCrossed,
+        href: "/dashboard/admin/hostel/mess-management",
+      },
+      {
+        label: "Maintenance Management",
+        icon: Wrench,
+        href: "/dashboard/admin/hostel/maintenance",
+      },
+    ],
+  },
   { label: "Reports", icon: BarChart3, href: "/dashboard/admin/reports" },
   { label: "Settings", icon: Settings, href: "/dashboard/admin/settings" },
 ];

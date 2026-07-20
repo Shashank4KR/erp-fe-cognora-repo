@@ -2,9 +2,18 @@
 
 import { useState } from "react";
 import AttendanceStatusIcon from "./AttendanceStatusIcon";
-import AttendanceRowActions from "./AttendanceRowActions";
+import AttendanceRowActions, { type AttendanceRowActionsProps } from "./AttendanceRowActions";
 import type { ClassSubjectSummary } from "@/types/entities/class-subject-summary";
 import type { AttendanceResponse } from "@/types/entities/attendance";
+
+interface AttendanceTableProps {
+  rows: AttendanceTableRow[];
+  subjects: ClassSubjectSummary[];
+  loading: boolean;
+  error: string | null;
+  emptyMessage?: string;
+  rowActionsProps?: Omit<AttendanceRowActionsProps, "student">;
+}
 
 function severity(status: string): number {
   if (status === "ABSENT") return 3;
@@ -51,6 +60,7 @@ export type AttendanceTableRow = {
   overall: number;
   presentCount: number;
   absentCount: number;
+  dailyStatus: "present" | "absent" | "late";
 };
 
 interface AttendanceTableProps {
@@ -61,7 +71,7 @@ interface AttendanceTableProps {
   emptyMessage?: string;
 }
 
-export default function AttendanceTable({ rows, subjects, loading, error, emptyMessage }: AttendanceTableProps) {
+export default function AttendanceTable({ rows, subjects, loading, error, emptyMessage, rowActionsProps }: AttendanceTableProps) {
   if (error) {
     return (
       <div className="bg-white rounded-lg border border-slate-200 mb-6 overflow-hidden">
@@ -161,8 +171,12 @@ export default function AttendanceTable({ rows, subjects, loading, error, emptyM
                   <div className="flex items-center gap-2.5">
                     <CircularPercentage value={student.overall} />
                     <div className="text-xs leading-tight">
-                      <p className="text-emerald-600 font-medium">{student.presentCount} Present</p>
-                      <p className="text-red-500 font-medium">{student.absentCount} Absent</p>
+                      <p className={`font-medium ${student.dailyStatus === "present" ? "text-emerald-600" : student.dailyStatus === "late" ? "text-amber-600" : "text-red-500"}`}>
+                        {student.dailyStatus === "present" ? "1 Present" : student.dailyStatus === "late" ? "1 Late" : "0 Present"}
+                      </p>
+                      <p className={`font-medium ${student.dailyStatus === "absent" ? "text-red-500" : "text-slate-400"}`}>
+                        {student.dailyStatus === "absent" ? "1 Absent" : "0 Absent"}
+                      </p>
                     </div>
                   </div>
                 </td>
@@ -180,7 +194,7 @@ export default function AttendanceTable({ rows, subjects, loading, error, emptyM
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex items-center justify-end gap-1.5">
-                    <AttendanceRowActions student={student} />
+                    <AttendanceRowActions student={student} {...rowActionsProps} />
                   </div>
                 </td>
               </tr>

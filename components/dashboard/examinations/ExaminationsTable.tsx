@@ -1,6 +1,6 @@
 "use client";
 
-import { ExaminationRow, EXAM_CODE_COLORS, EXAM_TYPE_COLORS, STATUS_COLORS } from "@/lib/fixtures/examinations-reference-fixture";
+import { ExaminationRow, EXAM_TYPE_COLORS, STATUS_COLORS } from "@/lib/fixtures/examinations-reference-fixture";
 
 interface ExaminationsTableProps {
   rows: ExaminationRow[];
@@ -24,7 +24,7 @@ export default function ExaminationsTable({
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                <th className="px-4 py-3">Exam Code</th>
+                <th className="px-4 py-3">Exam ID</th>
                 <th className="px-4 py-3">Examination Name</th>
                 <th className="px-4 py-3">Type</th>
                 <th className="px-4 py-3">Class / Grade</th>
@@ -74,7 +74,7 @@ export default function ExaminationsTable({
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              <th className="px-4 py-3">Exam Code</th>
+              <th className="px-4 py-3">Exam ID</th>
               <th className="px-4 py-3">Examination Name</th>
               <th className="px-4 py-3">Type</th>
               <th className="px-4 py-3">Class / Grade</th>
@@ -88,10 +88,10 @@ export default function ExaminationsTable({
           </thead>
           <tbody className="divide-y divide-slate-50">
             {rows.map((row) => (
-              <tr key={row.examCode} className="hover:bg-slate-50/50 transition">
+              <tr key={row.id} className="hover:bg-slate-50/50 transition">
                 <td className="px-4 py-3">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${EXAM_CODE_COLORS[row.examCode] || "bg-slate-50 text-slate-700 border-slate-100"}`}>
-                    {row.examCode}
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-purple-50 text-purple-700 border-purple-100">
+                    {row.displayCode}
                   </span>
                 </td>
                 <td className="px-4 py-3 text-sm font-medium text-slate-900">{row.examName}</td>
@@ -115,7 +115,7 @@ export default function ExaminationsTable({
                     <button
                       onClick={() => onView(row)}
                       className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-purple-50 text-[#7c3aed] hover:bg-purple-100 transition"
-                      aria-label={`View ${row.examCode}`}
+                      aria-label={`View ${row.displayCode}`}
                       title="View"
                     >
                       <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -126,7 +126,7 @@ export default function ExaminationsTable({
                     <button
                       onClick={() => onEdit(row)}
                       className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                      aria-label={`Edit ${row.examCode}`}
+                      aria-label={`Edit ${row.displayCode}`}
                       title="Edit"
                     >
                       <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -136,7 +136,7 @@ export default function ExaminationsTable({
                     <button
                       onClick={() => onDelete(row)}
                       className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-red-50 text-red-500 hover:bg-red-100 transition"
-                      aria-label={`Delete ${row.examCode}`}
+                      aria-label={`Delete ${row.displayCode}`}
                       title="Delete"
                     >
                       <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

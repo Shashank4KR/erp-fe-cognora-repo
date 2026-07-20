@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { GraduationCap, ChevronRight, ChevronDown, Headset } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { MENU_ITEMS, COMPANY_INFO } from "@/lib/constants";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
 
   const isActive = (href: string) => {
     if (href === "/dashboard/admin") return pathname === "/dashboard/admin";
@@ -47,7 +48,21 @@ export default function Sidebar() {
             <div key={item.label} className="mb-2">
               {hasChildren ? (
                 <button
-                  onClick={() => setExpanded((e) => !e)}
+                  onClick={() => {
+                    const isComm = item.label === "Communication";
+                    const isTransport = item.label === "Transport";
+                    const isHostel = item.label === "Hostel";
+                    setExpanded((e) => !e);
+                    if (isComm && pathname !== "/dashboard/admin/communication") {
+                      router.push("/dashboard/admin/communication");
+                    }
+                    if (isTransport && pathname !== "/dashboard/admin/transport") {
+                      router.push("/dashboard/admin/transport");
+                    }
+                    if (isHostel && pathname !== "/dashboard/admin/hostel") {
+                      router.push("/dashboard/admin/hostel");
+                    }
+                  }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                     active
                       ? "bg-gradient-to-r from-purple-500 to-purple-600 text-white"

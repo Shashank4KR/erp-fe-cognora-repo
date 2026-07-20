@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   CalendarCheck,
   Users,
@@ -11,7 +10,6 @@ import {
   Settings,
   Download,
 } from "lucide-react";
-import Modal from "@/components/shared/Modal";
 
 const ACTIONS = [
   { label: "Mark Attendance", icon: CalendarCheck, color: "text-emerald-600", bg: "bg-emerald-50" },
@@ -24,9 +22,11 @@ const ACTIONS = [
   { label: "Export Data", icon: Download, color: "text-blue-600", bg: "bg-blue-50" },
 ];
 
-export default function AttendanceQuickActions() {
-  const [openAction, setOpenAction] = useState<string | null>(null);
+interface AttendanceQuickActionsProps {
+  onAction?: (action: { label: string }) => void;
+}
 
+export default function AttendanceQuickActions({ onAction }: AttendanceQuickActionsProps) {
   return (
     <div className="bg-white rounded-lg border border-slate-200 p-5">
       <h3 className="text-sm font-semibold text-slate-900 mb-4">Quick Actions</h3>
@@ -36,7 +36,7 @@ export default function AttendanceQuickActions() {
           return (
             <button
               key={action.label}
-              onClick={() => setOpenAction(action.label)}
+              onClick={() => onAction?.({ label: action.label })}
               className="flex flex-col items-center gap-2 p-3 rounded-xl border border-slate-100 hover:border-slate-200 hover:shadow-sm transition group"
             >
               <div className={`${action.bg} p-2 rounded-lg group-hover:scale-105 transition-transform`}>
@@ -47,30 +47,6 @@ export default function AttendanceQuickActions() {
           );
         })}
       </div>
-
-      <Modal
-        open={!!openAction}
-        onClose={() => setOpenAction(null)}
-        title={openAction ?? ""}
-        maxWidth="max-w-sm"
-      >
-        <div className="space-y-4">
-          <p className="text-sm text-slate-600">
-            &quot;{openAction}&quot; is a UI-only quick action. Backend integration will be handled in the next phase.
-          </p>
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-700">
-            No backend API is connected in this phase.
-          </div>
-          <div className="flex items-center justify-end">
-            <button
-              onClick={() => setOpenAction(null)}
-              className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      </Modal>
     </div>
   );
 }

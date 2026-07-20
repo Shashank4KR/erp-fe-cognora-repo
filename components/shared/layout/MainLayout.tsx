@@ -17,7 +17,7 @@ export default function MainLayout({
     <div className="flex min-h-screen bg-slate-50">
       {sidebar}
 
-      <div className="flex-1 lg:ml-[280px] flex flex-col">
+      <div className="flex-1 lg:ml-[280px] flex flex-col min-w-0">
         {header}
 
         <main className="flex-1 overflow-y-auto">
