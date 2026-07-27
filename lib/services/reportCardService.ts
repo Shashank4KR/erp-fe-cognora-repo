@@ -1,4 +1,4 @@
-import { formatApiError } from "@/lib/services/apiError";
+﻿import { formatApiError } from "@/lib/services/apiError";
 import type {
   ReportCardGenerate,
   ReportCardResponse,
@@ -65,3 +65,4 @@ export async function getReportCardById(
     headers: { Authorization: `Bearer ${token}` },
   });
 }
+

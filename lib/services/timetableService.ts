@@ -1,4 +1,4 @@
-import type {
+﻿import type {
   TimetableCreate,
   TimetableResponse,
   TimetableUpdate,
@@ -114,3 +114,5 @@ export async function deleteTimetable(
     throw new Error(data.detail ?? "Failed to delete timetable.");
   }
 }
+
+

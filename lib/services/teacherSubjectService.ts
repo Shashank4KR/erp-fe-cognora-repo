@@ -1,4 +1,4 @@
-import type { TeacherSubjectCreate, TeacherSubjectResponse } from "@/types/entities/teacher-subject";
+﻿import type { TeacherSubjectCreate, TeacherSubjectResponse } from "@/types/entities/teacher-subject";
 
 const BASE = "/api/teacher-subjects";
 
@@ -101,3 +101,4 @@ export async function deleteTeacherSubject(token: string, id: string): Promise<v
     throw await parseError(response);
   }
 }
+

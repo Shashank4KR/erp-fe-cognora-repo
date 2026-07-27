@@ -1,4 +1,4 @@
-import type { ClassCreate, ClassResponse, ClassUpdate } from "@/types/entities/class";
+﻿import type { ClassCreate, ClassResponse, ClassUpdate } from "@/types/entities/class";
 import type { ClassSubjectSummary } from "@/types/entities/class-subject-summary";
 import type { ClassTeacherSummary } from "@/types/entities/class-teacher-summary";
 
@@ -119,3 +119,4 @@ export async function getClassTeachers(
 
   return (await response.json()) as ClassTeacherSummary[];
 }
+

@@ -1,4 +1,4 @@
-import type { UserCreate, UserResponse } from "@/types/entities/user";
+﻿import type { UserCreate, UserResponse } from "@/types/entities/user";
 
 const BASE = "/api/users";
 
@@ -82,3 +82,4 @@ export async function deleteUser(token: string, id: string): Promise<void> {
     throw new Error(data.detail ?? "Failed to delete user.");
   }
 }
+

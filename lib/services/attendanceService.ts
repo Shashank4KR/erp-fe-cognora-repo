@@ -1,4 +1,4 @@
-import { formatApiError } from "@/lib/services/apiError";
+﻿import { formatApiError } from "@/lib/services/apiError";
 import type {
   AttendanceCreate,
   AttendanceListParams,
@@ -228,3 +228,4 @@ export async function getSubjectAttendanceSummary(
     headers: { Authorization: `Bearer ${token}` },
   });
 }
+

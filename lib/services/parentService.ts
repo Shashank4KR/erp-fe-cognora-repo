@@ -1,4 +1,4 @@
-import type { ParentCreate, ParentResponse } from "@/types/entities/parent";
+﻿import type { ParentCreate, ParentResponse } from "@/types/entities/parent";
 
 const BASE = "/api/parents";
 
@@ -85,3 +85,4 @@ export async function deleteParent(token: string, id: string): Promise<void> {
     throw new Error(data.detail ?? "Failed to delete parent.");
   }
 }
+

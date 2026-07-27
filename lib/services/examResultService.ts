@@ -1,4 +1,4 @@
-import { formatApiError } from "@/lib/services/apiError";
+﻿import { formatApiError } from "@/lib/services/apiError";
 import type {
   ExamResultCreate,
   ExamResultResponse,
@@ -97,3 +97,4 @@ export async function deleteExamResult(
     headers: { Authorization: `Bearer ${token}` },
   });
 }
+

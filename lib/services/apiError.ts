@@ -1,4 +1,4 @@
-export type ApiErrorShape = {
+﻿export type ApiErrorShape = {
   detail?:
     | string
     | Array<{ loc?: (string | number)[]; msg?: string; message?: string }>
@@ -80,3 +80,4 @@ export function formatApiError(
 
   return statusText || fallback;
 }
+

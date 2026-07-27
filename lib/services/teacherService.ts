@@ -1,4 +1,4 @@
-import type { TeacherCreate, TeacherResponse } from "@/types/entities/teacher";
+﻿import type { TeacherCreate, TeacherResponse } from "@/types/entities/teacher";
 import type { ClassResponse } from "@/types/entities/class";
 import type { SubjectResponse } from "@/types/entities/subject";
 
@@ -119,3 +119,4 @@ export async function getTeacherSubjects(
 
   return (await response.json()) as SubjectResponse[];
 }
+

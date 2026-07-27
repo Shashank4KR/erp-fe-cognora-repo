@@ -1,0 +1,112 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import RoleDashboardLayout from "@/components/dashboard/role-dashboards/RoleDashboardLayout";
+import { ROLE_CONFIGS } from "@/lib/dashboard/role-dashboards/config";
+import { getToken, getStoredUser } from "@/lib/auth";
+import Card from "@/components/shared/Card";
+import { Loader2, AlertCircle, Megaphone } from "lucide-react";
+
+interface Event {
+  id: string;
+  title: string;
+  description: string;
+  meta: string;
+  iconBg: string;
+  iconColor: string;
+}
+
+export default function TeacherEventsPage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [events, setEvents] = useState<Event[]>([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const token = getToken();
+        const user = getStoredUser();
+
+        if (!token || !user) {
+          router.replace("/login");
+          return;
+        }
+
+        const mockEvents: Event[] = [
+          { id: "1", title: "Staff Meeting", description: "Conference hall", meta: "11 Jun · 02:00 PM", iconBg: "bg-purple-50", iconColor: "text-purple-500" },
+          { id: "2", title: "PTM · Class 10", description: "School auditorium", meta: "22 Jun · 10:00 AM", iconBg: "bg-amber-50", iconColor: "text-amber-500" },
+          { id: "3", title: "Science Exhibition", description: "Lab block", meta: "28 Jun · 11:00 AM", iconBg: "bg-green-50", iconColor: "text-green-500" },
+        ];
+
+        setEvents(mockEvents);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching events:", err);
+        setError(err instanceof Error ? err.message : "Failed to load events");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, [router]);
+
+  return (
+    <RoleDashboardLayout config={ROLE_CONFIGS.teacher}>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold text-slate-900 flex items-center gap-2">
+            <Megaphone className="h-8 w-8 text-purple-600" />
+            Events
+          </h1>
+          <p className="text-slate-600 mt-1">View upcoming school events and announcements</p>
+        </div>
+
+        {loading && (
+          <Card className="flex items-center justify-center py-12">
+            <div className="flex flex-col items-center gap-3">
+              <Loader2 className="h-8 w-8 animate-spin text-purple-600" />
+              <p className="text-slate-600">Loading events...</p>
+            </div>
+          </Card>
+        )}
+
+        {error && (
+          <Card className="border-red-200 bg-red-50 p-6">
+            <div className="flex items-center gap-3 text-red-700">
+              <AlertCircle className="h-5 w-5" />
+              <p>{error}</p>
+            </div>
+          </Card>
+        )}
+
+        {!loading && !error && events.length === 0 && (
+          <Card className="border-amber-200 bg-amber-50 p-6">
+            <div className="flex items-center gap-3 text-amber-700">
+              <Megaphone className="h-5 w-5" />
+              <p>No upcoming events.</p>
+            </div>
+          </Card>
+        )}
+
+        {!loading && !error && events.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {events.map((event) => (
+              <Card key={event.id} className="hover:shadow-lg transition p-6">
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-lg font-semibold text-slate-900">{event.title}</p>
+                    <p className="text-sm text-slate-600 mt-1">{event.description}</p>
+                  </div>
+                  <p className="text-xs text-slate-500">{event.meta}</p>
+                </div>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
+    </RoleDashboardLayout>
+  );
+}

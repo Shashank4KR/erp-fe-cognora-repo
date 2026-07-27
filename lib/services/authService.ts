@@ -1,4 +1,4 @@
-export const REGISTER_ENDPOINT = "/api/auth/register";
+﻿export const REGISTER_ENDPOINT = "/api/auth/register";
 export const LOGIN_ENDPOINT = "/api/auth/login";
 export const ME_ENDPOINT = "/api/auth/me";
 
@@ -103,3 +103,4 @@ export async function getCurrentUser(token: string): Promise<{
     updated_at?: string | null;
   };
 }
+

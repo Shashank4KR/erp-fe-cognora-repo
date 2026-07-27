@@ -1,4 +1,4 @@
-import type {
+﻿import type {
   ParentStudentCreate,
   ParentStudentResponse,
 } from "@/types/entities/parent-student";
@@ -93,3 +93,4 @@ export async function deleteParentStudent(
     throw new Error(data.detail ?? "Failed to delete parent-student relationship.");
   }
 }
+

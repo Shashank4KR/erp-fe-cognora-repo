@@ -1,4 +1,4 @@
-import type { ClassSubjectResponse } from "@/types/entities/class-subject";
+﻿import type { ClassSubjectResponse } from "@/types/entities/class-subject";
 
 const BASE = "/api/class-subjects";
 
@@ -69,3 +69,4 @@ export async function deleteClassSubject(token: string, id: string): Promise<voi
     throw new Error(message);
   }
 }
+

@@ -1,4 +1,4 @@
-import type { SubjectCreate, SubjectResponse, SubjectUpdate } from "@/types/entities/subject";
+﻿import type { SubjectCreate, SubjectResponse, SubjectUpdate } from "@/types/entities/subject";
 
 const BASE = "/api/subjects";
 
@@ -85,3 +85,4 @@ export async function deleteSubject(token: string, id: string): Promise<void> {
     throw new Error(data.detail ?? "Failed to delete subject.");
   }
 }
+

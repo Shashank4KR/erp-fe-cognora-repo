@@ -1,4 +1,4 @@
-import { formatApiError } from "@/lib/services/apiError";
+﻿import { formatApiError } from "@/lib/services/apiError";
 import type {
   ExamCreate,
   ExamResponse,
@@ -111,3 +111,4 @@ export async function getExamToppers(
     },
   );
 }
+

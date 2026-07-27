@@ -1,4 +1,4 @@
-import type { DepartmentCreate, DepartmentResponse } from "@/types/entities/department";
+﻿import type { DepartmentCreate, DepartmentResponse } from "@/types/entities/department";
 
 const BASE = "/api/departments";
 
@@ -85,3 +85,4 @@ export async function deleteDepartment(token: string, id: string): Promise<void>
     throw new Error(data.detail ?? "Failed to delete department.");
   }
 }
+

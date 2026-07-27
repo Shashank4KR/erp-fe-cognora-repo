@@ -1,4 +1,4 @@
-import type { StudentCreate, StudentResponse } from "@/types/entities/student";
+﻿import type { StudentCreate, StudentResponse } from "@/types/entities/student";
 
 const BASE = "/api/students";
 
@@ -85,3 +85,53 @@ export async function deleteStudent(token: string, id: string): Promise<void> {
     throw new Error(data.detail ?? "Failed to delete student.");
   }
 }
+
+export async function getStudentExamResults(
+  token: string,
+  studentId: string,
+): Promise<any[]> {
+  const response = await fetch(`${BASE}/${studentId}/exam-results`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to fetch student exam results.");
+  }
+
+  return (await response.json()) as any[];
+}
+
+export async function getStudentReportCards(
+  token: string,
+  studentId: string,
+): Promise<any[]> {
+  const response = await fetch(`${BASE}/${studentId}/report-cards`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to fetch student report cards.");
+  }
+
+  return (await response.json()) as any[];
+}
+
+export async function getStudentPerformance(
+  token: string,
+  studentId: string,
+): Promise<any> {
+  const response = await fetch(`${BASE}/${studentId}/performance`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to fetch student performance summary.");
+  }
+
+  return await response.json();
+}
+
+

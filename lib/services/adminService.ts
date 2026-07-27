@@ -1,4 +1,4 @@
-import type { AdminCreate, AdminResponse } from "@/types/entities/admin";
+﻿import type { AdminCreate, AdminResponse } from "@/types/entities/admin";
 
 const BASE = "/api/admins";
 
@@ -85,3 +85,4 @@ export async function deleteAdmin(token: string, id: string): Promise<void> {
     throw new Error(data.detail ?? "Failed to delete admin.");
   }
 }
+
