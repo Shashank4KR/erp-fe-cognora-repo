@@ -32,7 +32,7 @@ export const ROLE_CONFIGS: Record<string, RoleConfig> = {
       { label: "Teachers", icon: GraduationCap, href: "/dashboard/admin/teachers" },
       { label: "Attendance", icon: CheckCircle2, href: "/dashboard/admin/academics/attendance" },
       { label: "Examinations", icon: FileBarChart, href: "/dashboard/admin/examinations" },
-      { label: "Fees", icon: Wallet, href: "/dashboard/admin/fees" },
+      { label: "Fees", icon: Wallet, href: "/dashboard/admin/finance" },
       { label: "Library", icon: Library, href: "/dashboard/admin/library" },
       { label: "Transport", icon: Bus, href: "/dashboard/admin/transport" },
       { label: "Hostel", icon: BedDouble, href: "/dashboard/admin/hostel" },
