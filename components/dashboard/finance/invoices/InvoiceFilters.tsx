@@ -6,12 +6,11 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Dropdown from "@/components/shared/Dropdown";
 import Calendar from "@/components/shared/Calendar";
-import {
-  ACADEMIC_YEAR_OPTIONS,
-  INVOICE_TYPE_OPTIONS,
-  CLASS_GRADE_OPTIONS,
-  STATUS_OPTIONS,
-} from "@/lib/fixtures/invoices-reference-fixture";
+
+const ACADEMIC_YEAR_OPTIONS = ["2024-25", "2025-26"];
+const INVOICE_TYPE_OPTIONS = ["All Types", "Fee Invoice", "Salary Invoice", "Expense Invoice", "Other Invoice"];
+const CLASS_GRADE_OPTIONS = ["All Classes", "VIII - A", "VI - B", "IX - A", "VIII - B", "IX - B", "VI - A", "V - B", "VIII - C"];
+const STATUS_OPTIONS = ["All Status", "Paid", "Partial", "Overdue", "Pending"];
 
 function formatDate(date: Date): string {
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

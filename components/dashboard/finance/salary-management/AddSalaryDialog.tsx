@@ -5,12 +5,30 @@ import Modal from "@/components/shared/Modal";
 import { X, ChevronDown, Calendar } from "lucide-react";
 import Dropdown from "@/components/shared/Dropdown";
 import CalendarPicker from "@/components/shared/Calendar";
-import {
-  MONTH_OPTIONS,
-  DEPARTMENT_OPTIONS,
-  DESIGNATION_OPTIONS,
-} from "@/lib/fixtures/salary-management-reference-fixture";
 import type { SalaryRow } from "@/lib/fixtures/salary-management-reference-fixture";
+
+const MONTH_OPTIONS = ["May 2025", "April 2025", "March 2025", "February 2025", "January 2025"];
+const DEPARTMENT_OPTIONS = [
+  "All Departments",
+  "Computer Science",
+  "Electronics",
+  "Mechanical",
+  "Information Tech.",
+  "Administration",
+  "Accounts",
+  "Library",
+  "Maintenance",
+];
+const DESIGNATION_OPTIONS = [
+  "All Designations",
+  "Professor",
+  "Associate Professor",
+  "Assistant Professor",
+  "Office Manager",
+  "Accountant",
+  "Librarian",
+  "Technician",
+];
 
 interface AddSalaryDialogProps {
   open: boolean;
@@ -92,17 +110,17 @@ export default function AddSalaryDialog({ open, onClose, onSave }: AddSalaryDial
     "w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#7c3aed] focus:border-transparent";
 
   return (
-    <Modal open={open} onClose={onClose} className="w-full max-w-2xl">
-      <div className="flex items-center justify-between p-6 border-b border-slate-100">
-        <h2 className="text-lg font-semibold text-slate-900">Add Salary</h2>
-        <button onClick={onClose} className="p-1 rounded-lg hover:bg-slate-100 text-slate-400 transition" aria-label="Close">
-          <X className="h-5 w-5" />
+    <Modal open={open} onClose={onClose}>
+      <div>
+        <h2>Add Salary</h2>
+        <button onClick={onClose} aria-label="Close">
+          <X />
         </button>
       </div>
-      <form onSubmit={handleSubmit} className="p-6 space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <form onSubmit={handleSubmit}>
+        <div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Employee Name</label>
+            <label>Employee Name</label>
             <input
               type="text"
               value={form.employeeName}
@@ -111,10 +129,10 @@ export default function AddSalaryDialog({ open, onClose, onSave }: AddSalaryDial
               placeholder="Enter employee name"
               required
             />
-            {errors.employeeName && <p className="text-xs text-red-500 mt-1">{errors.employeeName}</p>}
+            {errors.employeeName && <p>{errors.employeeName}</p>}
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Employee ID</label>
+            <label>Employee ID</label>
             <input
               type="text"
               value={form.employeeId}
@@ -123,10 +141,10 @@ export default function AddSalaryDialog({ open, onClose, onSave }: AddSalaryDial
               placeholder="e.g. EMP009"
               required
             />
-            {errors.employeeId && <p className="text-xs text-red-500 mt-1">{errors.employeeId}</p>}
+            {errors.employeeId && <p>{errors.employeeId}</p>}
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Department</label>
+            <label>Department</label>
             <Dropdown
               value={form.department}
               options={DEPARTMENT_OPTIONS.filter((o) => o !== "All Departments")}
@@ -134,7 +152,7 @@ export default function AddSalaryDialog({ open, onClose, onSave }: AddSalaryDial
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Designation</label>
+            <label>Designation</label>
             <Dropdown
               value={form.designation}
               options={DESIGNATION_OPTIONS.filter((o) => o !== "All Designations")}
@@ -142,7 +160,7 @@ export default function AddSalaryDialog({ open, onClose, onSave }: AddSalaryDial
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Month</label>
+            <label>Month</label>
             <Dropdown
               value={form.month}
               options={MONTH_OPTIONS}
@@ -150,7 +168,7 @@ export default function AddSalaryDialog({ open, onClose, onSave }: AddSalaryDial
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Basic Salary (₹)</label>
+            <label>Basic Salary (₹)</label>
             <input
               type="number"
               value={form.basicSalary}
@@ -159,10 +177,10 @@ export default function AddSalaryDialog({ open, onClose, onSave }: AddSalaryDial
               placeholder="0.00"
               required
             />
-            {errors.basicSalary && <p className="text-xs text-red-500 mt-1">{errors.basicSalary}</p>}
+            {errors.basicSalary && <p>{errors.basicSalary}</p>}
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Allowances (₹)</label>
+            <label>Allowances (₹)</label>
             <input
               type="number"
               value={form.allowances}
@@ -172,7 +190,7 @@ export default function AddSalaryDialog({ open, onClose, onSave }: AddSalaryDial
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Deductions (₹)</label>
+            <label>Deductions (₹)</label>
             <input
               type="number"
               value={form.deductions}
@@ -182,7 +200,7 @@ export default function AddSalaryDialog({ open, onClose, onSave }: AddSalaryDial
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Net Salary (₹)</label>
+            <label>Net Salary (₹)</label>
             <input
               type="text"
               value={netSalary.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -191,7 +209,7 @@ export default function AddSalaryDialog({ open, onClose, onSave }: AddSalaryDial
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Payment Status</label>
+            <label>Payment Status</label>
             <Dropdown
               value={form.paymentStatus}
               options={["Paid", "Partial", "Pending"]}
@@ -199,8 +217,8 @@ export default function AddSalaryDialog({ open, onClose, onSave }: AddSalaryDial
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Payment Date</label>
-            <div className="relative">
+            <label>Payment Date</label>
+            <div>
               <input
                 type="text"
                 value={form.paymentDate}
@@ -208,9 +226,9 @@ export default function AddSalaryDialog({ open, onClose, onSave }: AddSalaryDial
                 onClick={() => setCalendarOpen((o) => !o)}
                 className={`${inputClass} cursor-pointer`}
               />
-              <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+              <Calendar />
               {calendarOpen && (
-                <div className="absolute right-0 z-50 mt-2">
+                <div>
                   <CalendarPicker
                     selectedDate={new Date(form.paymentDate)}
                     onSelect={(d) => {
@@ -223,8 +241,8 @@ export default function AddSalaryDialog({ open, onClose, onSave }: AddSalaryDial
               )}
             </div>
           </div>
-          <div className="sm:col-span-2">
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Notes</label>
+          <div>
+            <label>Notes</label>
             <textarea
               value={form.notes}
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
@@ -234,17 +252,17 @@ export default function AddSalaryDialog({ open, onClose, onSave }: AddSalaryDial
             />
           </div>
         </div>
-        <div className="flex items-center justify-end gap-2 pt-2">
+        <div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition"
+           
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="rounded-lg bg-[#7c3aed] px-4 py-2 text-sm font-semibold text-white hover:brightness-110 transition"
+           
           >
             Save
           </button>
@@ -253,3 +271,4 @@ export default function AddSalaryDialog({ open, onClose, onSave }: AddSalaryDial
     </Modal>
   );
 }
+

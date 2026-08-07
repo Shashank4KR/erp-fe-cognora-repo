@@ -1,7 +1,65 @@
 "use client";
 
+import { MoreVertical } from "lucide-react";
 import type { FeeInstallmentRow } from "@/lib/fixtures/fees-management-reference-fixture";
-import { FEE_INSTALLMENT_ROWS } from "@/lib/fixtures/fees-management-reference-fixture";
+
+const FEE_INSTALLMENT_ROWS = [
+  {
+    id: "1",
+    studentName: "Aarav Sharma",
+    classGrade: "VIII - A",
+    installment: "Installment 1",
+    dueDate: "10 May 2025",
+    amount: 12500,
+    paidAmount: 12500,
+    balance: 0,
+    status: "Paid",
+  },
+  {
+    id: "2",
+    studentName: "Aarav Sharma",
+    classGrade: "VIII - A",
+    installment: "Installment 2",
+    dueDate: "10 Jun 2025",
+    amount: 12500,
+    paidAmount: 12500,
+    balance: 0,
+    status: "Paid",
+  },
+  {
+    id: "3",
+    studentName: "Diya Patel",
+    classGrade: "VI - B",
+    installment: "Installment 1",
+    dueDate: "10 May 2025",
+    amount: 9000,
+    paidAmount: 9000,
+    balance: 0,
+    status: "Paid",
+  },
+  {
+    id: "4",
+    studentName: "Diya Patel",
+    classGrade: "VI - B",
+    installment: "Installment 2",
+    dueDate: "10 Jun 2025",
+    amount: 9000,
+    paidAmount: 3000,
+    balance: 6000,
+    status: "Partial",
+  },
+  {
+    id: "5",
+    studentName: "Vihaan Kumar",
+    classGrade: "IX - A",
+    installment: "Installment 1",
+    dueDate: "10 May 2025",
+    amount: 14000,
+    paidAmount: 8000,
+    balance: 6000,
+    status: "Overdue",
+  },
+];
 
 export default function FeeInstallmentsTab() {
   const getStatusBadge = (status: string) => {

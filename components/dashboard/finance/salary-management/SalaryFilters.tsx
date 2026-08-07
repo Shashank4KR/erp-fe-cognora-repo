@@ -3,13 +3,31 @@
 import { useState } from "react";
 import { Filter, X } from "lucide-react";
 import Dropdown from "@/components/shared/Dropdown";
-import {
-  MONTH_OPTIONS,
-  DEPARTMENT_OPTIONS,
-  EMPLOYEE_TYPE_OPTIONS,
-  DESIGNATION_OPTIONS,
-  PAYMENT_STATUS_OPTIONS,
-} from "@/lib/fixtures/salary-management-reference-fixture";
+
+const MONTH_OPTIONS = ["May 2025", "April 2025", "March 2025", "February 2025", "January 2025"];
+const DEPARTMENT_OPTIONS = [
+  "All Departments",
+  "Computer Science",
+  "Electronics",
+  "Mechanical",
+  "Information Tech.",
+  "Administration",
+  "Accounts",
+  "Library",
+  "Maintenance",
+];
+const EMPLOYEE_TYPE_OPTIONS = ["All Types", "Teaching Staff", "Non-Teaching Staff"];
+const DESIGNATION_OPTIONS = [
+  "All Designations",
+  "Professor",
+  "Associate Professor",
+  "Assistant Professor",
+  "Office Manager",
+  "Accountant",
+  "Librarian",
+  "Technician",
+];
+const PAYMENT_STATUS_OPTIONS = ["All Status", "Paid", "Partial", "Pending"];
 
 interface SalaryFiltersProps {
   month: string;

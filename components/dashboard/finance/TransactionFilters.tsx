@@ -4,11 +4,10 @@ import { useState } from "react";
 import { Filter, X, Search } from "lucide-react";
 import Dropdown from "@/components/shared/Dropdown";
 import TransactionDateRangePicker from "@/components/dashboard/finance/TransactionDateRangePicker";
-import {
-  TRANSACTION_TYPE_OPTIONS,
-  PAYMENT_MODE_OPTIONS,
-  STATUS_OPTIONS,
-} from "@/lib/fixtures/transactions-reference-fixture";
+
+const TRANSACTION_TYPE_OPTIONS = ["All Types", "Income", "Expense"];
+const PAYMENT_MODE_OPTIONS = ["All Modes", "Online", "UPI", "Net Banking", "Cash", "Bank Transfer"];
+const STATUS_OPTIONS = ["All Status", "Success", "Pending", "Failed"];
 
 interface TransactionFiltersProps {
   transactionType: string;

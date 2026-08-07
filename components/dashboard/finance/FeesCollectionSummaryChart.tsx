@@ -4,7 +4,14 @@ import { useState } from "react";
 import Card from "@/components/shared/Card";
 import DonutChart from "@/components/shared/charts/DonutChart";
 import Dropdown from "@/components/shared/Dropdown";
-import { FEE_COLLECTION_SEGMENTS, FEE_COLLECTION_PERIOD_OPTIONS } from "@/lib/fixtures/fees-management-reference-fixture";
+
+const FEE_COLLECTION_SEGMENTS = [
+  { label: "Collected", value: 79.1, color: "#10b981" },
+  { label: "Outstanding", value: 20.9, color: "#f97316" },
+  { label: "Overdue", value: 3.8, color: "#ef4444" },
+];
+
+const FEE_COLLECTION_PERIOD_OPTIONS = ["This Month", "This Quarter", "This Year"];
 
 export default function FeesCollectionSummaryChart() {
   const [period, setPeriod] = useState("This Year");

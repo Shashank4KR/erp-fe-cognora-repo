@@ -4,12 +4,13 @@ import { Filter, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Dropdown from "@/components/shared/Dropdown";
 import { Input } from "@/components/ui/input";
-import {
-  BLOCK_FILTER_OPTIONS,
-  ROOM_TYPE_FILTER_OPTIONS,
-  FLOOR_FILTER_OPTIONS,
-  ROOM_STATUS_OPTIONS,
-} from "@/lib/fixtures/rooms-management-reference-fixture";
+const BLOCK_FILTER_OPTIONS = ["All Blocks", "Block A", "Block B", "Block C"];
+
+const ROOM_TYPE_FILTER_OPTIONS = ["All Types", "1 Seater", "2 Seater", "3 Seater", "4 Seater"];
+
+const FLOOR_FILTER_OPTIONS = ["All Floors", "1st Floor", "2nd Floor", "3rd Floor"];
+
+const ROOM_STATUS_OPTIONS = ["All Status", "Occupied", "Partially Vacant", "Vacant", "Maintenance"];
 
 interface RoomFiltersProps {
   block: string;

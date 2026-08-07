@@ -4,8 +4,38 @@ import { useState } from "react";
 import NewMessageDialog from "@/components/dashboard/communication/NewMessageDialog";
 import SendNotificationDialog from "@/components/dashboard/communication/SendNotificationDialog";
 import Modal from "@/components/shared/Modal";
-import { Template } from "@/lib/fixtures/communications-announcements-reference-fixture";
-import { TEMPLATES } from "@/lib/fixtures/communications-announcements-reference-fixture";
+import type { Template } from "@/lib/fixtures/communications-announcements-reference-fixture";
+
+const TEMPLATES: Template[] = [
+  {
+    id: "fee-reminder",
+    icon: "bell",
+    iconBg: "bg-purple-50",
+    title: "Fee Reminder",
+    channels: "Email / SMS",
+  },
+  {
+    id: "holiday-notice",
+    icon: "holiday",
+    iconBg: "bg-blue-50",
+    title: "Holiday Notice",
+    channels: "Email / SMS",
+  },
+  {
+    id: "exam-schedule",
+    icon: "schedule",
+    iconBg: "bg-emerald-50",
+    title: "Exam Schedule",
+    channels: "Email / SMS",
+  },
+  {
+    id: "event-invitation",
+    icon: "event",
+    iconBg: "bg-pink-50",
+    title: "Event Invitation",
+    channels: "Email / SMS",
+  },
+];
 import TemplateEditorDialog from "@/components/dashboard/communication/TemplateEditorDialog";
 
 interface CommunicationOverviewDialogsProps {

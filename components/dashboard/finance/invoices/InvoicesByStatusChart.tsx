@@ -2,7 +2,13 @@
 
 import Card from "@/components/shared/Card";
 import DonutChart from "@/components/shared/charts/DonutChart";
-import { INVOICE_STATUS_DATA } from "@/lib/fixtures/invoices-reference-fixture";
+
+const INVOICE_STATUS_DATA = {
+  paid: 892,
+  partial: 258,
+  overdue: 98,
+  total: 1248,
+};
 
 export default function InvoicesByStatusChart() {
   const segments = [

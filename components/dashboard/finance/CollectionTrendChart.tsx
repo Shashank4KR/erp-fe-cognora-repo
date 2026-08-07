@@ -3,7 +3,13 @@
 import { useState } from "react";
 import Card from "@/components/shared/Card";
 import Dropdown from "@/components/shared/Dropdown";
-import { COLLECTION_TREND_MONTHLY, TREND_PERIOD_OPTIONS } from "@/lib/fixtures/fees-management-reference-fixture";
+
+const COLLECTION_TREND_MONTHLY = {
+  expected: [20, 25, 30, 45, 55, 60, 75, 80, 85, 100, 105, 110],
+  collected: [5, 10, 15, 25, 35, 45, 55, 60, 65, 80, 90, 98],
+};
+
+const TREND_PERIOD_OPTIONS = ["Monthly", "Quarterly", "Yearly"];
 
 export default function CollectionTrendChart() {
   const [period, setPeriod] = useState("Monthly");

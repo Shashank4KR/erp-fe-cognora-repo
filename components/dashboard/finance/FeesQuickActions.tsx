@@ -2,7 +2,17 @@
 
 import { Wallet, CalendarPlus, FileText, Bell, Percent, Download, BookOpen, Settings } from "lucide-react";
 import Card from "@/components/shared/Card";
-import { QUICK_ACTIONS } from "@/lib/fixtures/fees-management-reference-fixture";
+
+const QUICK_ACTIONS = [
+  { label: "Collect Fee", icon: "Wallet", color: "text-emerald-600", bgColor: "bg-emerald-50" },
+  { label: "Add Installment", icon: "CalendarPlus", color: "text-blue-600", bgColor: "bg-blue-50" },
+  { label: "Generate Invoice", icon: "FileText", color: "text-orange-600", bgColor: "bg-orange-50" },
+  { label: "Fee Reminder", icon: "Bell", color: "text-[#7c3aed]", bgColor: "bg-purple-50" },
+  { label: "Fee Concession", icon: "Percent", color: "text-pink-600", bgColor: "bg-pink-50" },
+  { label: "Export Report", icon: "Download", color: "text-emerald-600", bgColor: "bg-emerald-50" },
+  { label: "Fee Ledger", icon: "BookOpen", color: "text-[#7c3aed]", bgColor: "bg-purple-50" },
+  { label: "Fee Settings", icon: "Settings", color: "text-slate-600", bgColor: "bg-slate-100" },
+];
 
 const iconMap: Record<string, React.ReactNode> = {
   Wallet: <Wallet className="h-5 w-5" />,

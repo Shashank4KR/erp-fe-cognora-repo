@@ -5,13 +5,12 @@ import { Filter, X, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Dropdown from "@/components/shared/Dropdown";
 import ExpenseDateRangePicker from "@/components/dashboard/finance/expenses/ExpenseDateRangePicker";
-import {
-  FINANCIAL_YEAR_OPTIONS,
-  DEPARTMENT_OPTIONS,
-  EXPENSE_CATEGORY_OPTIONS,
-  PAYMENT_MODE_OPTIONS,
-  STATUS_OPTIONS,
-} from "@/lib/fixtures/expenses-management-reference-fixture";
+
+const FINANCIAL_YEAR_OPTIONS = ["2024-25", "2025-26"];
+const DEPARTMENT_OPTIONS = ["All Departments", "Administration", "Computer Science", "Electronics", "Mechanical", "Management", "NSS"];
+const EXPENSE_CATEGORY_OPTIONS = ["All Categories", "Academic Expenses", "Office Expenses", "Utilities", "Maintenance", "Other Expenses"];
+const PAYMENT_MODE_OPTIONS = ["All Modes", "UPI", "Bank Transfer", "Net Banking", "Cash"];
+const STATUS_OPTIONS = ["All Status", "Approved", "Pending", "Rejected"];
 
 interface ExpenseFiltersProps {
   financialYear: string;

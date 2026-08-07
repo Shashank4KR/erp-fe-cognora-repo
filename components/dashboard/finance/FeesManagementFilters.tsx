@@ -3,13 +3,22 @@
 import { useState } from "react";
 import { Filter, X } from "lucide-react";
 import Dropdown from "@/components/shared/Dropdown";
-import {
-  ACADEMIC_YEAR_OPTIONS,
-  CLASS_GRADE_OPTIONS,
-  FEE_TYPE_OPTIONS,
-  INSTALLMENT_OPTIONS,
-  STATUS_OPTIONS,
-} from "@/lib/fixtures/fees-management-reference-fixture";
+
+const ACADEMIC_YEAR_OPTIONS = ["2024-25", "2025-26"];
+const CLASS_GRADE_OPTIONS = [
+  "All Classes",
+  "VIII - A",
+  "VI - B",
+  "IX - A",
+  "VIII - B",
+  "IX - B",
+  "VI - A",
+  "V - B",
+  "VIII - C",
+];
+const FEE_TYPE_OPTIONS = ["All Fee Types", "Tuition Fee", "Transport Fee", "Admission Fee", "Exam Fee", "Other Fees"];
+const INSTALLMENT_OPTIONS = ["All Installments", "Installment 1", "Installment 2", "Installment 3", "Full Payment"];
+const STATUS_OPTIONS = ["All Status", "Paid", "Partial", "Overdue", "Pending"];
 
 interface FeesManagementFiltersProps {
   academicYear: string;

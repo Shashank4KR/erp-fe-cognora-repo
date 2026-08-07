@@ -16,16 +16,98 @@ import TopCommunicationTypesCard from "@/components/dashboard/communication/TopC
 import CommunicationStatisticsReportDialog from "@/components/dashboard/communication/CommunicationStatisticsReportDialog";
 import CommunicationStatisticsExportDialog from "@/components/dashboard/communication/CommunicationStatisticsExportDialog";
 import Modal from "@/components/shared/Modal";
-import {
-  STATS_SUMMARY_CARDS,
-  CHANNEL_STATS,
-  AUDIENCE_STATS,
-  DELIVERY_STATS,
-  TOP_COMMUNICATION_TYPES,
-  ALL_COMMUNICATION_TYPES,
-  DONUT_SEGMENTS,
-  NOTIFICATION_REPORT_ROWS,
-} from "@/lib/fixtures/communication-statistics-reference-fixture";
+import type { StatSummaryCard, ChannelStat, AudienceStat, DeliveryStat, TopCommunicationType, DonutSegment, ReportRow } from "@/lib/fixtures/communication-statistics-reference-fixture";
+
+const STATS_SUMMARY_CARDS: StatSummaryCard[] = [
+  {
+    title: "Total Communications",
+    value: "2,438",
+    footer: "This Month",
+    icon: "send",
+    iconBg: "bg-purple-50",
+    iconColor: "text-[#7c3aed]",
+    sparkline: [18, 22, 19, 25, 23, 28, 26, 30, 27, 32],
+    sparkColor: "#7c3aed",
+  },
+  {
+    title: "Delivered",
+    value: "2,403",
+    footer: "98.6% Delivery Rate",
+    icon: "check-circle",
+    iconBg: "bg-emerald-50",
+    iconColor: "text-emerald-500",
+    sparkline: [15, 18, 16, 22, 20, 24, 21, 26, 23, 28],
+    sparkColor: "#10b981",
+  },
+  {
+    title: "Failed",
+    value: "35",
+    footer: "1.4% Failure Rate",
+    icon: "x-circle",
+    iconBg: "bg-pink-50",
+    iconColor: "text-pink-500",
+    sparkline: [3, 4, 3, 5, 4, 6, 5, 7, 6, 8],
+    sparkColor: "#ec4899",
+  },
+  {
+    title: "Top Channel",
+    value: "SMS",
+    footer: "1,028 Messages",
+    icon: "message-circle",
+    iconBg: "bg-blue-50",
+    iconColor: "text-blue-500",
+    sparkline: [20, 22, 21, 24, 23, 25, 24, 26, 25, 27],
+    sparkColor: "#3b82f6",
+  },
+];
+
+const CHANNEL_STATS: ChannelStat[] = [
+  { label: "Email", value: 842, percentage: "35.4%", color: "#10b981" },
+  { label: "SMS", value: 1028, percentage: "43.1%", color: "#3b82f6" },
+  { label: "In-App", value: 568, percentage: "23.8%", color: "#f97316" },
+];
+
+const AUDIENCE_STATS: AudienceStat[] = [
+  { label: "Students", value: 984, percentage: "40.3%", color: "#7c3aed" },
+  { label: "Parents", value: 1056, percentage: "43.3%", color: "#3b82f6" },
+  { label: "Staff", value: 398, percentage: "16.4%", color: "#f97316" },
+];
+
+const DELIVERY_STATS: DeliveryStat[] = [
+  { label: "Delivered", value: 2403, percentage: "98.6%", color: "#10b981" },
+  { label: "Failed", value: 35, percentage: "1.4%", color: "#ec4899" },
+];
+
+const TOP_COMMUNICATION_TYPES: TopCommunicationType[] = [
+  { type: "Fee Reminder", messages: 452 },
+  { type: "General Announcement", messages: 318 },
+  { type: "Event Notification", messages: 276 },
+  { type: "Exam Related", messages: 248 },
+  { type: "Attendance Alert", messages: 186 },
+];
+
+const ALL_COMMUNICATION_TYPES: TopCommunicationType[] = [
+  ...TOP_COMMUNICATION_TYPES,
+  { type: "Holiday Notice", messages: 128 },
+  { type: "Fee Receipt", messages: 98 },
+  { type: "Transport Alert", messages: 72 },
+];
+
+const DONUT_SEGMENTS: DonutSegment[] = [
+  { label: "Announcements", value: 218, percentage: "38.4%", color: "#3b82f6" },
+  { label: "Circulars", value: 156, percentage: "27.5%", color: "#ec4899" },
+  { label: "Events", value: 98, percentage: "17.3%", color: "#14b8a6" },
+  { label: "Reminders", value: 64, percentage: "11.3%", color: "#f97316" },
+  { label: "Others", value: 32, percentage: "5.5%", color: "#7c3aed" },
+];
+
+const NOTIFICATION_REPORT_ROWS: ReportRow[] = [
+  { category: "Announcements", count: 218, percentage: "38.4%" },
+  { category: "Circulars", count: 156, percentage: "27.5%" },
+  { category: "Events", count: 98, percentage: "17.3%" },
+  { category: "Reminders", count: 64, percentage: "11.3%" },
+  { category: "Others", count: 32, percentage: "5.5%" },
+];
 
 export default function CommunicationStatisticsPage() {
   const [exportDialogOpen, setExportDialogOpen] = useState(false);

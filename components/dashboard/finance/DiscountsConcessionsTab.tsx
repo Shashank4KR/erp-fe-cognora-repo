@@ -1,6 +1,47 @@
 "use client";
 
-import { DISCOUNT_CONCESSION_ROWS } from "@/lib/fixtures/fees-management-reference-fixture";
+const DISCOUNT_CONCESSION_ROWS = [
+  {
+    id: "1",
+    studentName: "Aarav Sharma",
+    classGrade: "VIII - A",
+    discountType: "Merit Scholarship",
+    originalFee: 25000,
+    discountAmount: 5000,
+    finalFee: 20000,
+    approvalStatus: "Approved",
+  },
+  {
+    id: "2",
+    studentName: "Diya Patel",
+    classGrade: "VI - B",
+    discountType: "Sibling Discount",
+    originalFee: 18000,
+    discountAmount: 1800,
+    finalFee: 16200,
+    approvalStatus: "Approved",
+  },
+  {
+    id: "3",
+    studentName: "Vihaan Kumar",
+    classGrade: "IX - A",
+    discountType: "Sports Quota",
+    originalFee: 28000,
+    discountAmount: 2800,
+    finalFee: 25200,
+    approvalStatus: "Pending",
+  },
+  {
+    id: "4",
+    studentName: "Ishita Gupta",
+    classGrade: "VIII - B",
+    discountType: "Merit Scholarship",
+    originalFee: 25000,
+    discountAmount: 2500,
+    finalFee: 22500,
+    approvalStatus: "Approved",
+  },
+];
 
 export default function DiscountsConcessionsTab() {
   const getStatusBadge = (status: string) => {

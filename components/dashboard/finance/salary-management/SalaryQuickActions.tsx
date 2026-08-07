@@ -2,7 +2,17 @@
 
 import { UserPlus, Wallet, Building2, FileText, BarChart3, Settings, CircleDollarSign, MinusCircle } from "lucide-react";
 import Card from "@/components/shared/Card";
-import { QUICK_ACTIONS } from "@/lib/fixtures/salary-management-reference-fixture";
+
+const QUICK_ACTIONS = [
+  { label: "Add Salary", icon: "UserPlus", color: "text-emerald-600", bgColor: "bg-emerald-50" },
+  { label: "Process Payroll", icon: "Wallet", color: "text-[#7c3aed]", bgColor: "bg-purple-50" },
+  { label: "Salary Structure", icon: "Building2", color: "text-orange-600", bgColor: "bg-orange-50" },
+  { label: "Generate Payslip", icon: "FileText", color: "text-pink-600", bgColor: "bg-pink-50" },
+  { label: "Salary Report", icon: "BarChart3", color: "text-blue-600", bgColor: "bg-blue-50" },
+  { label: "Tax Settings", icon: "Settings", color: "text-blue-600", bgColor: "bg-blue-50" },
+  { label: "Allowances", icon: "CircleDollarSign", color: "text-orange-600", bgColor: "bg-orange-50" },
+  { label: "Deductions", icon: "MinusCircle", color: "text-pink-600", bgColor: "bg-pink-50" },
+];
 
 const iconMap: Record<string, React.ReactNode> = {
   UserPlus: <UserPlus className="h-5 w-5" />,

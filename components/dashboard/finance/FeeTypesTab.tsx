@@ -1,6 +1,12 @@
 "use client";
 
-import { FEE_TYPE_ROWS } from "@/lib/fixtures/fees-management-reference-fixture";
+const FEE_TYPE_ROWS = [
+  { id: "1", name: "Tuition Fee", amount: 7020000, collected: 7020000, percentage: 71.1 },
+  { id: "2", name: "Transport Fee", amount: 1245000, collected: 1245000, percentage: 12.6 },
+  { id: "3", name: "Admission Fee", amount: 830000, collected: 830000, percentage: 8.4 },
+  { id: "4", name: "Exam Fee", amount: 540000, collected: 540000, percentage: 5.5 },
+  { id: "5", name: "Other Fees", amount: 240000, collected: 240000, percentage: 2.4 },
+];
 
 export default function FeeTypesTab() {
   return (

@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     const contentType =
       request.headers.get("content-type") || "application/x-www-form-urlencoded";
 
-    const response = await fetch(`${backendUrl}/login`, {
+    const response = await fetch(`${backendUrl}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": contentType,

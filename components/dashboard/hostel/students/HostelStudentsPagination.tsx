@@ -6,6 +6,8 @@ interface HostelStudentsPaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  rowsPerPage: number;
+  onRowsPerPageChange: (rows: number) => void;
   totalItems: number;
   startIndex: number;
   endIndex: number;

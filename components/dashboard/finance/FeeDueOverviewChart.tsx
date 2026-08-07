@@ -4,7 +4,15 @@ import { useState } from "react";
 import Card from "@/components/shared/Card";
 import DonutChart from "@/components/shared/charts/DonutChart";
 import Dropdown from "@/components/shared/Dropdown";
-import { FEE_DUE_SEGMENTS, FEE_DUE_PERIOD_OPTIONS } from "@/lib/fixtures/fees-management-reference-fixture";
+
+const FEE_DUE_SEGMENTS = [
+  { label: "Current Due", value: 76.1, color: "#f97316" },
+  { label: "Overdue (1-30 days)", value: 16.3, color: "#f59e0b" },
+  { label: "Overdue (31-60 days)", value: 4.6, color: "#84cc16" },
+  { label: "Overdue (60+ days)", value: 3.0, color: "#ef4444" },
+];
+
+const FEE_DUE_PERIOD_OPTIONS = ["This Month", "This Quarter", "This Year"];
 
 export default function FeeDueOverviewChart() {
   const [period, setPeriod] = useState("This Year");

@@ -3,10 +3,26 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Card from "@/components/shared/Card";
-import {
-  INCOME_EXPENSE_TREND,
-  TREND_PERIOD_OPTIONS,
-} from "@/lib/fixtures/transactions-reference-fixture";
+
+const INCOME_EXPENSE_TREND = {
+  monthly: {
+    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar"],
+    income: [25, 45, 38, 55, 50, 68, 62, 70, 65, 75, 72, 80],
+    expenses: [10, 22, 18, 30, 25, 38, 32, 40, 35, 45, 38, 50],
+  },
+  quarterly: {
+    labels: ["Q1", "Q2", "Q3", "Q4"],
+    income: [108, 173, 197, 217],
+    expenses: [50, 93, 107, 133],
+  },
+  yearly: {
+    labels: ["2021", "2022", "2023", "2024", "2025"],
+    income: [180, 220, 260, 310, 360],
+    expenses: [90, 130, 160, 190, 240],
+  },
+};
+
+const TREND_PERIOD_OPTIONS = ["Monthly", "Quarterly", "Yearly"];
 
 interface IncomeExpenseTrendChartProps {
   incomeColor?: string;

@@ -4,7 +4,15 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Card from "@/components/shared/Card";
 import DonutChart from "@/components/shared/charts/DonutChart";
-import { CATEGORY_CHART_SEGMENTS, TOTAL_REQUESTS_COUNT } from "@/lib/fixtures/maintenance-management-reference-fixture";
+const CATEGORY_CHART_SEGMENTS = [
+  { label: "Electrical", value: 46, color: "#3b82f6" },
+  { label: "Plumbing", value: 32, color: "#10b981" },
+  { label: "Furniture", value: 20, color: "#f97316" },
+  { label: "Appliance", value: 16, color: "#6366f1" },
+  { label: "Others", value: 14, color: "#ef4444" },
+];
+
+const TOTAL_REQUESTS_COUNT = 128;
 
 const PERIOD_OPTIONS = ["All Categories", "Electrical", "Plumbing", "Furniture", "Appliance", "Others"];
 

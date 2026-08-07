@@ -3,7 +3,17 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Card from "@/components/shared/Card";
-import { PAYROLL_TREND_DATA, TREND_PERIOD_OPTIONS } from "@/lib/fixtures/salary-management-reference-fixture";
+
+const PAYROLL_TREND_DATA = [
+  { month: "Dec 2024", payroll: 28, netPayout: 25 },
+  { month: "Jan 2025", payroll: 30, netPayout: 27 },
+  { month: "Feb 2025", payroll: 27, netPayout: 24 },
+  { month: "Mar 2025", payroll: 32, netPayout: 29 },
+  { month: "Apr 2025", payroll: 29, netPayout: 26 },
+  { month: "May 2025", payroll: 35, netPayout: 31 },
+];
+
+const TREND_PERIOD_OPTIONS = ["Last 3 Months", "Last 6 Months", "This Year"];
 
 export default function PayrollTrendChart() {
   const [period, setPeriod] = useState("Last 6 Months");

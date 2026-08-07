@@ -5,7 +5,22 @@ import { ChevronDown } from "lucide-react";
 import Card from "@/components/shared/Card";
 import DonutChart from "@/components/shared/charts/DonutChart";
 import { Users, Lock } from "lucide-react";
-import { PAYROLL_SUMMARY_DATA, PAYROLL_PERIOD_OPTIONS } from "@/lib/fixtures/salary-management-reference-fixture";
+
+const PAYROLL_SUMMARY_DATA = {
+  totalPayroll: "₹ 28,75,000",
+  paidAmount: "₹ 24,60,000",
+  paidPercentage: "85.7%",
+  pendingAmount: "₹ 4,15,000",
+  pendingPercentage: "14.3%",
+  totalDeductions: "₹ 2,85,000",
+  deductionsPercentage: "9.9%",
+  netPayout: "₹ 25,90,000",
+  netPayoutPercentage: "90.1%",
+  employeesPaid: "109 / 128",
+  pendingPayments: "19 / 128",
+};
+
+const PAYROLL_PERIOD_OPTIONS = ["This Month", "Last Month", "This Quarter", "This Year"];
 
 export default function PayrollSummaryChart() {
   const [period, setPeriod] = useState("This Month");

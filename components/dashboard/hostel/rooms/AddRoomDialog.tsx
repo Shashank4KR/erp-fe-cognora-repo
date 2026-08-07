@@ -6,13 +6,15 @@ import Modal from "@/components/shared/Modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Dropdown from "@/components/shared/Dropdown";
-import {
-  ADD_ROOM_BLOCK_OPTIONS,
-  ADD_ROOM_FLOOR_OPTIONS,
-  ADD_ROOM_TYPE_OPTIONS,
-  ADD_ROOM_STATUS_LIST,
-  ADD_ROOM_GENDER_OPTIONS,
-} from "@/lib/fixtures/rooms-management-reference-fixture";
+const ADD_ROOM_BLOCK_OPTIONS = ["Block A", "Block B", "Block C"];
+
+const ADD_ROOM_FLOOR_OPTIONS = ["1st Floor", "2nd Floor", "3rd Floor"];
+
+const ADD_ROOM_TYPE_OPTIONS = ["1 Seater", "2 Seater", "3 Seater", "4 Seater"];
+
+const ADD_ROOM_STATUS_LIST = ["Occupied", "Partially Vacant", "Vacant", "Maintenance"];
+
+const ADD_ROOM_GENDER_OPTIONS = ["Boys", "Girls"];
 
 interface AddRoomDialogProps {
   open: boolean;

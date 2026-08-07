@@ -24,7 +24,12 @@ import EditExaminationDialog from "@/components/dashboard/examinations/EditExami
 import DeleteExaminationDialog from "@/components/dashboard/examinations/DeleteExaminationDialog";
 import { getAllExams, createExam, updateExam, deleteExam } from "@/lib/services/examService";
 import { listClasses } from "@/lib/services/classService";
-import { getDisplayCode } from "@/lib/fixtures/examinations-reference-fixture";
+
+function getDisplayCode(id: string): string {
+  if (!id) return "-";
+  return `EXAM-${id.slice(0, 6).toUpperCase()}`;
+}
+
 import type { ExamResponse } from "@/types/entities/exam";
 import type { ClassResponse } from "@/types/entities/class";
 import type { ExaminationRow } from "@/lib/fixtures/examinations-reference-fixture";
@@ -407,6 +412,7 @@ export default function ExaminationsPage() {
 
           <ExaminationFilters
             onSearch={() => {}}
+            onFilter={() => {}}
             onReset={resetFilters}
             academicYear={filters.academicYear}
             onAcademicYearChange={(value) => setFilters((f) => ({ ...f, academicYear: value, search: "" }))}

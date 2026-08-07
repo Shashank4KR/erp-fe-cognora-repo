@@ -1,8 +1,37 @@
 "use client";
 
 import Modal from "@/components/shared/Modal";
-import { WORK_ORDERS } from "@/lib/fixtures/maintenance-management-reference-fixture";
 import type { WorkOrder } from "@/lib/fixtures/maintenance-management-reference-fixture";
+
+const WORK_ORDERS: WorkOrder[] = [
+  {
+    id: "WO2025O518-001",
+    relatedRequest: "MR2025O518-002",
+    issueType: "Water Leakage",
+    assignedTo: "Ramesh Kumar",
+    status: "In Progress",
+    scheduledDate: "18/05/2025",
+    notes: "Plumber assigned. Expected completion by evening.",
+  },
+  {
+    id: "WO2025O518-002",
+    relatedRequest: "MR2025O518-001",
+    issueType: "Fan Not Working",
+    assignedTo: "Suresh Yadav",
+    status: "Open",
+    scheduledDate: "18/05/2025",
+    notes: "Electrician to visit today.",
+  },
+  {
+    id: "WO2025O517-003",
+    relatedRequest: "MR2025O517-005",
+    issueType: "Geyser Not Working",
+    assignedTo: "Mahesh Verma",
+    status: "Completed",
+    scheduledDate: "17/05/2025",
+    notes: "Geyser repaired and tested.",
+  },
+];
 
 interface WorkOrdersDialogProps {
   open: boolean;

@@ -59,22 +59,22 @@ export default function ImportSalariesDialog({ open, onClose, onImport }: Import
   };
 
   return (
-    <Modal open={open} onClose={handleClose} className="w-full max-w-lg">
-      <div className="flex items-center justify-between p-6 border-b border-slate-100">
-        <h2 className="text-lg font-semibold text-slate-900">Import Salaries</h2>
-        <button onClick={handleClose} className="p-1 rounded-lg hover:bg-slate-100 text-slate-400 transition" aria-label="Close">
-          <X className="h-5 w-5" />
+    <Modal open={open} onClose={handleClose}>
+      <div>
+        <h2>Import Salaries</h2>
+        <button onClick={handleClose} aria-label="Close">
+          <X />
         </button>
       </div>
-      <div className="p-6">
+      <div>
         {imported ? (
-          <div className="flex flex-col items-center justify-center py-8">
-            <CheckCircle2 className="h-12 w-12 text-emerald-500 mb-3" />
-            <p className="text-sm font-semibold text-slate-900 mb-1">Import Complete</p>
-            <p className="text-xs text-slate-500">{selectedFile?.name} has been processed successfully.</p>
+          <div>
+            <CheckCircle2 />
+            <p>Import Complete</p>
+            <p>{selectedFile?.name} has been processed successfully.</p>
             <button
               onClick={handleClose}
-              className="mt-4 rounded-lg bg-[#7c3aed] px-4 py-2 text-sm font-semibold text-white hover:brightness-110 transition"
+             
             >
               Done
             </button>
@@ -96,28 +96,28 @@ export default function ImportSalariesDialog({ open, onClose, onImport }: Import
                 type="file"
                 accept=".csv,.xlsx"
                 onChange={handleFileChange}
-                className="hidden"
+               
               />
-              <FileSpreadsheet className="h-10 w-10 text-slate-400 mx-auto mb-3" />
-              <p className="text-sm font-medium text-slate-700 mb-1">
+              <FileSpreadsheet />
+              <p>
                 {selectedFile ? selectedFile.name : "Drag & drop your file here"}
               </p>
-              <p className="text-xs text-slate-500 mb-3">or click to browse</p>
-              <p className="text-[11px] text-slate-400">Accepted formats: CSV, XLSX</p>
+              <p>or click to browse</p>
+              <p>Accepted formats: CSV, XLSX</p>
             </div>
-            <div className="flex items-center justify-between mt-4">
+            <div>
               <button
                 type="button"
-                className="text-xs font-medium text-[#7c3aed] hover:underline"
+               
                 onClick={() => alert("Template download simulated")}
               >
                 Download Template
               </button>
-              <div className="flex items-center gap-2">
+              <div>
                 <button
                   type="button"
                   onClick={handleClose}
-                  className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition"
+                 
                 >
                   Cancel
                 </button>
@@ -125,7 +125,7 @@ export default function ImportSalariesDialog({ open, onClose, onImport }: Import
                   type="button"
                   onClick={handleImport}
                   disabled={!selectedFile || importing}
-                  className="rounded-lg bg-[#7c3aed] px-4 py-2 text-sm font-semibold text-white hover:brightness-110 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                 
                 >
                   {importing ? "Importing..." : "Import"}
                 </button>
@@ -137,3 +137,4 @@ export default function ImportSalariesDialog({ open, onClose, onImport }: Import
     </Modal>
   );
 }
+

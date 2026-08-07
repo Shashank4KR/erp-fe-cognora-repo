@@ -25,15 +25,15 @@ export default function ExpenseDateRangePicker({
   const containerRef = useRef<HTMLDivElement>(null);
   const [pickerMonth, setPickerMonth] = useState(new Date(2025, 4, 1));
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event as any)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+   useEffect(() => {
+     const handleClickOutside = (event: MouseEvent) => {
+       if (containerRef.current && event.target instanceof Node && !containerRef.current.contains(event.target)) {
+         setIsOpen(false);
+       }
+     };
+     document.addEventListener("mousedown", handleClickOutside);
+     return () => document.removeEventListener("mousedown", handleClickOutside);
+   }, []);
 
   const handleStartSelect = (date: Date) => {
     setStartDate(date);

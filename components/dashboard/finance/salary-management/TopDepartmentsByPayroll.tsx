@@ -3,10 +3,17 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Card from "@/components/shared/Card";
-import {
-  TOP_DEPARTMENTS_DATA,
-  TOP_DEPARTMENTS_PERIOD_OPTIONS,
-} from "@/lib/fixtures/salary-management-reference-fixture";
+
+const TOP_DEPARTMENTS_DATA = [
+  { label: "Computer Science", amount: "₹ 8,75,000", percentage: 30.4, color: "#7c3aed", iconBg: "bg-purple-50", iconColor: "text-[#7c3aed]" },
+  { label: "Electronics", amount: "₹ 5,40,000", percentage: 18.8, color: "#10b981", iconBg: "bg-emerald-50", iconColor: "text-emerald-500" },
+  { label: "Mechanical", amount: "₹ 4,25,000", percentage: 14.8, color: "#f97316", iconBg: "bg-orange-50", iconColor: "text-orange-500" },
+  { label: "Information Tech.", amount: "₹ 3,75,000", percentage: 13.0, color: "#6366f1", iconBg: "bg-indigo-50", iconColor: "text-indigo-500" },
+  { label: "Administration", amount: "₹ 2,60,000", percentage: 9.0, color: "#ec4899", iconBg: "bg-pink-50", iconColor: "text-pink-500" },
+  { label: "Others", amount: "₹ 3,00,000", percentage: 10.4, color: "#6366f1", iconBg: "bg-indigo-50", iconColor: "text-indigo-500" },
+];
+
+const TOP_DEPARTMENTS_PERIOD_OPTIONS = ["This Month", "Last Month", "This Quarter", "This Year"];
 
 export default function TopDepartmentsByPayroll() {
   const [period, setPeriod] = useState("This Month");

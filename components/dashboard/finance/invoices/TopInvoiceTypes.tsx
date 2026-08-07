@@ -4,7 +4,43 @@ import { useState } from "react";
 import { ChevronDown, FileText, User, Receipt, Lock } from "lucide-react";
 import Card from "@/components/shared/Card";
 import Dropdown from "@/components/shared/Dropdown";
-import { INVOICE_TYPE_ROWS, TOP_INVOICE_PERIOD_OPTIONS } from "@/lib/fixtures/invoices-reference-fixture";
+
+const INVOICE_TYPE_ROWS = [
+  {
+    label: "Fee Invoice",
+    amount: "₹ 98,75,000",
+    percentage: 79.1,
+    iconBg: "bg-purple-50",
+    iconColor: "text-[#7c3aed]",
+    icon: "fee",
+  },
+  {
+    label: "Salary Invoice",
+    amount: "₹ 15,60,000",
+    percentage: 12.5,
+    iconBg: "bg-emerald-50",
+    iconColor: "text-emerald-500",
+    icon: "salary",
+  },
+  {
+    label: "Expense Invoice",
+    amount: "₹ 7,25,000",
+    percentage: 5.8,
+    iconBg: "bg-orange-50",
+    iconColor: "text-orange-500",
+    icon: "expense",
+  },
+  {
+    label: "Other Invoice",
+    amount: "₹ 1,20,000",
+    percentage: 2.6,
+    iconBg: "bg-purple-50",
+    iconColor: "text-[#7c3aed]",
+    icon: "other",
+  },
+];
+
+const TOP_INVOICE_PERIOD_OPTIONS = ["This Month", "This Quarter", "This Academic Year"];
 
 const iconMap: Record<string, React.ReactNode> = {
   fee: <FileText className="h-5 w-5" />,

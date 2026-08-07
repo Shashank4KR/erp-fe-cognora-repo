@@ -11,12 +11,122 @@ import CommunicationRecentHighlights from "@/components/dashboard/communication/
 import CommunicationDeliveryHealth from "@/components/dashboard/communication/CommunicationDeliveryHealth";
 import CommunicationQuickNavigation from "@/components/dashboard/communication/CommunicationQuickNavigation";
 import CommunicationOverviewDialogs from "@/components/dashboard/communication/CommunicationOverviewDialogs";
-import {
-  OVERVIEW_SUMMARY_CARDS,
-  RECENT_HIGHLIGHTS,
-  QUICK_NAVIGATION_ITEMS,
-  DELIVERY_HEALTH,
-} from "@/lib/fixtures/communication-overview-reference-fixture";
+import type { OverviewSummaryCard, HighlightItem, DeliveryHealthData, QuickNavigationItem } from "@/lib/fixtures/communication-overview-reference-fixture";
+
+const OVERVIEW_SUMMARY_CARDS: OverviewSummaryCard[] = [
+  {
+    title: "Messages This Month",
+    value: "1,245",
+    footer: "Across all channels",
+    icon: "send",
+    iconBg: "bg-purple-50",
+    iconColor: "text-[#7c3aed]",
+    sparkline: [18, 22, 19, 25, 23, 28, 26, 30, 27, 32],
+    sparkColor: "#7c3aed",
+  },
+  {
+    title: "Delivery Rate",
+    value: "98.6%",
+    footer: "2,403 successfully delivered",
+    icon: "check-circle",
+    iconBg: "bg-emerald-50",
+    iconColor: "text-emerald-500",
+    sparkline: [10, 12, 11, 14, 13, 16, 15, 18, 17, 20],
+    sparkColor: "#10b981",
+  },
+  {
+    title: "Active Conversations",
+    value: "24",
+    footer: "12 unread conversations",
+    icon: "chat",
+    iconBg: "bg-blue-50",
+    iconColor: "text-blue-500",
+    sparkline: [8, 10, 9, 11, 10, 12, 11, 13, 12, 14],
+    sparkColor: "#3b82f6",
+  },
+  {
+    title: "Published Updates",
+    value: "18",
+    footer: "Announcements, circulars and events",
+    icon: "megaphone",
+    iconBg: "bg-orange-50",
+    iconColor: "text-orange-500",
+    sparkline: [3, 5, 4, 6, 5, 7, 6, 8, 7, 9],
+    sparkColor: "#f97316",
+  },
+];
+
+const RECENT_HIGHLIGHTS: HighlightItem[] = [
+  {
+    type: "conversation",
+    icon: "chat",
+    iconBg: "bg-blue-50",
+    iconColor: "text-blue-500",
+    title: "Class 10-A Parents Group",
+    text: "12 unread messages",
+    time: "10:30 AM",
+  },
+  {
+    type: "announcement",
+    icon: "megaphone",
+    iconBg: "bg-emerald-50",
+    iconColor: "text-emerald-500",
+    title: "Summer Vacation Notice",
+    text: "Published to all students and parents",
+    time: "18 May 2025",
+  },
+  {
+    type: "circular",
+    icon: "file-text",
+    iconBg: "bg-pink-50",
+    iconColor: "text-pink-500",
+    title: "Fee Payment Reminder",
+    text: "Sent to 154 parents with pending fees",
+    time: "15 May 2025",
+  },
+];
+
+const QUICK_NAVIGATION_ITEMS: QuickNavigationItem[] = [
+  {
+    title: "Messages & Announcements",
+    description: "Manage conversations and published updates",
+    icon: "message-square",
+    iconBg: "bg-purple-50",
+    iconColor: "text-[#7c3aed]",
+    href: "/dashboard/admin/communication/communications-announcements",
+  },
+  {
+    title: "Communication Statistics",
+    description: "Review delivery and audience performance",
+    icon: "bar-chart",
+    iconBg: "bg-blue-50",
+    iconColor: "text-blue-500",
+    href: "/dashboard/admin/communication/statistics",
+  },
+  {
+    title: "Send Notification",
+    description: "Send or schedule a notification",
+    icon: "bell",
+    iconBg: "bg-orange-50",
+    iconColor: "text-orange-500",
+    action: "send-notification",
+  },
+  {
+    title: "Templates",
+    description: "Reuse communication templates",
+    icon: "file-text",
+    iconBg: "bg-emerald-50",
+    iconColor: "text-emerald-500",
+    action: "templates",
+  },
+];
+
+const DELIVERY_HEALTH: DeliveryHealthData = {
+  rate: 98.6,
+  delivered: 2403,
+  failed: 35,
+  topChannel: "SMS",
+};
 
 export default function CommunicationOverviewPage() {
   const [newMessageOpen, setNewMessageOpen] = useState(false);

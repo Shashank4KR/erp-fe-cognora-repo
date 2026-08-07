@@ -2,8 +2,100 @@
 
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Eye, FileText, MoreVertical } from "lucide-react";
+import StudentFeeDetailsDialog from "./StudentFeeDetailsDialog";
+import FeeInvoiceDialog from "./FeeInvoiceDialog";
 import type { StudentFeeRow } from "@/lib/fixtures/fees-management-reference-fixture";
-import { STUDENT_FEE_ROWS } from "@/lib/fixtures/fees-management-reference-fixture";
+
+const STUDENT_FEE_ROWS: StudentFeeRow[] = [
+  {
+    id: "1",
+    rollNo: "STU001",
+    studentName: "Aarav Sharma",
+    classGrade: "VIII - A",
+    totalFee: 25000,
+    paid: 25000,
+    outstanding: 0,
+    status: "Paid",
+    dueDate: "N/A",
+  },
+  {
+    id: "2",
+    rollNo: "STU002",
+    studentName: "Diya Patel",
+    classGrade: "VI - B",
+    totalFee: 18000,
+    paid: 12000,
+    outstanding: 6000,
+    status: "Partial",
+    dueDate: "20 May 2025",
+  },
+  {
+    id: "3",
+    rollNo: "STU003",
+    studentName: "Vihaan Kumar",
+    classGrade: "IX - A",
+    totalFee: 28000,
+    paid: 8000,
+    outstanding: 20000,
+    status: "Overdue",
+    dueDate: "15 May 2025",
+  },
+  {
+    id: "4",
+    rollNo: "STU004",
+    studentName: "Ishita Gupta",
+    classGrade: "VIII - B",
+    totalFee: 25000,
+    paid: 20000,
+    outstanding: 5000,
+    status: "Partial",
+    dueDate: "25 May 2025",
+  },
+  {
+    id: "5",
+    rollNo: "STU005",
+    studentName: "Arjun Mehta",
+    classGrade: "IX - B",
+    totalFee: 28000,
+    paid: 28000,
+    outstanding: 0,
+    status: "Paid",
+    dueDate: "N/A",
+  },
+  {
+    id: "6",
+    rollNo: "STU006",
+    studentName: "Myra Iyer",
+    classGrade: "VI - A",
+    totalFee: 18000,
+    paid: 0,
+    outstanding: 18000,
+    status: "Overdue",
+    dueDate: "10 May 2025",
+  },
+  {
+    id: "7",
+    rollNo: "STU007",
+    studentName: "Aditya Raj",
+    classGrade: "V - B",
+    totalFee: 15000,
+    paid: 7500,
+    outstanding: 7500,
+    status: "Partial",
+    dueDate: "30 May 2025",
+  },
+  {
+    id: "8",
+    rollNo: "STU008",
+    studentName: "Rohan Verma",
+    classGrade: "VIII - C",
+    totalFee: 22000,
+    paid: 22000,
+    outstanding: 0,
+    status: "Paid",
+    dueDate: "N/A",
+  },
+];
 
 const ITEMS_PER_PAGE = 8;
 

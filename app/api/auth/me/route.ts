@@ -13,7 +13,7 @@ export async function GET(request: Request) {
   try {
     const authHeader = request.headers.get("authorization");
 
-    const response = await fetch(`${backendUrl}/me`, {
+    const response = await fetch(`${backendUrl}/auth/me`, {
       method: "GET",
       headers: {
         ...(authHeader ? { Authorization: authHeader } : {}),

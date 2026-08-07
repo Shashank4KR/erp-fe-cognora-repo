@@ -4,12 +4,13 @@ import { Filter, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Dropdown from "@/components/shared/Dropdown";
 import { Input } from "@/components/ui/input";
-import {
-  BLOCK_OPTIONS,
-  ROOM_TYPE_OPTIONS,
-  STATUS_OPTIONS,
-  GENDER_OPTIONS,
-} from "@/lib/fixtures/hostel-management-reference-fixture";
+const BLOCK_OPTIONS = ["All Blocks", "Block A", "Block B", "Block C"];
+
+const ROOM_TYPE_OPTIONS = ["All Types", "1 Seater", "2 Seater", "3 Seater", "4 Seater"];
+
+const STATUS_OPTIONS = ["All Status", "Available", "Partially Occupied", "Full", "Maintenance"];
+
+const GENDER_OPTIONS = ["All", "Boys", "Girls"];
 
 interface HostelFiltersProps {
   block: string;

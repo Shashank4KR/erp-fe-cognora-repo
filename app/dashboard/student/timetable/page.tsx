@@ -64,7 +64,7 @@ export default function StudentTimetablePage() {
 
     const fetchTimetable = async () => {
       try {
-        const entries = await getClassTimetable(token, student.class_id);
+        const entries = await getClassTimetable(token, student.class_id ?? "");
         setTimetable(entries ?? []);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load timetable.");

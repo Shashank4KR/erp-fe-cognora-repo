@@ -2,7 +2,41 @@
 
 import { Wallet, MinusCircle, Clock, CreditCard } from "lucide-react";
 import Card from "@/components/shared/Card";
-import { MONTHLY_SUMMARY_CARDS } from "@/lib/fixtures/salary-management-reference-fixture";const iconMap: Record<string, React.ReactNode> = {
+
+const MONTHLY_SUMMARY_CARDS = [
+  {
+    title: "Total Allowances (May 2025)",
+    value: "₹ 7,20,000",
+    footer: "↑ 5.2% From Apr 2025",
+    iconBg: "bg-emerald-50",
+    iconColor: "text-emerald-500",
+    icon: "wallet",
+  },
+  {
+    title: "Total Deductions (May 2025)",
+    value: "₹ 2,85,000",
+    footer: "↑ 3.1% From Apr 2025",
+    iconBg: "bg-pink-50",
+    iconColor: "text-pink-500",
+    icon: "deduct",
+  },
+  {
+    title: "Total Overtime (May 2025)",
+    value: "₹ 1,25,000",
+    footer: "↑ 8.7% From Apr 2025",
+    iconBg: "bg-orange-50",
+    iconColor: "text-orange-500",
+    icon: "clock",
+  },
+  {
+    title: "Total Reimbursements (May 2025)",
+    value: "₹ 75,000",
+    footer: "↑ 2.4% From Apr 2025",
+    iconBg: "bg-blue-50",
+    iconColor: "text-blue-500",
+    icon: "card",
+  },
+];const iconMap: Record<string, React.ReactNode> = {
   wallet: <Wallet className="h-5 w-5" />,
   deduct: <MinusCircle className="h-5 w-5" />,
   clock: <Clock className="h-5 w-5" />,

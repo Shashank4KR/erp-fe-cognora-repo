@@ -6,7 +6,9 @@ import Modal from "@/components/shared/Modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Dropdown from "@/components/shared/Dropdown";
-import { ADD_BLOCK_STATUS_OPTIONS, BLOCK_OPTIONS } from "@/lib/fixtures/hostel-management-reference-fixture";
+const ADD_BLOCK_STATUS_OPTIONS = ["Active", "Inactive", "Maintenance"];
+
+const BLOCK_OPTIONS = ["All Blocks", "Block A", "Block B", "Block C"];
 
 interface AddBlockDialogProps {
   open: boolean;

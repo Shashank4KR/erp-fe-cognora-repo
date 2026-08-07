@@ -4,12 +4,21 @@ import { useState } from "react";
 import { X, ChevronDown } from "lucide-react";
 import Modal from "@/components/shared/Modal";
 import Dropdown from "@/components/shared/Dropdown";
-import {
-  CLASS_GRADE_OPTIONS,
-  FEE_TYPE_OPTIONS,
-  INSTALLMENT_OPTIONS,
-  STATUS_OPTIONS,
-} from "@/lib/fixtures/fees-management-reference-fixture";
+
+const CLASS_GRADE_OPTIONS = [
+  "All Classes",
+  "VIII - A",
+  "VI - B",
+  "IX - A",
+  "VIII - B",
+  "IX - B",
+  "VI - A",
+  "V - B",
+  "VIII - C",
+];
+const FEE_TYPE_OPTIONS = ["All Fee Types", "Tuition Fee", "Transport Fee", "Admission Fee", "Exam Fee", "Other Fees"];
+const INSTALLMENT_OPTIONS = ["All Installments", "Installment 1", "Installment 2", "Installment 3", "Full Payment"];
+const STATUS_OPTIONS = ["All Status", "Paid", "Partial", "Overdue", "Pending"];
 
 interface AddFeeCollectionDialogProps {
   open: boolean;
@@ -96,17 +105,17 @@ export default function AddFeeCollectionDialog({ open, onClose, onSave }: AddFee
     "w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#7c3aed] focus:border-transparent";
 
   return (
-    <Modal open={open} onClose={onClose} className="w-full max-w-2xl">
-      <div className="flex items-center justify-between p-6 border-b border-slate-100">
-        <h2 className="text-lg font-semibold text-slate-900">Add Fee Collection</h2>
-        <button onClick={onClose} className="p-1 rounded-lg hover:bg-slate-100 text-slate-400 transition" aria-label="Close">
-          <X className="h-5 w-5" />
+    <Modal open={open} onClose={onClose}>
+      <div>
+        <h2>Add Fee Collection</h2>
+        <button onClick={onClose} aria-label="Close">
+          <X />
         </button>
       </div>
-      <form onSubmit={handleSubmit} className="p-6 space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="md:col-span-2">
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Student</label>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <div>
+            <label>Student</label>
             <input
               type="text"
               value={form.studentName}
@@ -114,40 +123,40 @@ export default function AddFeeCollectionDialog({ open, onClose, onSave }: AddFee
               className={inputClass}
               placeholder="Enter student name"
             />
-            {errors.studentName && <p className="text-xs text-red-500 mt-1">{errors.studentName}</p>}
+            {errors.studentName && <p>{errors.studentName}</p>}
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Class / Grade</label>
+            <label>Class / Grade</label>
             <Dropdown
               label=""
               value={form.classGrade}
               options={CLASS_GRADE_OPTIONS}
               onChange={(v) => setForm({ ...form, classGrade: v })}
             />
-            {errors.classGrade && <p className="text-xs text-red-500 mt-1">{errors.classGrade}</p>}
+            {errors.classGrade && <p>{errors.classGrade}</p>}
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Fee Type</label>
+            <label>Fee Type</label>
             <Dropdown
               label=""
               value={form.feeType}
               options={FEE_TYPE_OPTIONS}
               onChange={(v) => setForm({ ...form, feeType: v })}
             />
-            {errors.feeType && <p className="text-xs text-red-500 mt-1">{errors.feeType}</p>}
+            {errors.feeType && <p>{errors.feeType}</p>}
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Installment</label>
+            <label>Installment</label>
             <Dropdown
               label=""
               value={form.installment}
               options={INSTALLMENT_OPTIONS}
               onChange={(v) => setForm({ ...form, installment: v })}
             />
-            {errors.installment && <p className="text-xs text-red-500 mt-1">{errors.installment}</p>}
+            {errors.installment && <p>{errors.installment}</p>}
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Total Amount (₹)</label>
+            <label>Total Amount (₹)</label>
             <input
               type="number"
               value={form.totalAmount}
@@ -155,10 +164,10 @@ export default function AddFeeCollectionDialog({ open, onClose, onSave }: AddFee
               className={inputClass}
               placeholder="0.00"
             />
-            {errors.totalAmount && <p className="text-xs text-red-500 mt-1">{errors.totalAmount}</p>}
+            {errors.totalAmount && <p>{errors.totalAmount}</p>}
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Amount Paid (₹)</label>
+            <label>Amount Paid (₹)</label>
             <input
               type="number"
               value={form.amountPaid}
@@ -166,10 +175,10 @@ export default function AddFeeCollectionDialog({ open, onClose, onSave }: AddFee
               className={inputClass}
               placeholder="0.00"
             />
-            {errors.amountPaid && <p className="text-xs text-red-500 mt-1">{errors.amountPaid}</p>}
+            {errors.amountPaid && <p>{errors.amountPaid}</p>}
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Payment Mode</label>
+            <label>Payment Mode</label>
             <select
               value={form.paymentMode}
               onChange={(e) => setForm({ ...form, paymentMode: e.target.value })}
@@ -181,20 +190,20 @@ export default function AddFeeCollectionDialog({ open, onClose, onSave }: AddFee
               <option>Cheque</option>
               <option>Bank Transfer</option>
             </select>
-            {errors.paymentMode && <p className="text-xs text-red-500 mt-1">{errors.paymentMode}</p>}
+            {errors.paymentMode && <p>{errors.paymentMode}</p>}
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Payment Date</label>
+            <label>Payment Date</label>
             <input
               type="date"
               value={form.paymentDate}
               onChange={(e) => setForm({ ...form, paymentDate: e.target.value })}
               className={inputClass}
             />
-            {errors.paymentDate && <p className="text-xs text-red-500 mt-1">{errors.paymentDate}</p>}
+            {errors.paymentDate && <p>{errors.paymentDate}</p>}
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Receipt Number</label>
+            <label>Receipt Number</label>
             <input
               type="text"
               value={form.receiptNumber}
@@ -202,20 +211,20 @@ export default function AddFeeCollectionDialog({ open, onClose, onSave }: AddFee
               className={inputClass}
               placeholder="RCPT-XXXX"
             />
-            {errors.receiptNumber && <p className="text-xs text-red-500 mt-1">{errors.receiptNumber}</p>}
+            {errors.receiptNumber && <p>{errors.receiptNumber}</p>}
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Status</label>
+            <label>Status</label>
             <Dropdown
               label=""
               value={form.status}
               options={STATUS_OPTIONS}
               onChange={(v) => setForm({ ...form, status: v })}
             />
-            {errors.status && <p className="text-xs text-red-500 mt-1">{errors.status}</p>}
+            {errors.status && <p>{errors.status}</p>}
           </div>
-          <div className="md:col-span-2">
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Notes</label>
+          <div>
+            <label>Notes</label>
             <textarea
               value={form.notes}
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
@@ -225,27 +234,28 @@ export default function AddFeeCollectionDialog({ open, onClose, onSave }: AddFee
             />
           </div>
         </div>
-        <div className="flex items-center justify-end gap-2 pt-2">
+        <div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition"
+           
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="rounded-lg bg-[#7c3aed] px-4 py-2 text-sm font-semibold text-white hover:brightness-110 transition"
+           
           >
             Save
           </button>
         </div>
       </form>
       {toast.open && (
-        <div className="fixed bottom-6 right-6 z-[200] rounded-xl bg-slate-900 px-6 py-3 text-sm font-medium text-white shadow-2xl">
+        <div>
           {toast.message}
         </div>
       )}
     </Modal>
   );
 }
+

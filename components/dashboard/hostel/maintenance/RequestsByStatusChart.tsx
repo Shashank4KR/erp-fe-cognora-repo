@@ -4,7 +4,14 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Card from "@/components/shared/Card";
 import DonutChart from "@/components/shared/charts/DonutChart";
-import { STATUS_CHART_SEGMENTS, TOTAL_REQUESTS_COUNT } from "@/lib/fixtures/maintenance-management-reference-fixture";
+const STATUS_CHART_SEGMENTS = [
+  { label: "Open", value: 32, color: "#3b82f6" },
+  { label: "In Progress", value: 18, color: "#f97316" },
+  { label: "Completed", value: 74, color: "#10b981" },
+  { label: "Overdue", value: 4, color: "#ef4444" },
+];
+
+const TOTAL_REQUESTS_COUNT = 128;
 
 const PERIOD_OPTIONS = ["All Time", "This Month", "This Quarter", "This Year"];
 

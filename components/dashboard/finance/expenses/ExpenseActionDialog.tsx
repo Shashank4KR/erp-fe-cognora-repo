@@ -26,19 +26,19 @@ export default function ExpenseActionDialog({
 }: ExpenseActionDialogProps) {
   return (
     <Modal open={open} onClose={onClose} maxWidth="max-w-md">
-      <div className="flex items-center justify-between p-6 border-b border-slate-100">
-        <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
-        <button onClick={onClose} className="p-1 rounded-lg hover:bg-slate-100 text-slate-400 transition" aria-label="Close">
-          <X className="h-5 w-5" />
+      <div>
+        <h2>{title}</h2>
+        <button onClick={onClose} aria-label="Close">
+          <X />
         </button>
       </div>
-      <div className="p-6">
-        <p className="text-sm text-slate-600 mb-6">{message}</p>
-        <div className="flex items-center justify-end gap-2">
+      <div>
+        <p>{message}</p>
+        <div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition"
+           
           >
             Cancel
           </button>
@@ -63,3 +63,4 @@ export default function ExpenseActionDialog({
     </Modal>
   );
 }
+

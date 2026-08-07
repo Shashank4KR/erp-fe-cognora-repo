@@ -4,12 +4,21 @@ import { useState } from "react";
 import { Filter, X } from "lucide-react";
 import Dropdown from "@/components/shared/Dropdown";
 import FinanceDateRangePicker from "@/components/dashboard/finance/FinanceDateRangePicker";
-import {
-  ACADEMIC_YEAR_OPTIONS,
-  CLASS_GRADE_OPTIONS,
-  FEE_TYPE_OPTIONS,
-  PAYMENT_STATUS_OPTIONS,
-} from "@/lib/fixtures/finance-overview-reference-fixture";
+
+const ACADEMIC_YEAR_OPTIONS = ["2024-25", "2025-26"];
+const CLASS_GRADE_OPTIONS = [
+  "All Classes",
+  "VIII - A",
+  "VI - B",
+  "IX - A",
+  "VII - C",
+  "VIII - B",
+  "IX - B",
+  "VI - A",
+  "V - B",
+];
+const FEE_TYPE_OPTIONS = ["All Fee Types", "Tuition Fee", "Transport Fee", "Admission Fee", "Exam Fee", "Other Fees"];
+const PAYMENT_STATUS_OPTIONS = ["All Status", "Paid", "Pending", "Failed", "Refunded"];
 
 interface FinanceFiltersProps {
   academicYear: string;

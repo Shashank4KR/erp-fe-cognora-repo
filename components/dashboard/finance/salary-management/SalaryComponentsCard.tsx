@@ -2,7 +2,13 @@
 
 import { ChevronRight } from "lucide-react";
 import Card from "@/components/shared/Card";
-import { SALARY_COMPONENTS } from "@/lib/fixtures/salary-management-reference-fixture";
+
+const SALARY_COMPONENTS = [
+  { component: "Basic Salary", amount: "₹ 18,40,000", percentage: "64.0%" },
+  { component: "Allowances", amount: "₹ 7,20,000", percentage: "25.0%" },
+  { component: "Deductions", amount: "₹ 2,85,000", percentage: "9.9%" },
+  { component: "Net Payout", amount: "₹ 25,90,000", percentage: "90.1%" },
+];
 
 export default function SalaryComponentsCard() {
   return (

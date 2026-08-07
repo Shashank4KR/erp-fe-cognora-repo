@@ -3,7 +3,16 @@
 import { useState } from "react";
 import Card from "@/components/shared/Card";
 import Dropdown from "@/components/shared/Dropdown";
-import { FEE_COLLECTION_BY_TYPE, FEE_TYPE_PERIOD_OPTIONS } from "@/lib/fixtures/fees-management-reference-fixture";
+
+const FEE_COLLECTION_BY_TYPE = [
+  { label: "Tuition Fee", amount: "₹ 70,20,000", percentage: 71.1, color: "#6366f1" },
+  { label: "Transport Fee", amount: "₹ 12,45,000", percentage: 12.6, color: "#8b5cf6" },
+  { label: "Admission Fee", amount: "₹ 8,30,000", percentage: 8.4, color: "#3b82f6" },
+  { label: "Exam Fee", amount: "₹ 5,40,000", percentage: 5.5, color: "#f97316" },
+  { label: "Other Fees", amount: "₹ 2,40,000", percentage: 2.4, color: "#ef4444" },
+];
+
+const FEE_TYPE_PERIOD_OPTIONS = ["This Month", "This Quarter", "This Year"];
 
 export default function FeeCollectionByTypeCard() {
   const [period, setPeriod] = useState("This Year");

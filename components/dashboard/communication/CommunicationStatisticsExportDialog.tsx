@@ -4,13 +4,24 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import Modal from "@/components/shared/Modal";
 import Dropdown from "@/components/shared/Dropdown";
-import {
-  PERIOD_OPTIONS,
-  CHANNEL_OPTIONS,
-  AUDIENCE_OPTIONS,
-  COMMUNICATION_TYPE_OPTIONS,
-  FILE_FORMAT_OPTIONS,
-} from "@/lib/fixtures/communication-statistics-reference-fixture";
+const PERIOD_OPTIONS = ["This Week", "This Month", "This Quarter", "This Year"];
+
+const CHANNEL_OPTIONS = ["All Channels", "Email", "SMS", "In-App"];
+
+const AUDIENCE_OPTIONS = ["All Audiences", "Students", "Parents", "Staff"];
+
+const COMMUNICATION_TYPE_OPTIONS = [
+  "All Types",
+  "Announcement",
+  "Circular",
+  "Event",
+  "Reminder",
+  "General Communication",
+  "Exam Related",
+  "Attendance Alert",
+];
+
+const FILE_FORMAT_OPTIONS = ["PDF", "CSV", "XLSX"];
 
 interface CommunicationStatisticsExportDialogProps {
   open: boolean;

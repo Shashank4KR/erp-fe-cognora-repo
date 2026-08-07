@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { CheckCircle, Bus, Clock, Wrench, ChevronDown } from "lucide-react";
 import Card from "@/components/shared/Card";
-import { ACTIVITY_ROWS, OVERVIEW_PERIOD_OPTIONS } from "@/lib/fixtures/transport-overview-reference-fixture";
 import type { ActivityRow } from "@/lib/fixtures/transport-overview-reference-fixture";
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -12,6 +11,13 @@ const iconMap: Record<string, React.ReactNode> = {
   clock: <Clock className="h-4 w-4" />,
   tools: <Wrench className="h-4 w-4" />,
 };
+
+const OVERVIEW_PERIOD_OPTIONS = ["Today", "This Week", "This Month"];
+
+const ACTIVITY_ROWS: ActivityRow[] = [
+  { label: "Trips Completed", value: 8, icon: "check-circle", iconBg: "bg-emerald-50", iconColor: "text-emerald-500", progressColor: "bg-emerald-500", progressValue: 80 },
+  { label: "Trips Running", value: 16, icon: "bus", iconBg: "bg-blue-50", iconColor: "text-blue-500", progressColor: "bg-blue-500", progressValue: 100 },
+];
 
 interface TransportActivityCardProps {
   rows: ActivityRow[];

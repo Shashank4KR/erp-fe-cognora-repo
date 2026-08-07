@@ -5,14 +5,12 @@ import Modal from "@/components/shared/Modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Dropdown from "@/components/shared/Dropdown";
-import {
-  REQUEST_TYPE_OPTIONS,
-  CATEGORY_OPTIONS,
-  PRIORITY_OPTIONS,
-  STATUS_OPTIONS,
-  HOSTEL_BLOCK_OPTIONS,
-  ROWS_PER_PAGE_OPTIONS,
-} from "@/lib/fixtures/maintenance-management-reference-fixture";
+const REQUEST_TYPE_OPTIONS = ["All Types", "Repair", "Replacement", "Inspection", "Emergency", "Preventive Maintenance"];
+const CATEGORY_OPTIONS = ["All Categories", "Electrical", "Plumbing", "Furniture", "Appliance", "Others"];
+const PRIORITY_OPTIONS = ["All Priorities", "Low", "Medium", "High", "Emergency"];
+const STATUS_OPTIONS = ["All Status", "Open", "In Progress", "Completed", "Overdue"];
+const HOSTEL_BLOCK_OPTIONS = ["All Blocks", "Block A", "Block B", "Block C", "Block D"];
+const ROWS_PER_PAGE_OPTIONS = [10, 20, 50];
 
 interface RaiseMaintenanceRequestDialogProps {
   open: boolean;

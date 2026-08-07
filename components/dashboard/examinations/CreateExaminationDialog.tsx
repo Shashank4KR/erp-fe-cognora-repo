@@ -3,9 +3,10 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import Modal from "@/components/shared/Modal";
-import { EXAM_TYPE_OPTIONS } from "@/lib/fixtures/examinations-reference-fixture";
 import DatePicker from "@/components/shared/DatePicker";
 import type { ClassResponse } from "@/types/entities/class";
+
+const EXAM_TYPE_OPTIONS = ["Unit Test", "Periodic Test", "Half Yearly", "Pre Final", "Final", "Annual", "Others"];
 
 interface CreateExaminationDialogProps {
   open: boolean;

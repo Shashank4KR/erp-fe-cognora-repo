@@ -6,7 +6,7 @@ import Modal from "@/components/shared/Modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Dropdown from "@/components/shared/Dropdown";
-import { BLOCK_OPTIONS } from "@/lib/fixtures/hostel-management-reference-fixture";
+const BLOCK_OPTIONS = ["All Blocks", "Block A", "Block B", "Block C"];
 
 interface AssignStudentDialogProps {
   open: boolean;

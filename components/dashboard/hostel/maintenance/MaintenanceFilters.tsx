@@ -4,13 +4,11 @@ import { Filter, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Dropdown from "@/components/shared/Dropdown";
 import MaintenanceDateRangePicker from "./MaintenanceDateRangePicker";
-import {
-  REQUEST_TYPE_OPTIONS,
-  CATEGORY_OPTIONS,
-  PRIORITY_OPTIONS,
-  STATUS_OPTIONS,
-  HOSTEL_BLOCK_OPTIONS,
-} from "@/lib/fixtures/maintenance-management-reference-fixture";
+const REQUEST_TYPE_OPTIONS = ["All Types", "Repair", "Replacement", "Inspection", "Emergency", "Preventive Maintenance"];
+const CATEGORY_OPTIONS = ["All Categories", "Electrical", "Plumbing", "Furniture", "Appliance", "Others"];
+const PRIORITY_OPTIONS = ["All Priorities", "Low", "Medium", "High", "Emergency"];
+const STATUS_OPTIONS = ["All Status", "Open", "In Progress", "Completed", "Overdue"];
+const HOSTEL_BLOCK_OPTIONS = ["All Blocks", "Block A", "Block B", "Block C", "Block D"];
 
 interface MaintenanceFiltersProps {
   requestType: string;

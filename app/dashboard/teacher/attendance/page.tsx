@@ -40,8 +40,8 @@ export default function TeacherAttendancePage() {
             present: data.present || 0,
             absent: data.absent || 0,
             late: data.late || 0,
-            total: (data.total_classes || data.present + data.absent + data.late) as number,
-            percentage: data.attendance_percentage || 0,
+            total: (data.total_records || data.present + data.absent + data.late) as number,
+            percentage: Math.round(((data.present + data.late) / (data.total_records || 1)) * 100),
           };
           setSummary(summaryData);
           setError(null);

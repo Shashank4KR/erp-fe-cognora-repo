@@ -3,7 +3,16 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Card from "@/components/shared/Card";
-import { TOP_INCOME_CATEGORIES, TOP_INCOME_PERIOD_OPTIONS } from "@/lib/fixtures/transactions-reference-fixture";
+
+const TOP_INCOME_CATEGORIES = [
+  { label: "Tuition Fee", amount: "₹ 70,20,000", percentage: 56.3 },
+  { label: "Transport Fee", amount: "₹ 12,45,000", percentage: 10.0 },
+  { label: "Admission Fee", amount: "₹ 8,30,000", percentage: 6.7 },
+  { label: "Exam Fee", amount: "₹ 5,40,000", percentage: 4.3 },
+  { label: "Other Fees", amount: "₹ 2,40,000", percentage: 1.9 },
+];
+
+const TOP_INCOME_PERIOD_OPTIONS = ["This Month", "This Quarter", "This Year"];
 
 interface TopIncomeCategoriesProps {
   categories?: typeof TOP_INCOME_CATEGORIES;

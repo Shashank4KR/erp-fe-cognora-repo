@@ -5,13 +5,39 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Dropdown from "@/components/shared/Dropdown";
 import { Button } from "@/components/ui/button";
-import {
-  HOSTEL_BLOCK_OPTIONS,
-  ROOM_OPTIONS,
-  GENDER_OPTIONS,
-  CLASS_SECTION_OPTIONS,
-  STATUS_OPTIONS,
-} from "@/lib/fixtures/hostel-students-reference-fixture";
+const HOSTEL_BLOCK_OPTIONS = ["All Blocks", "Block A", "Block B", "Block C", "Block D"];
+
+const ROOM_OPTIONS = [
+  "All Rooms",
+  "A-101",
+  "A-102",
+  "A-103",
+  "A-104",
+  "B-201",
+  "B-202",
+  "B-203",
+  "C-301",
+  "C-302",
+  "C-303",
+];
+
+const GENDER_OPTIONS = ["All", "Male", "Female"];
+
+const CLASS_SECTION_OPTIONS = [
+  "All Classes",
+  "XII - A",
+  "XI - B",
+  "X - A",
+  "X - B",
+  "IX - A",
+  "IX - B",
+  "VIII - A",
+  "VIII - B",
+  "VII - A",
+  "VII - B",
+];
+
+const STATUS_OPTIONS = ["All Status", "Active", "Inactive", "Checked Out"];
 
 interface HostelStudentsFiltersProps {
   block: string;

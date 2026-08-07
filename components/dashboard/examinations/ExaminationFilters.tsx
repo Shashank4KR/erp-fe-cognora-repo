@@ -7,6 +7,7 @@ import DateRangePicker from "@/components/shared/DateRangePicker";
 
 interface ExaminationFiltersProps {
   onSearch: () => void;
+  onFilter: () => void;
   onReset: () => void;
   academicYear: string;
   onAcademicYearChange: (value: string) => void;

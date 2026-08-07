@@ -236,6 +236,8 @@ export default function HostelStudentsTable({
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={onPageChange}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={onRowsPerPageChange}
         totalItems={totalItems}
         startIndex={startIndex}
         endIndex={endIndex}

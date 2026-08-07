@@ -6,12 +6,13 @@ import Modal from "@/components/shared/Modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Dropdown from "@/components/shared/Dropdown";
-import {
-  ROOM_TYPE_OPTIONS,
-  ADD_ROOM_STATUS_OPTIONS,
-  ROOM_GENDER_OPTIONS,
-  BLOCK_OPTIONS,
-} from "@/lib/fixtures/hostel-management-reference-fixture";
+const ROOM_TYPE_OPTIONS = ["All Types", "1 Seater", "2 Seater", "3 Seater", "4 Seater"];
+
+const ADD_ROOM_STATUS_OPTIONS = ["Available", "Partially Occupied", "Full", "Maintenance"];
+
+const ROOM_GENDER_OPTIONS = ["Boys", "Girls"];
+
+const BLOCK_OPTIONS = ["All Blocks", "Block A", "Block B", "Block C"];
 
 interface AddRoomDialogProps {
   open: boolean;

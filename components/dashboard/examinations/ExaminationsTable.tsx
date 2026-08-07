@@ -1,6 +1,22 @@
 "use client";
 
-import { ExaminationRow, EXAM_TYPE_COLORS, STATUS_COLORS } from "@/lib/fixtures/examinations-reference-fixture";
+import type { ExaminationRow } from "@/lib/fixtures/examinations-reference-fixture";
+
+const EXAM_TYPE_COLORS: Record<string, string> = {
+  "Unit Test": "bg-indigo-50 text-indigo-700 border-indigo-100",
+  "Periodic Test": "bg-emerald-50 text-emerald-700 border-emerald-100",
+  "Half Yearly": "bg-sky-50 text-sky-700 border-sky-100",
+  "Pre Final": "bg-orange-50 text-orange-700 border-orange-100",
+  "Final": "bg-rose-50 text-rose-700 border-rose-100",
+  "Annual": "bg-sky-50 text-sky-700 border-sky-100",
+  "Others": "bg-violet-50 text-violet-700 border-violet-100",
+};
+
+const STATUS_COLORS: Record<string, string> = {
+  Upcoming: "bg-orange-50 text-orange-700 border-orange-100",
+  Ongoing: "bg-blue-50 text-blue-700 border-blue-100",
+  Completed: "bg-emerald-50 text-emerald-700 border-emerald-100",
+};
 
 interface ExaminationsTableProps {
   rows: ExaminationRow[];

@@ -4,12 +4,22 @@ import { useState } from "react";
 import { Filter, X } from "lucide-react";
 import Dropdown from "@/components/shared/Dropdown";
 import CommunicationDateRangePicker from "./CommunicationDateRangePicker";
-import {
-  PERIOD_OPTIONS,
-  CHANNEL_OPTIONS,
-  AUDIENCE_OPTIONS,
-  COMMUNICATION_TYPE_OPTIONS,
-} from "@/lib/fixtures/communication-statistics-reference-fixture";
+const PERIOD_OPTIONS = ["This Week", "This Month", "This Quarter", "This Year"];
+
+const CHANNEL_OPTIONS = ["All Channels", "Email", "SMS", "In-App"];
+
+const AUDIENCE_OPTIONS = ["All Audiences", "Students", "Parents", "Staff"];
+
+const COMMUNICATION_TYPE_OPTIONS = [
+  "All Types",
+  "Announcement",
+  "Circular",
+  "Event",
+  "Reminder",
+  "General Communication",
+  "Exam Related",
+  "Attendance Alert",
+];
 
 interface CommunicationStatisticsFiltersProps {
   period: string;

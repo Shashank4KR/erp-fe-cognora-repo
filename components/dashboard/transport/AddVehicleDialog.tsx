@@ -4,9 +4,13 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import Modal from "@/components/shared/Modal";
 import { Button } from "@/components/ui/button";
-import { VEHICLE_TYPE_OPTIONS, VEHICLE_STATUS_OPTIONS, DRIVER_OPTIONS, ROUTE_OPTIONS } from "@/lib/fixtures/transport-management-reference-fixture";
 import Dropdown from "@/components/shared/Dropdown";
 import { Input } from "@/components/ui/input";
+
+const VEHICLE_TYPE_OPTIONS = ["Bus", "Van", "Mini Bus", "Car"];
+const VEHICLE_STATUS_OPTIONS = ["Active", "Maintenance", "Inactive"];
+const DRIVER_OPTIONS = ["All Drivers", "Ramesh Kumar", "Suresh Yadav", "Mahesh Singh", "Prakash Patel", "Anil Verma"];
+const ROUTE_OPTIONS = ["All Routes", "Route 1 (Green)", "Route 2 (Blue)", "Route 3 (Yellow)", "Route 4 (Red)", "Route 5 (Orange)"];
 
 interface AddVehicleDialogProps {
   open: boolean;

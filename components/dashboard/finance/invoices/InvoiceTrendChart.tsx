@@ -3,7 +3,26 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Card from "@/components/shared/Card";
-import { INVOICE_TREND_DATA, INVOICE_TREND_PERIOD_OPTIONS } from "@/lib/fixtures/invoices-reference-fixture";
+
+const INVOICE_TREND_DATA = {
+  monthly: {
+    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar"],
+    invoiced: [18, 30, 42, 40, 52, 48, 62, 55, 68, 60, 52, 60],
+    paid: [8, 14, 16, 10, 22, 18, 28, 24, 30, 22, 20, 30],
+  },
+  quarterly: {
+    labels: ["Q1", "Q2", "Q3", "Q4"],
+    invoiced: [90, 140, 175, 172],
+    paid: [38, 52, 82, 72],
+  },
+  yearly: {
+    labels: ["2021", "2022", "2023", "2024", "2025"],
+    invoiced: [280, 340, 390, 450, 520],
+    paid: [120, 160, 200, 240, 280],
+  },
+};
+
+const INVOICE_TREND_PERIOD_OPTIONS = ["Monthly", "Quarterly", "Yearly"];
 
 interface InvoiceTrendChartProps {
   className?: string;

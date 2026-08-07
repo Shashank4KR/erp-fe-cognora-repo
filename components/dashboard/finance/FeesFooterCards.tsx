@@ -3,7 +3,57 @@
 import { Calendar, CheckCircle, FileText, AlertCircle, Tag, Gift } from "lucide-react";
 import Card from "@/components/shared/Card";
 import type { FooterCard } from "@/lib/fixtures/fees-management-reference-fixture";
-import { FOOTER_CARDS } from "@/lib/fixtures/fees-management-reference-fixture";
+
+const FOOTER_CARDS = [
+  {
+    title: "Total Installments",
+    value: "1,386",
+    footer: "All Students",
+    iconBg: "bg-purple-50",
+    iconColor: "text-[#7c3aed]",
+    icon: "calendar",
+  },
+  {
+    title: "Paid Installments",
+    value: "1,095",
+    footer: "79.1%",
+    iconBg: "bg-emerald-50",
+    iconColor: "text-emerald-500",
+    icon: "calendar-check",
+  },
+  {
+    title: "Pending Installments",
+    value: "291",
+    footer: "20.9%",
+    iconBg: "bg-orange-50",
+    iconColor: "text-orange-500",
+    icon: "pending",
+  },
+  {
+    title: "Overdue Installments",
+    value: "128",
+    footer: "9.2%",
+    iconBg: "bg-pink-50",
+    iconColor: "text-pink-500",
+    icon: "overdue-calendar",
+  },
+  {
+    title: "Discount Given",
+    value: "₹ 6,75,000",
+    footer: "This Year",
+    iconBg: "bg-purple-50",
+    iconColor: "text-[#7c3aed]",
+    icon: "tag",
+  },
+  {
+    title: "Concessions Given",
+    value: "₹ 3,15,000",
+    footer: "This Year",
+    iconBg: "bg-blue-50",
+    iconColor: "text-blue-500",
+    icon: "gift",
+  },
+];
 
 const iconMap: Record<string, React.ReactNode> = {
   calendar: <Calendar className="h-5 w-5" />,

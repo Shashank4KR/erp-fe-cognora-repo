@@ -3,7 +3,14 @@
 import { ChevronDown } from "lucide-react";
 import DonutChart from "@/components/shared/charts/DonutChart";
 import Dropdown from "@/components/shared/Dropdown";
-import { BLOCK_SEGMENTS, BLOCK_FILTER_OPTIONS } from "@/lib/fixtures/hostel-students-reference-fixture";
+const BLOCK_SEGMENTS = [
+  { label: "Block A (Boys)", value: 90, color: "#7c3aed" },
+  { label: "Block B (Boys)", value: 88, color: "#10b981" },
+  { label: "Block C (Girls)", value: 72, color: "#f97316" },
+  { label: "Block D (Girls)", value: 36, color: "#ec4899" },
+];
+
+const BLOCK_FILTER_OPTIONS = ["All Blocks", "Boys Blocks", "Girls Blocks"];
 
 interface StudentsByBlockChartProps {
   filter: string;

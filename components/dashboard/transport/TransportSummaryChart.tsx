@@ -3,13 +3,24 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Card from "@/components/shared/Card";
-import { TRANSPORT_DONUT_SEGMENTS, TRANSPORT_TOTAL_STUDENTS, OVERVIEW_PERIOD_OPTIONS } from "@/lib/fixtures/transport-overview-reference-fixture";
 import type { DonutSegment } from "@/lib/fixtures/transport-overview-reference-fixture";
 
 interface TransportSummaryChartProps {
   segments: DonutSegment[];
   total: number;
 }
+
+const TRANSPORT_DONUT_SEGMENTS: DonutSegment[] = [
+  { label: "Route 1 (Green)", value: 42, color: "#3b82f6" },
+  { label: "Route 2 (Blue)", value: 38, color: "#10b981" },
+  { label: "Route 3 (Yellow)", value: 35, color: "#eab308" },
+  { label: "Route 4 (Red)", value: 40, color: "#ef4444" },
+  { label: "Route 5 (Orange)", value: 32, color: "#f97316" },
+  { label: "Other Routes", value: 239, color: "#7c3aed" },
+];
+
+const TRANSPORT_TOTAL_STUDENTS = 426;
+const OVERVIEW_PERIOD_OPTIONS = ["Today", "This Week", "This Month"];
 
 export default function TransportSummaryChart({ segments, total }: TransportSummaryChartProps) {
   const [period, setPeriod] = useState("This Month");
@@ -60,7 +71,6 @@ export default function TransportSummaryChart({ segments, total }: TransportSumm
       </div>
 
       <div className="flex flex-col sm:flex-row items-center gap-6">
-        {/* Donut chart */}
         <div className="relative flex-shrink-0">
           <svg width="180" height="180" viewBox="0 0 180 180">
             {segmentsWithOffset.map((segment) => {
@@ -83,7 +93,6 @@ export default function TransportSummaryChart({ segments, total }: TransportSumm
                 />
               );
             })}
-            {/* Center text */}
             <text x="90" y="82" textAnchor="middle" dominantBaseline="middle" fontSize="24" fontWeight="bold" fill="#0f172a">
               {total.toLocaleString()}
             </text>
@@ -93,7 +102,6 @@ export default function TransportSummaryChart({ segments, total }: TransportSumm
           </svg>
         </div>
 
-        {/* Legend */}
         <div className="flex-1 w-full space-y-2.5">
           {segments.map((segment) => (
             <div key={segment.label} className="flex items-center justify-between">
@@ -101,12 +109,7 @@ export default function TransportSummaryChart({ segments, total }: TransportSumm
                 <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: segment.color }} />
                 <span className="text-sm text-slate-600">{segment.label}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold text-slate-900">{segment.value}</span>
-                <span className="text-xs text-slate-400 w-10 text-right">
-                  {((segment.value / totalValue) * 100).toFixed(1)}%
-                </span>
-              </div>
+              <span className="text-sm font-medium text-slate-900">{segment.value}</span>
             </div>
           ))}
         </div>
