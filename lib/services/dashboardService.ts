@@ -1,4 +1,5 @@
-import { getToken } from "@/lib/auth";
+﻿import { getToken } from "@/lib/auth";
+import type { UserResponse } from "@/types/auth";
 
 export interface DashboardStats {
   total_students: number;
@@ -7,70 +8,90 @@ export interface DashboardStats {
   total_subjects: number;
   total_fees_invoiced: number;
   total_fees_collected: number;
+  outstanding_fees: number;
+  today_collection: number;
+  monthly_collection: number;
   upcoming_events: number;
 }
 
-export async function getDashboardStats(token: string): Promise<DashboardStats> {
-  const response = await fetch("/api/dashboard/stats", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  if (!response.ok) {
-    const data = (await response.json()) as { detail?: string };
-    throw new Error(data.detail ?? "Failed to fetch dashboard stats.");
-  }
-
-  return (await response.json()) as DashboardStats;
+export interface StudentDashboardSummary {
+  attendance_percentage: number;
+  total_classes: number;
+  present: number;
+  total_fees: number;
+  paid_amount: number;
+  pending_amount: number;
+  student_name: string;
 }
 
-export async function getRecentActivities(token: string): Promise<any[]> {
-  const response = await fetch("/api/audit/recent-activities", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  if (!response.ok) {
-    const data = (await response.json()) as { detail?: string };
-    throw new Error(data.detail ?? "Failed to fetch recent activities.");
-  }
-
-  return (await response.json()) as any[];
+export interface TeacherDashboardSummary {
+  assigned_classes: number;
+  assigned_subjects: number;
+  total_students: number;
+  teacher_name: string;
 }
 
-export async function getUpcomingEvents(token: string): Promise<any[]> {
-  const response = await fetch("/api/events/upcoming", {
-    headers: { Authorization: `Bearer ${token}` },
+async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
+  const token = getToken();
+  const response = await fetch(path, {
+    ...init,
+    headers: {
+      ...(init?.headers || {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
   });
 
   if (!response.ok) {
-    const data = (await response.json()) as { detail?: string };
-    throw new Error(data.detail ?? "Failed to fetch upcoming events.");
+    const detail = await response.text();
+    throw new Error(detail || `Request failed with ${response.status}`);
   }
 
-  return (await response.json()) as any[];
+  return (await response.json()) as T;
 }
 
-export async function getAllStudents(token: string): Promise<any[]> {
-  const response = await fetch("/api/students", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  if (!response.ok) {
-    const data = (await response.json()) as { detail?: string };
-    throw new Error(data.detail ?? "Failed to fetch students.");
-  }
-
-  return (await response.json()) as any[];
+export async function getCurrentUserProfile(): Promise<UserResponse> {
+  return requestJson<UserResponse>("/api/auth/me");
 }
 
-export async function getAllClasses(token: string): Promise<any[]> {
-  const response = await fetch("/api/classes", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export async function getDashboardStats(): Promise<DashboardStats> {
+  return requestJson<DashboardStats>("/api/dashboard/stats");
+}
 
-  if (!response.ok) {
-    const data = (await response.json()) as { detail?: string };
-    throw new Error(data.detail ?? "Failed to fetch classes.");
-  }
+export async function getStudentDashboardSummary(studentId: string): Promise<StudentDashboardSummary> {
+  return requestJson<StudentDashboardSummary>(`/api/dashboard/student/${studentId}`);
+}
 
-  return (await response.json()) as any[];
+export async function getCurrentStudentProfile(): Promise<{
+  id: string;
+  admission_no: string;
+  first_name?: string | null;
+  last_name?: string | null;
+  class_name?: string | null;
+  roll_no?: string | null;
+}> {
+  return requestJson(`/api/students/me`);
+}
+
+export async function getTeacherDashboardSummary(teacherId: string): Promise<TeacherDashboardSummary> {
+  return requestJson<TeacherDashboardSummary>(`/api/dashboard/teacher/${teacherId}`);
+}
+
+export async function getCurrentTeacherProfile(): Promise<{
+  id: string;
+  employee_id: string;
+  qualification?: string | null;
+  department_id?: string | null;
+}> {
+  return requestJson(`/api/teachers/me`);
+}
+
+export async function getCurrentParentStudents(): Promise<Array<{
+  id: string;
+  admission_no: string;
+  first_name?: string | null;
+  last_name?: string | null;
+  class_name?: string | null;
+  roll_no?: string | null;
+}>> {
+  return requestJson(`/api/parents/me/students`);
 }

@@ -4,18 +4,26 @@ import { useState } from "react";
 import Card from "@/components/shared/Card";
 import Dropdown from "@/components/shared/Dropdown";
 
-const COLLECTION_TREND_MONTHLY = {
+const COLLECTION_TREND_MONTHLY_DEFAULT = {
   expected: [20, 25, 30, 45, 55, 60, 75, 80, 85, 100, 105, 110],
   collected: [5, 10, 15, 25, 35, 45, 55, 60, 65, 80, 90, 98],
 };
 
 const TREND_PERIOD_OPTIONS = ["Monthly", "Quarterly", "Yearly"];
 
-export default function CollectionTrendChart() {
+interface CollectionTrendChartProps {
+  expected?: number[];
+  collected?: number[];
+}
+
+export default function CollectionTrendChart({ expected, collected }: CollectionTrendChartProps) {
   const [period, setPeriod] = useState("Monthly");
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
-  const data = COLLECTION_TREND_MONTHLY;
+  const data = {
+    expected: expected || COLLECTION_TREND_MONTHLY_DEFAULT.expected,
+    collected: collected || COLLECTION_TREND_MONTHLY_DEFAULT.collected,
+  };
   const labels = ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar"];
   const width = 400;
   const height = 180;

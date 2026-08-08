@@ -5,14 +5,15 @@ import { useRouter } from "next/navigation";
 import RoleDashboardLayout from "@/components/dashboard/role-dashboards/RoleDashboardLayout";
 import { ROLE_CONFIGS } from "@/lib/dashboard/role-dashboards/config";
 import { getToken, getStoredUser } from "@/lib/auth";
+import { getCurrentTeacher, getTeacherClasses } from "@/lib/services/teacherService";
 import Card from "@/components/shared/Card";
 import { Loader2, AlertCircle, Users2 } from "lucide-react";
 
 interface TeacherClass {
   id: string;
   name: string;
-  studentCount: number;
-  room: string;
+  studentCount: number | null;
+  room: string | null;
   schedule?: string;
 }
 
@@ -33,32 +34,18 @@ export default function TeacherClassesPage() {
           return;
         }
 
-        // Mock data - in production, fetch from API
-        const mockClasses: TeacherClass[] = [
-          {
-            id: "1",
-            name: "Class 10-A",
-            studentCount: 38,
-            room: "Room 201",
-            schedule: "Mon, Wed, Fri",
-          },
-          {
-            id: "2",
-            name: "Class 10-B",
-            studentCount: 42,
-            room: "Room 202",
-            schedule: "Tue, Thu",
-          },
-          {
-            id: "3",
-            name: "Class 12-A",
-            studentCount: 35,
-            room: "Room 301",
-            schedule: "Mon, Tue, Wed",
-          },
-        ];
+        const teacher = await getCurrentTeacher(token);
+        const assignedClasses = await getTeacherClasses(token, teacher.id);
 
-        setClasses(mockClasses);
+        setClasses(
+          assignedClasses.map((cls) => ({
+            id: cls.id,
+            name: `${cls.class_name}${cls.section ? `-${cls.section}` : ""}`,
+            studentCount: null,
+            room: null,
+            schedule: cls.academic_year,
+          })),
+        );
         setError(null);
       } catch (err) {
         console.error("Error fetching classes:", err);
@@ -116,13 +103,13 @@ export default function TeacherClassesPage() {
                 <div className="space-y-4">
                   <div>
                     <p className="text-lg font-semibold text-slate-900">{cls.name}</p>
-                    <p className="text-sm text-slate-600 mt-1">{cls.room}</p>
+                    <p className="text-sm text-slate-600 mt-1">{cls.room ?? "Room not assigned"}</p>
                   </div>
 
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-slate-600">Students</span>
-                      <span className="font-semibold text-slate-900">{cls.studentCount}</span>
+                      <span className="font-semibold text-slate-900">{cls.studentCount ?? "Not available"}</span>
                     </div>
                     {cls.schedule && (
                       <div className="flex justify-between">

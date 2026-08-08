@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import RoleDashboardLayout from "@/components/dashboard/role-dashboards/RoleDashboardLayout";
 import { ROLE_CONFIGS } from "@/lib/dashboard/role-dashboards/config";
 import { getToken, getStoredUser } from "@/lib/auth";
+import { getCurrentTeacher, getTeacherMessages } from "@/lib/services/teacherService";
 import Card from "@/components/shared/Card";
 import { Loader2, AlertCircle, MessageSquare } from "lucide-react";
 
@@ -34,13 +35,19 @@ export default function TeacherMessagesPage() {
           return;
         }
 
-        const mockMessages: Message[] = [
-          { id: "1", title: "Mrs. Verma (Aarav's parent)", description: "Asked about exam schedule", meta: "10 min ago", iconBg: "bg-purple-50", iconColor: "text-purple-500" },
-          { id: "2", title: "Admin Office", description: "Marks entry deadline Fri", meta: "1 hour ago", iconBg: "bg-blue-50", iconColor: "text-blue-500" },
-          { id: "3", title: "Mr. Das", description: "Shared lesson plan", meta: "Yesterday", iconBg: "bg-green-50", iconColor: "text-green-500" },
-        ];
+        const teacher = await getCurrentTeacher(token);
+        const teacherMessages = await getTeacherMessages(token, teacher.id);
 
-        setMessages(mockMessages);
+        setMessages(
+          teacherMessages.map((message) => ({
+            id: message.id,
+            title: message.sender_name,
+            description: message.message,
+            meta: message.sent_on,
+            iconBg: message.is_read ? "bg-slate-100" : "bg-purple-50",
+            iconColor: message.is_read ? "text-slate-500" : "text-purple-500",
+          })),
+        );
         setError(null);
       } catch (err) {
         console.error("Error fetching messages:", err);

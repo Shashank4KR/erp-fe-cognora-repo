@@ -4,7 +4,7 @@ import { useState } from "react";
 import Card from "@/components/shared/Card";
 import Dropdown from "@/components/shared/Dropdown";
 
-const FEE_COLLECTION_BY_TYPE = [
+const FEE_COLLECTION_BY_TYPE_DEFAULT = [
   { label: "Tuition Fee", amount: "₹ 70,20,000", percentage: 71.1, color: "#6366f1" },
   { label: "Transport Fee", amount: "₹ 12,45,000", percentage: 12.6, color: "#8b5cf6" },
   { label: "Admission Fee", amount: "₹ 8,30,000", percentage: 8.4, color: "#3b82f6" },
@@ -14,8 +14,15 @@ const FEE_COLLECTION_BY_TYPE = [
 
 const FEE_TYPE_PERIOD_OPTIONS = ["This Month", "This Quarter", "This Year"];
 
-export default function FeeCollectionByTypeCard() {
+interface FeeCollectionByTypeCardProps {
+  items?: Array<{ label: string; amount: string; percentage: number; color: string }>;
+  total?: string;
+}
+
+export default function FeeCollectionByTypeCard({ items, total }: FeeCollectionByTypeCardProps) {
   const [period, setPeriod] = useState("This Year");
+  const activeItems = items || FEE_COLLECTION_BY_TYPE_DEFAULT;
+  const activeTotal = total || "₹ 98,75,000";
 
   return (
     <Card className="p-5">
@@ -30,7 +37,7 @@ export default function FeeCollectionByTypeCard() {
       </div>
 
       <div className="space-y-4">
-        {FEE_COLLECTION_BY_TYPE.map((item) => (
+        {activeItems.map((item) => (
           <div key={item.label}>
             <div className="flex items-center justify-between mb-1">
               <span className="text-xs font-medium text-slate-700">{item.label}</span>
@@ -52,7 +59,7 @@ export default function FeeCollectionByTypeCard() {
       <div className="mt-4 pt-3 border-t border-slate-100">
         <div className="flex items-center justify-between">
           <span className="text-xs font-semibold text-slate-700">Total Collected</span>
-          <span className="text-xs font-bold text-slate-900">₹ 98,75,000</span>
+          <span className="text-xs font-bold text-slate-900">{activeTotal}</span>
         </div>
       </div>
     </Card>

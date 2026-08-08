@@ -2,50 +2,39 @@
 
 import DonutChart from "@/components/shared/charts/DonutChart";
 import Card from "@/components/shared/Card";
-import { CircleCheck, ArrowUpRight } from "lucide-react";
+import { CircleCheck } from "lucide-react";
 
-export default function FeeCollectionSummaryChart() {
-  const totalFeeRevenue = 2280000;
-  const feeChartData = [
-    { label: "Tuition Fees", value: 58, color: "#7c3aed" },
-    { label: "Transport Fees", value: 18, color: "#3b82f6" },
-    { label: "Library Fees", value: 12, color: "#0ea5e9" },
-    { label: "Lab Fees", value: 8, color: "#f59e0b" },
-    { label: "Other Fees", value: 4, color: "#6366f1" },
-  ];
+interface FeeCollectionSummaryChartProps {
+  data?: Array<{ label: string; value: number; color: string }>;
+  recentCollections?: Array<{ student: string; course: string; status: "Paid" | "Pending" | "Overdue"; amount: string; date: string }>;
+}
 
-  const recentCollections = [
-    { student: "Arjun Mehta", course: "B.Sc. Biology", status: "Paid" as const, amount: "₹42,000", date: "2024-01-12" },
-    { student: "Priya Sharma", course: "B.A. History", status: "Pending" as const, amount: "₹18,500", date: "2024-01-12" },
-    { student: "Rahul Verma", course: "M.Com", status: "Overdue" as const, amount: "₹24,000", date: "2024-01-11" },
-    { student: "Sneha Kapoor", course: "B.Tech CSE", status: "Paid" as const, amount: "₹85,000", date: "2024-01-11" },
-  ];
-
+export default function FeeCollectionSummaryChart({ data = [], recentCollections = [] }: FeeCollectionSummaryChartProps) {
   return (
     <Card className="p-5 flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-semibold text-slate-900">Fee Collection Summary</h3>
         <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-600">
           <CircleCheck className="h-3.5 w-3.5" />
-          +12.5%
+          Live backend data
         </span>
       </div>
 
       <div className="flex items-center justify-center mb-4">
         <DonutChart
-          segments={feeChartData}
+          segments={data.length > 0 ? data : []}
           size={180}
         />
       </div>
 
       <div className="space-y-2">
-        {feeChartData.map((item) => (
+        {data.map((item) => (
           <div key={item.label} className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: item.color }} />
               <span className="text-xs text-slate-600">{item.label}</span>
             </div>
-            <span className="text-xs font-semibold text-slate-900">{item.value}%</span>
+            <span className="text-xs font-semibold text-slate-900">{item.value}</span>
           </div>
         ))}
       </div>
@@ -54,7 +43,7 @@ export default function FeeCollectionSummaryChart() {
         <p className="text-xs font-semibold text-slate-700 mb-2">Recent Collections</p>
         <div className="space-y-2">
           {recentCollections.map((item) => (
-            <div key={item.student} className="flex items-center justify-between">
+            <div key={`${item.student}-${item.date}`} className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-medium text-slate-900">{item.student}</p>
                 <p className="text-[11px] text-slate-500">{item.course}</p>

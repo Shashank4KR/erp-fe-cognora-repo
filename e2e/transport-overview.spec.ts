@@ -12,7 +12,7 @@ test.describe("Transport Overview", () => {
   test("quick navigation cards render", async ({ page }) => {
     await page.goto("/dashboard/admin/transport");
 
-    await expect(page.locator("text=Transport Management")).toBeVisible();
+    await expect(page.getByRole("link", { name: /Transport Management/ })).toBeVisible();
     await expect(page.locator("text=Live Tracking")).toBeVisible();
   });
 });

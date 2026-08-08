@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import RoleDashboardLayout from "@/components/dashboard/role-dashboards/RoleDashboardLayout";
 import { ROLE_CONFIGS } from "@/lib/dashboard/role-dashboards/config";
 import { getToken, getStoredUser } from "@/lib/auth";
+import { getCurrentTeacher, getTeacherTimetable } from "@/lib/services/teacherService";
 import Card from "@/components/shared/Card";
 import { Loader2, AlertCircle, CalendarDays } from "lucide-react";
 
@@ -34,15 +35,19 @@ export default function TeacherSchedulePage() {
           return;
         }
 
-        const mockSchedule: ScheduleItem[] = [
-          { id: "1", title: "Class 10-A", description: "Algebra · Room 201", meta: "08:30 - 09:15", iconBg: "bg-purple-50", iconColor: "text-purple-500" },
-          { id: "2", title: "Class 10-B", description: "Geometry · Room 202", meta: "09:20 - 10:05", iconBg: "bg-blue-50", iconColor: "text-blue-500" },
-          { id: "3", title: "Free Period", description: "Staff room", meta: "10:20 - 11:05", iconBg: "bg-slate-100", iconColor: "text-slate-500" },
-          { id: "4", title: "Class 11-Sci", description: "Calculus · Room 301", meta: "11:10 - 11:55", iconBg: "bg-amber-50", iconColor: "text-amber-500" },
-          { id: "5", title: "Class 12-Sci", description: "Calculus · Room 302", meta: "12:30 - 01:15", iconBg: "bg-pink-50", iconColor: "text-pink-500" },
-        ];
+        const teacher = await getCurrentTeacher(token);
+        const timetable = await getTeacherTimetable(token, teacher.id);
 
-        setSchedule(mockSchedule);
+        setSchedule(
+          timetable.map((item) => ({
+            id: item.id,
+            title: item.class_name ?? "Assigned class",
+            description: [item.subject_name, item.room_no].filter(Boolean).join(" · ") || item.day_of_week,
+            meta: `${item.day_of_week}, ${item.start_time} - ${item.end_time}`,
+            iconBg: "bg-purple-50",
+            iconColor: "text-purple-500",
+          })),
+        );
         setError(null);
       } catch (err) {
         console.error("Error fetching schedule:", err);
@@ -84,7 +89,16 @@ export default function TeacherSchedulePage() {
           </Card>
         )}
 
-        {!loading && !error && (
+        {!loading && !error && schedule.length === 0 && (
+          <Card className="border-amber-200 bg-amber-50 p-6">
+            <div className="flex items-center gap-3 text-amber-700">
+              <CalendarDays className="h-5 w-5" />
+              <p>No timetable entries assigned yet.</p>
+            </div>
+          </Card>
+        )}
+
+        {!loading && !error && schedule.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {schedule.map((item) => (
               <Card key={item.id} className="hover:shadow-lg transition p-6">

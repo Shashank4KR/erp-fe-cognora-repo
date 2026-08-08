@@ -231,3 +231,41 @@ export async function processSalary(
 
   return (await response.json()) as any;
 }
+
+export async function getFeesSummary(token: string): Promise<any> {
+  const response = await fetch("/api/fees/summary", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!response.ok) {
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to fetch fee summary.");
+  }
+  return await response.json();
+}
+
+export async function listFeeInstallments(token: string): Promise<any[]> {
+  const response = await fetch("/api/finance/fee-installments", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!response.ok) {
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to fetch fee installments.");
+  }
+  return (await response.json()) as any[];
+}
+
+export async function createFeePayment(token: string, payload: any): Promise<any> {
+  const response = await fetch("/api/payments", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) {
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to add payment.");
+  }
+  return await response.json();
+}

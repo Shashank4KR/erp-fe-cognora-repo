@@ -101,15 +101,19 @@ const ITEMS_PER_PAGE = 8;
 
 interface StudentFeeDetailsTableProps {
   searchQuery?: string;
+  data?: StudentFeeRow[];
+  loading?: boolean;
 }
 
-export default function StudentFeeDetailsTable({ searchQuery = "" }: StudentFeeDetailsTableProps) {
+export default function StudentFeeDetailsTable({ searchQuery = "", data, loading = false }: StudentFeeDetailsTableProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [viewStudent, setViewStudent] = useState<StudentFeeRow | null>(null);
   const [invoiceStudent, setInvoiceStudent] = useState<StudentFeeRow | null>(null);
   const [actionMenu, setActionMenu] = useState<string | null>(null);
 
-  const filteredRows = STUDENT_FEE_ROWS.filter((row) => {
+  const rows = data || STUDENT_FEE_ROWS;
+
+  const filteredRows = rows.filter((row) => {
     if (!searchQuery) return true;
     const q = searchQuery.toLowerCase();
     return (
@@ -118,7 +122,7 @@ export default function StudentFeeDetailsTable({ searchQuery = "" }: StudentFeeD
     );
   });
 
-  const totalPages = Math.max(1, Math.ceil(STUDENT_FEE_ROWS.length / ITEMS_PER_PAGE));
+  const totalPages = Math.max(1, Math.ceil(rows.length / ITEMS_PER_PAGE));
   const paginatedRows = filteredRows.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   const getStatusBadge = (status: string) => {

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import RoleDashboardLayout from "@/components/dashboard/role-dashboards/RoleDashboardLayout";
 import { ROLE_CONFIGS } from "@/lib/dashboard/role-dashboards/config";
 import { getToken, getStoredUser } from "@/lib/auth";
+import { getCurrentTeacher, getTeacherExamResults } from "@/lib/services/teacherService";
 import Card from "@/components/shared/Card";
 import { Loader2, AlertCircle, FileBarChart } from "lucide-react";
 
@@ -36,14 +37,21 @@ export default function TeacherMarksPage() {
           return;
         }
 
-        const mockMarks: MarkEntry[] = [
-          { id: "1", student: "Aarav Sharma", class: "Class 10-A", subject: "Mathematics", exam: "Mid-Term", marks: 85, maxMarks: 100, status: "entered" },
-          { id: "2", student: "Priya Singh", class: "Class 10-A", subject: "Mathematics", exam: "Mid-Term", marks: 78, maxMarks: 100, status: "entered" },
-          { id: "3", student: "Rohan Verma", class: "Class 10-B", subject: "Mathematics", exam: "Mid-Term", marks: 0, maxMarks: 100, status: "pending" },
-          { id: "4", student: "Ananya Patel", class: "Class 11-Sci", subject: "Calculus", exam: "Unit Test", marks: 92, maxMarks: 100, status: "review" },
-        ];
+        const teacher = await getCurrentTeacher(token);
+        const results = await getTeacherExamResults(token, teacher.id);
 
-        setMarks(mockMarks);
+        setMarks(
+          results.map((result) => ({
+            id: result.id,
+            student: result.student_name,
+            class: result.class_name,
+            subject: result.subject_name,
+            exam: result.exam_name,
+            marks: result.marks_obtained,
+            maxMarks: result.max_marks,
+            status: "entered",
+          })),
+        );
         setError(null);
       } catch (err) {
         console.error("Error fetching marks:", err);

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import RoleDashboardLayout from "@/components/dashboard/role-dashboards/RoleDashboardLayout";
 import { ROLE_CONFIGS } from "@/lib/dashboard/role-dashboards/config";
 import { getToken, getStoredUser } from "@/lib/auth";
+import { getCurrentTeacher, getTeacherAssignments } from "@/lib/services/teacherService";
 import Card from "@/components/shared/Card";
 import { Loader2, AlertCircle, ClipboardList } from "lucide-react";
 
@@ -34,13 +35,19 @@ export default function TeacherAssignmentsPage() {
           return;
         }
 
-        const mockAssignments: Assignment[] = [
-          { id: "1", title: "Class 10-A Algebra HW", subject: "Mathematics", dueDate: "2026-06-12", status: "pending", description: "Chapter 5 exercises" },
-          { id: "2", title: "Class 9-A Geometry Test", subject: "Mathematics", dueDate: "2026-06-14", status: "pending", description: "Triangles and circles" },
-          { id: "3", title: "Class 10-B Project", subject: "Mathematics", dueDate: "2026-06-18", status: "graded", description: "Statistics project" },
-        ];
+        const teacher = await getCurrentTeacher(token);
+        const teacherAssignments = await getTeacherAssignments(token, teacher.id);
 
-        setAssignments(mockAssignments);
+        setAssignments(
+          teacherAssignments.map((assignment) => ({
+            id: assignment.id,
+            title: assignment.title,
+            subject: assignment.subject_name ?? "Subject not assigned",
+            dueDate: assignment.due_date ?? "No due date",
+            status: "pending",
+            description: assignment.description ?? assignment.class_name ?? undefined,
+          })),
+        );
         setError(null);
       } catch (err) {
         console.error("Error fetching assignments:", err);

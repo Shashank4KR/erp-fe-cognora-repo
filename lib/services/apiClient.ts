@@ -2,7 +2,7 @@
 
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ??
-  "https://edtech-backend-2w7w.onrender.com";
+  "/api";
 
 export async function apiClient<T>(
   path: string,

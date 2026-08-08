@@ -120,3 +120,168 @@ export async function getTeacherSubjects(
   return (await response.json()) as SubjectResponse[];
 }
 
+export async function getCurrentTeacher(token: string): Promise<TeacherResponse> {
+  const response = await fetch(`${BASE}/me`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to fetch teacher profile.");
+  }
+
+  return (await response.json()) as TeacherResponse;
+}
+
+export async function getTeacherTimetable(
+  token: string,
+  teacherId: string,
+): Promise<Array<{
+  id: string;
+  class_name?: string | null;
+  subject_name?: string | null;
+  day_of_week: string;
+  start_time: string;
+  end_time: string;
+  room_no?: string | null;
+}>> {
+  const response = await fetch(`${BASE}/${teacherId}/timetable`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to fetch teacher timetable.");
+  }
+
+  return (await response.json()) as Array<{
+    id: string;
+    class_name?: string | null;
+    subject_name?: string | null;
+    day_of_week: string;
+    start_time: string;
+    end_time: string;
+    room_no?: string | null;
+  }>;
+}
+
+export async function getTeacherAssignments(
+  token: string,
+  teacherId: string,
+): Promise<Array<{
+  id: string;
+  title: string;
+  description?: string | null;
+  due_date?: string | null;
+  class_name?: string | null;
+  subject_name?: string | null;
+}>> {
+  const response = await fetch(`${BASE}/${teacherId}/assignments`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to fetch teacher assignments.");
+  }
+
+  return (await response.json()) as Array<{
+    id: string;
+    title: string;
+    description?: string | null;
+    due_date?: string | null;
+    class_name?: string | null;
+    subject_name?: string | null;
+  }>;
+}
+
+export async function getTeacherMessages(
+  token: string,
+  teacherId: string,
+): Promise<Array<{
+  id: string;
+  sender_name: string;
+  message: string;
+  sent_on: string;
+  is_read: boolean;
+}>> {
+  const response = await fetch(`${BASE}/${teacherId}/messages`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to fetch teacher messages.");
+  }
+
+  return (await response.json()) as Array<{
+    id: string;
+    sender_name: string;
+    message: string;
+    sent_on: string;
+    is_read: boolean;
+  }>;
+}
+
+export async function getTeacherEvents(
+  token: string,
+  teacherId: string,
+): Promise<Array<{
+  id: string;
+  event_name: string;
+  description?: string | null;
+  start_date: string;
+  end_date?: string | null;
+}>> {
+  const response = await fetch(`${BASE}/${teacherId}/events`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to fetch teacher events.");
+  }
+
+  return (await response.json()) as Array<{
+    id: string;
+    event_name: string;
+    description?: string | null;
+    start_date: string;
+    end_date?: string | null;
+  }>;
+}
+
+export async function getTeacherExamResults(
+  token: string,
+  teacherId: string,
+): Promise<Array<{
+  id: string;
+  student_name: string;
+  class_name: string;
+  subject_name: string;
+  exam_name: string;
+  marks_obtained: number;
+  max_marks: number;
+  grade?: string | null;
+}>> {
+  const response = await fetch(`${BASE}/${teacherId}/exam-results`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    const data = (await response.json()) as { detail?: string };
+    throw new Error(data.detail ?? "Failed to fetch teacher marks.");
+  }
+
+  return (await response.json()) as Array<{
+    id: string;
+    student_name: string;
+    class_name: string;
+    subject_name: string;
+    exam_name: string;
+    marks_obtained: number;
+    max_marks: number;
+    grade?: string | null;
+  }>;
+}
+

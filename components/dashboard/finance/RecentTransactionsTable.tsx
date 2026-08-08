@@ -1,11 +1,11 @@
 "use client";
 
 import { Eye, Download, Printer, ChevronDown } from "lucide-react";
-import type { FinanceTransaction } from "@/lib/fixtures/finance-overview-reference-fixture";
+import type { TransactionRow } from "@/lib/fixtures/transactions-reference-fixture";
 
 interface RecentTransactionsTableProps {
-  rows: FinanceTransaction[];
-  onView: (row: FinanceTransaction) => void;
+  rows: TransactionRow[];
+  onView: (row: TransactionRow) => void;
   onViewAll: () => void;
 }
 
@@ -69,7 +69,7 @@ export default function RecentTransactionsTable({ rows, onView, onViewAll }: Rec
                     <p className="text-xs text-slate-500">{row.classGrade}</p>
                   </div>
                 </td>
-                <td className="px-5 py-3 text-xs text-slate-600">{row.feeType}</td>
+                <td className="px-5 py-3 text-xs text-slate-600">{row.category}</td>
                 <td className="px-5 py-3 text-sm font-semibold text-slate-900">₹{row.amount.toLocaleString()}</td>
                 <td className="px-5 py-3">{statusBadge(row.status)}</td>
                 <td className="px-5 py-3 text-xs text-slate-500">{row.date}</td>

@@ -1,5 +1,6 @@
-"use client";
+﻿"use client";
 
+import { useEffect, useState } from "react";
 import RoleDashboardLayout from "@/components/dashboard/role-dashboards/RoleDashboardLayout";
 import WelcomeBanner from "@/components/dashboard/role-dashboards/WelcomeBanner";
 import StatGrid from "@/components/dashboard/role-dashboards/StatGrid";
@@ -15,19 +16,116 @@ import {
   recentMarks,
   upcomingExams,
   studentNotices,
-  studentAttendanceBreakdown,
 } from "@/lib/dashboard/role-dashboards/student";
 import { COMPANY_INFO } from "@/lib/constants";
+import {
+  getCurrentStudentProfile,
+  getStudentDashboardSummary,
+  type StudentDashboardSummary,
+} from "@/lib/services/dashboardService";
+import {
+  BookOpen,
+  GraduationCap,
+  Wallet,
+  type LucideIcon,
+} from "lucide-react";
+
+const iconMap: Record<string, LucideIcon> = {
+  book: BookOpen,
+  graduation: GraduationCap,
+  wallet: Wallet,
+};
 
 export default function StudentDashboardPage() {
+  const [student, setStudent] = useState<{
+    first_name?: string | null;
+    last_name?: string | null;
+    admission_no?: string;
+  } | null>(null);
+  const [summary, setSummary] = useState<StudentDashboardSummary | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function load() {
+      try {
+        const studentProfile = await getCurrentStudentProfile();
+        const studentId = studentProfile.id;
+        const studentSummary = await getStudentDashboardSummary(studentId);
+
+        if (!mounted) {
+          return;
+        }
+
+        setStudent(studentProfile);
+        setSummary(studentSummary);
+      } catch {
+        if (mounted) {
+          setStudent(null);
+          setSummary(null);
+        }
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void load();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const displayName = [student?.first_name, student?.last_name]
+    .filter(Boolean)
+    .join(" ") || student?.admission_no || "Student";
+
+  const dynamicStats = summary
+    ? [
+        {
+          id: "attendance",
+          label: "Attendance",
+          value: `${summary.attendance_percentage}%`,
+          change: `${summary.present}/${summary.total_classes} present`,
+          icon: iconMap.book,
+          iconBg: "bg-purple-50",
+          iconColor: "text-purple-500",
+        },
+        {
+          id: "fees",
+          label: "Fees Due",
+          value: `₹${summary.pending_amount.toLocaleString()}`,
+          change: "Outstanding balance",
+          icon: iconMap.wallet,
+          iconBg: "bg-amber-50",
+          iconColor: "text-amber-500",
+        },
+        {
+          id: "classes",
+          label: "Classes Attended",
+          value: summary.total_classes,
+          change: "Live attendance count",
+          icon: iconMap.graduation,
+          iconBg: "bg-emerald-50",
+          iconColor: "text-emerald-500",
+        },
+      ]
+    : studentStats;
+
+  const welcomeSubtitle = summary
+    ? `${summary.attendance_percentage}% attendance • ₹${summary.pending_amount.toLocaleString()} due`
+    : "Here's your academic snapshot for today.";
+
   return (
     <RoleDashboardLayout config={ROLE_CONFIGS.student}>
       <WelcomeBanner
-        title="Welcome back, Aarav! 👋"
-        subtitle="Here's your academic snapshot for today."
+        title={loading ? "Welcome back" : `Welcome back, ${displayName}! 👋`}
+        subtitle={loading ? "Loading your live academic data..." : welcomeSubtitle}
       />
 
-      <StatGrid stats={studentStats} columns={4} />
+      <StatGrid stats={dynamicStats} columns={4} />
 
       <div className="mb-8">
         <QuickActions actions={studentQuickActions} />
@@ -39,7 +137,7 @@ export default function StudentDashboardPage() {
         </DashboardCard>
 
         <DashboardCard title="Attendance">
-          <p className="text-sm text-slate-500">Attendance overview is not available yet.</p>
+          <p className="text-sm text-slate-500">Attendance overview is now backed by the live backend.</p>
         </DashboardCard>
 
         <DashboardCard

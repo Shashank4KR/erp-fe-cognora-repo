@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import RoleDashboardLayout from "@/components/dashboard/role-dashboards/RoleDashboardLayout";
 import { ROLE_CONFIGS } from "@/lib/dashboard/role-dashboards/config";
 import { getToken, getStoredUser } from "@/lib/auth";
+import { getCurrentTeacher, getTeacherEvents } from "@/lib/services/teacherService";
 import Card from "@/components/shared/Card";
 import { Loader2, AlertCircle, Megaphone } from "lucide-react";
 
@@ -34,13 +35,19 @@ export default function TeacherEventsPage() {
           return;
         }
 
-        const mockEvents: Event[] = [
-          { id: "1", title: "Staff Meeting", description: "Conference hall", meta: "11 Jun · 02:00 PM", iconBg: "bg-purple-50", iconColor: "text-purple-500" },
-          { id: "2", title: "PTM · Class 10", description: "School auditorium", meta: "22 Jun · 10:00 AM", iconBg: "bg-amber-50", iconColor: "text-amber-500" },
-          { id: "3", title: "Science Exhibition", description: "Lab block", meta: "28 Jun · 11:00 AM", iconBg: "bg-green-50", iconColor: "text-green-500" },
-        ];
+        const teacher = await getCurrentTeacher(token);
+        const teacherEvents = await getTeacherEvents(token, teacher.id);
 
-        setEvents(mockEvents);
+        setEvents(
+          teacherEvents.map((event) => ({
+            id: event.id,
+            title: event.event_name,
+            description: event.description ?? "No description provided",
+            meta: event.end_date ? `${event.start_date} - ${event.end_date}` : event.start_date,
+            iconBg: "bg-purple-50",
+            iconColor: "text-purple-500",
+          })),
+        );
         setError(null);
       } catch (err) {
         console.error("Error fetching events:", err);

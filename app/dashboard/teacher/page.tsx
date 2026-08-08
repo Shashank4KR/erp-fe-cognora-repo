@@ -1,5 +1,6 @@
-"use client";
+﻿"use client";
 
+import { useEffect, useState } from "react";
 import RoleDashboardLayout from "@/components/dashboard/role-dashboards/RoleDashboardLayout";
 import WelcomeBanner from "@/components/dashboard/role-dashboards/WelcomeBanner";
 import StatGrid from "@/components/dashboard/role-dashboards/StatGrid";
@@ -18,16 +19,98 @@ import {
   teacherEvents,
 } from "@/lib/dashboard/role-dashboards/teacher";
 import { COMPANY_INFO } from "@/lib/constants";
+import {
+  getCurrentTeacherProfile,
+  getTeacherDashboardSummary,
+  type TeacherDashboardSummary,
+} from "@/lib/services/dashboardService";
+import { BookOpen, GraduationCap, Users, type LucideIcon } from "lucide-react";
+
+const iconMap: Record<string, LucideIcon> = {
+  book: BookOpen,
+  graduation: GraduationCap,
+  users: Users,
+};
 
 export default function TeacherDashboardPage() {
+  const [teacher, setTeacher] = useState<{
+    employee_id?: string;
+  } | null>(null);
+  const [summary, setSummary] = useState<TeacherDashboardSummary | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function load() {
+      try {
+        const teacherProfile = await getCurrentTeacherProfile();
+        const resolvedSummary = await getTeacherDashboardSummary(teacherProfile.id);
+
+        if (!mounted) {
+          return;
+        }
+
+        setTeacher(teacherProfile);
+        setSummary(resolvedSummary);
+      } catch {
+        if (mounted) {
+          setTeacher(null);
+          setSummary(null);
+        }
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void load();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const dynamicStats = summary
+    ? [
+        {
+          id: "classes",
+          label: "Assigned Classes",
+          value: summary.assigned_classes,
+          change: "Live backend count",
+          icon: iconMap.graduation,
+          iconBg: "bg-purple-50",
+          iconColor: "text-purple-500",
+        },
+        {
+          id: "subjects",
+          label: "Assigned Subjects",
+          value: summary.assigned_subjects,
+          change: "Live backend count",
+          icon: iconMap.book,
+          iconBg: "bg-amber-50",
+          iconColor: "text-amber-500",
+        },
+        {
+          id: "students",
+          label: "Students",
+          value: summary.total_students,
+          change: "Shared with your classes",
+          icon: iconMap.users,
+          iconBg: "bg-emerald-50",
+          iconColor: "text-emerald-500",
+        },
+      ]
+    : teacherStats;
+
   return (
     <RoleDashboardLayout config={ROLE_CONFIGS.teacher}>
       <WelcomeBanner
-        title="Welcome back, Priya! 👋"
-        subtitle="You have 6 periods and 24 assignments to review today."
+        title={loading ? "Welcome back" : `Welcome back, ${teacher?.employee_id || "Teacher"}! 👋`}
+        subtitle={loading ? "Loading your teaching workload..." : "Your teaching workload is now backed by the live backend."}
       />
 
-      <StatGrid stats={teacherStats} columns={4} />
+      <StatGrid stats={dynamicStats} columns={4} />
 
       <div className="mb-8">
         <QuickActions actions={teacherQuickActions} />
@@ -48,7 +131,7 @@ export default function TeacherDashboardPage() {
           title="Pending Assignments to Review"
           action={
             <span className="text-xs font-semibold text-amber-600">
-              24 total
+              {summary?.assigned_classes ? "Live submissions" : "24 total"}
             </span>
           }
         >

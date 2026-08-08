@@ -1,13 +1,12 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Finance Overview", () => {
-  test("page loads with summary cards and charts", async ({ page }) => {
+  test("page loads without unauthenticated fixture data", async ({ page }) => {
     await page.goto("/dashboard/admin/finance/overview");
 
-    await expect(page.locator("text=Finance Overview")).toBeVisible();
-    await expect(page.locator("text=Total Fee Expected")).toBeVisible();
-    await expect(page.locator("text=Total Fee Collected")).toBeVisible();
-    await expect(page.locator("text=Total Outstanding")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Finance Overview" })).toBeVisible();
+    await expect(page.getByText("Please log in to view finance data.", { exact: true })).toBeVisible();
+    await expect(page.locator("text=Total Fee Expected")).toHaveCount(0);
   });
 
   test("recent transactions table renders", async ({ page }) => {
@@ -19,8 +18,8 @@ test.describe("Finance Overview", () => {
   test("filters are present", async ({ page }) => {
     await page.goto("/dashboard/admin/finance/overview");
 
-    await expect(page.locator("text=Academic Year")).toBeVisible();
-    await expect(page.locator("text=Class / Grade")).toBeVisible();
-    await expect(page.locator("text=Fee Type")).toBeVisible();
+    await expect(page.getByText("Academic Year", { exact: true })).toBeVisible();
+    await expect(page.getByText("Class / Grade", { exact: true })).toBeVisible();
+    await expect(page.getByText("Fee Type", { exact: true })).toBeVisible();
   });
 });

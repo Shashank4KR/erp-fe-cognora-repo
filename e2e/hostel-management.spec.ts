@@ -4,9 +4,10 @@ test.describe("Hostel Management", () => {
   test("page loads with summary cards and tables", async ({ page }) => {
     await page.goto("/dashboard/admin/hostel/management");
 
-    await expect(page.locator("text=Hostel Management")).toBeVisible();
-    await expect(page.locator("text=Total Rooms")).toBeVisible();
-    await expect(page.locator("text=Occupied Beds")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Hostel Management" })).toBeVisible();
+    await expect(page.locator("span").filter({ hasText: "Total Rooms" })).toBeVisible();
+    await expect(page.locator("span").filter({ hasText: "Vacant Beds" })).toBeVisible();
+    await expect(page.getByRole("columnheader", { name: "Occupied Beds" })).toBeVisible();
   });
 
   test("quick actions render", async ({ page }) => {
