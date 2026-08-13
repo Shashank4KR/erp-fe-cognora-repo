@@ -1,8 +1,5 @@
-"use client";
+import SettingsPage from "@/components/settings/SettingsPage";
 
-import RoleComingSoon from "@/components/shared/layout/RoleComingSoon";
-import { ROLE_CONFIGS } from "@/lib/dashboard/role-dashboards/config";
-
-export default function AdminSettingsPage() {
-  return <RoleComingSoon config={ROLE_CONFIGS.admin} title="Settings" />;
+export default function AdminSettingsRoute() {
+  return <SettingsPage currentRole="Admin" />;
 }

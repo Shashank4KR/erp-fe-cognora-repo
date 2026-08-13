@@ -31,12 +31,17 @@ export async function loginRequest(
   if (!response.ok) {
     let message = "Login failed. Please try again.";
     try {
-      const data = (await response.json()) as { detail?: string | { msg: string }[] };
-      const { detail } = data;
+      const data = (await response.json()) as {
+        detail?: string | { msg: string }[];
+        message?: string;
+      };
+      const { detail, message: responseMessage } = data;
       if (typeof detail === "string") {
         message = detail;
       } else if (Array.isArray(detail) && detail.length > 0) {
         message = detail.map((item) => item.msg).join(", ");
+      } else if (responseMessage) {
+        message = responseMessage;
       }
     } catch {
       // response body was not valid JSON; keep the default message
@@ -73,12 +78,17 @@ export async function getCurrentUser(token: string): Promise<{
   if (!response.ok) {
     let message = "Failed to fetch user profile.";
     try {
-      const data = (await response.json()) as { detail?: string | { msg: string }[] };
-      const { detail } = data;
+      const data = (await response.json()) as {
+        detail?: string | { msg: string }[];
+        message?: string;
+      };
+      const { detail, message: responseMessage } = data;
       if (typeof detail === "string") {
         message = detail;
       } else if (Array.isArray(detail) && detail.length > 0) {
         message = detail.map((item) => item.msg).join(", ");
+      } else if (responseMessage) {
+        message = responseMessage;
       }
     } catch {
       // response body was not valid JSON; keep the default message

@@ -79,10 +79,11 @@ export default function LoginForm({ language, setLanguage }: LoginFormProps) {
         <div className="relative">
           <Mail className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
           <input
-            type="email"
+            type="text"
             value={loginIdOrEmail}
             onChange={(event) => setLoginIdOrEmail(event.target.value)}
             placeholder="Enter your login ID or email"
+            autoComplete="username"
             className="h-12 w-full rounded-xl border border-slate-200 bg-white pl-11 pr-4 text-sm text-slate-700 outline-none transition focus:border-[#6d28d9] focus:ring-4 focus:ring-purple-100"
           />
         </div>

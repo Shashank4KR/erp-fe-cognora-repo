@@ -7,6 +7,7 @@ import {
   MessageSquare,
   Calendar,
   ChevronDown,
+  LogOut,
   type LucideIcon,
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -16,6 +17,7 @@ import { getInitials } from "@/lib/utils/formatters";
 import CalendarPicker from "@/components/shared/Calendar";
 import { MENU_ITEMS } from "@/lib/constants";
 import { MODULES, QUICK_ACCESS } from "@/lib/modules";
+import { clearAuth, getStoredUser, getToken } from "@/lib/auth";
 
 interface DashboardHeaderProps {
   userName?: string;
@@ -42,8 +44,8 @@ export default function DashboardHeader({
   userName,
   userRole,
 }: DashboardHeaderProps = {}) {
-  const name = userName ?? DEMO_USER.name;
-  const role = userRole ?? DEMO_USER.role;
+  const [name, setName] = useState(userName ?? DEMO_USER.name);
+  const [role, setRole] = useState(userRole ?? DEMO_USER.role);
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -52,6 +54,16 @@ export default function DashboardHeader({
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const searchRef = useRef<HTMLDivElement>(null);
   const calendarRef = useRef<HTMLDivElement>(null);
+  const profileRef = useRef<HTMLDivElement>(null);
+  const [profileOpen, setProfileOpen] = useState(false);
+
+  useEffect(() => {
+    const currentUser = getStoredUser();
+    if (!currentUser) return;
+
+    setName(currentUser.username);
+    setRole(currentUser.role?.role_name ?? currentUser.role_id);
+  }, []);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -64,7 +76,7 @@ export default function DashboardHeader({
   }, [query]);
 
   useEffect(() => {
-    if (!calendarOpen && !open) return;
+    if (!calendarOpen && !open && !profileOpen) return;
     const onPointerDown = (e: MouseEvent) => {
       if (calendarRef.current && !calendarRef.current.contains(e.target as Node)) {
         setCalendarOpen(false);
@@ -72,11 +84,15 @@ export default function DashboardHeader({
       if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
         setOpen(false);
       }
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+        setProfileOpen(false);
+      }
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setCalendarOpen(false);
         setOpen(false);
+        setProfileOpen(false);
       }
     };
     document.addEventListener("mousedown", onPointerDown);
@@ -85,12 +101,28 @@ export default function DashboardHeader({
       document.removeEventListener("mousedown", onPointerDown);
       document.removeEventListener("keydown", onKey);
     };
-  }, [calendarOpen, open]);
+  }, [calendarOpen, open, profileOpen]);
 
   const go = (href: string) => {
     setQuery("");
     setOpen(false);
     router.push(href);
+  };
+
+  const handleLogout = async () => {
+    const token = getToken();
+    clearAuth();
+
+    try {
+      if (token) {
+        await fetch("/api/auth/logout", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      }
+    } finally {
+      router.replace("/login");
+    }
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -232,19 +264,46 @@ export default function DashboardHeader({
             )}
           </div>
 
-          {/* Profile */}
-          <button className="flex items-center gap-3 pl-3 pr-2 py-2 hover:bg-slate-100 rounded-lg transition">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white font-semibold text-sm">
-              {getInitials(name)}
-            </div>
-            <div className="hidden sm:block text-left">
-              <p className="text-sm font-semibold text-slate-900">
-                {name}
-              </p>
-              <p className="text-xs text-slate-500">{role}</p>
-            </div>
-            <ChevronDown className="w-4 h-4 text-slate-600" />
-          </button>
+          {/* Profile menu */}
+          <div ref={profileRef} className="relative">
+            <button
+              type="button"
+              onClick={() => setProfileOpen((isOpen) => !isOpen)}
+              aria-haspopup="menu"
+              aria-expanded={profileOpen}
+              className="flex items-center gap-3 rounded-lg py-2 pl-3 pr-2 transition hover:bg-slate-100"
+            >
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-purple-400 to-purple-600 text-sm font-semibold text-white">
+                {getInitials(name)}
+              </div>
+              <div className="hidden text-left sm:block">
+                <p className="text-sm font-semibold text-slate-900">{name}</p>
+                <p className="text-xs text-slate-500">{role}</p>
+              </div>
+              <ChevronDown className={`h-4 w-4 text-slate-600 transition-transform ${profileOpen ? "rotate-180" : ""}`} />
+            </button>
+
+            {profileOpen && (
+              <div
+                role="menu"
+                className="absolute right-0 z-50 mt-2 w-full rounded-xl border border-slate-200 bg-white p-2 shadow-xl"
+              >
+                <div className="border-b border-slate-100 px-3 py-2 sm:hidden">
+                  <p className="text-sm font-semibold text-slate-900">{name}</p>
+                  <p className="text-xs text-slate-500">{role}</p>
+                </div>
+                <button
+                  type="button"
+                  role="menuitem"
+                  onClick={handleLogout}
+                  className="mt-1 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium text-red-600 transition hover:bg-red-50"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </header>

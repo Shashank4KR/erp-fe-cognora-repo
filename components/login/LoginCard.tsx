@@ -3,9 +3,11 @@
 import { Globe2, ShieldCheck, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import LoginForm from "./LoginForm";
+import StudentRegistrationForm from "./StudentRegistrationForm";
 
 export default function LoginCard() {
   const [language, setLanguage] = useState("English");
+  const [registering, setRegistering] = useState(false);
 
   return (
     <div className="relative w-full max-w-[29.375rem] rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_25px_70px_-25px_rgba(15,23,42,0.25)] sm:p-8">
@@ -30,14 +32,22 @@ export default function LoginCard() {
       </div>
 
       <h1 className="mt-5 text-2xl font-semibold tracking-tight text-slate-900">
-        Welcome Back!
+        {registering ? "Create Student Account" : "Welcome Back!"}
       </h1>
 
       <p className="mt-1 text-sm text-slate-500">
-        Login to access your EdTech account.
+        {registering ? "Your login and student profile will be created together." : "Login to access your EdTech account."}
       </p>
 
-      <LoginForm language={language} setLanguage={setLanguage} />
+      {registering ? (
+        <StudentRegistrationForm onSuccess={() => setRegistering(false)} />
+      ) : (
+        <LoginForm language={language} setLanguage={setLanguage} />
+      )}
+
+      <button type="button" onClick={() => setRegistering((value) => !value)} className="mt-4 w-full text-center text-sm font-semibold text-[#6d28d9]">
+        {registering ? "Already have an account? Log in" : "New student? Create an account"}
+      </button>
 
       <div className="mt-5 flex items-center justify-center gap-2 rounded-2xl border border-slate-100 bg-slate-50 px-3 py-2 text-xs text-slate-500">
         <ShieldCheck className="h-3.5 w-3.5 text-[#6d28d9]" />
