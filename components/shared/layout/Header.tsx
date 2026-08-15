@@ -53,6 +53,7 @@ export default function DashboardHeader({
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const searchRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const calendarRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -102,6 +103,18 @@ export default function DashboardHeader({
       document.removeEventListener("keydown", onKey);
     };
   }, [calendarOpen, open, profileOpen]);
+
+  useEffect(() => {
+    const onShortcut = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === "/") {
+        event.preventDefault();
+        searchInputRef.current?.focus();
+        setOpen(true);
+      }
+    };
+    window.addEventListener("keydown", onShortcut);
+    return () => window.removeEventListener("keydown", onShortcut);
+  }, []);
 
   const go = (href: string) => {
     setQuery("");
@@ -172,6 +185,7 @@ export default function DashboardHeader({
             >
               <Search className="w-4 h-4 text-slate-400" />
               <input
+                ref={searchInputRef}
                 type="text"
                 value={query}
                 placeholder="Search for modules, students, reports..."
@@ -220,13 +234,23 @@ export default function DashboardHeader({
         {/* Right */}
         <div className="flex items-center gap-4">
           {/* Notification */}
-          <button className="relative p-2 hover:bg-slate-100 rounded-lg transition">
+          <button
+            type="button"
+            onClick={() => router.push("/dashboard/admin/notifications")}
+            aria-label="Open notifications"
+            className="relative p-2 hover:bg-slate-100 rounded-lg transition"
+          >
             <Bell className="w-5 h-5 text-slate-600" />
             <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
 
           {/* Chat */}
-          <button className="relative p-2 hover:bg-slate-100 rounded-lg transition">
+          <button
+            type="button"
+            onClick={() => router.push("/dashboard/admin/messages")}
+            aria-label="Open messages"
+            className="relative p-2 hover:bg-slate-100 rounded-lg transition"
+          >
             <MessageSquare className="w-5 h-5 text-slate-600" />
             <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
@@ -251,7 +275,7 @@ export default function DashboardHeader({
               <div
                 role="dialog"
                 aria-label="Calendar"
-                className="absolute right-0 z-[60] mt-2 w-[320px] rounded-2xl border border-slate-200 bg-white p-4 shadow-2xl"
+                className="absolute right-0 top-full z-[60] mt-2 w-[320px] max-w-[calc(100vw-2rem)] rounded-2xl border border-slate-200 bg-white p-4 shadow-2xl"
               >
                 <CalendarPicker
                   selectedDate={selectedDate}

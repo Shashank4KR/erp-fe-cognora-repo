@@ -9,6 +9,7 @@ import { MENU_ITEMS, COMPANY_INFO } from "@/lib/constants";
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
 
   const isActive = (href: string) => {
     if (href === "/dashboard/admin") return pathname === "/dashboard/admin";
@@ -41,7 +42,7 @@ export default function Sidebar() {
             ? item.children!.some((child) => isActive(child.href ?? ""))
             : false;
           const active = parentActive || anyChildActive;
-          const [expanded, setExpanded] = useState(anyChildActive);
+          const expanded = expandedItems[item.label] ?? anyChildActive;
           const Icon = item.icon;
 
           return (
@@ -52,7 +53,7 @@ export default function Sidebar() {
                     const isComm = item.label === "Communication";
                     const isTransport = item.label === "Transport";
                     const isHostel = item.label === "Hostel";
-                    setExpanded((e) => !e);
+                    setExpandedItems((current) => ({ ...current, [item.label]: !expanded }));
                     if (isComm && pathname !== "/dashboard/admin/communication") {
                       router.push("/dashboard/admin/communication");
                     }
@@ -135,9 +136,9 @@ export default function Sidebar() {
           <p className="text-purple-200 text-xs mt-1">
             We're here to assist you
           </p>
-          <button className="w-full mt-3 bg-gradient-to-r from-purple-400 to-purple-500 text-white rounded-lg py-2 text-xs font-semibold hover:from-purple-500 hover:to-purple-600 transition">
+          <a href="mailto:support@cognora.edu" className="block w-full mt-3 bg-gradient-to-r from-purple-400 to-purple-500 text-white rounded-lg py-2 text-xs font-semibold hover:from-purple-500 hover:to-purple-600 transition">
             Contact Support
-          </button>
+          </a>
         </div>
       </div>
     </div>

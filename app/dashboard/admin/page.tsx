@@ -4,9 +4,6 @@ import MainLayout from "@/components/shared/layout/MainLayout";
 import DashboardOverview from "@/components/dashboard/DashboardOverview";
 import StatsCards from "@/components/dashboard/StatsCards";
 import FeesCollectionOverview from "@/components/dashboard/FeesCollectionOverview";
-import RecentActivities from "@/components/dashboard/RecentActivities";
-import UpcomingEvents from "@/components/dashboard/UpcomingEvents";
-import StudentsByClass from "@/components/dashboard/StudentsByClass";
 import { COMPANY_INFO } from "@/lib/constants";
 
 export default function DashboardPage() {
@@ -26,13 +23,6 @@ export default function DashboardPage() {
           {/* Charts Row */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             <FeesCollectionOverview />
-          </div>
-
-          {/* Bottom Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            <RecentActivities />
-            <UpcomingEvents />
-            <StudentsByClass />
           </div>
 
           {/* Footer */}

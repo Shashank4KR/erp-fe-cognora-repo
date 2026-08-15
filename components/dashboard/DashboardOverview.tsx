@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import SectionHeader from "@/components/shared/SectionHeader";
-import DatePicker from "@/components/shared/DatePicker";
 import {
   getCurrentUserProfile,
   getDashboardStats,
@@ -11,7 +10,6 @@ import {
 import type { UserResponse } from "@/types/auth";
 
 export default function DashboardOverview() {
-  const [selectedDate, setSelectedDate] = useState("Today");
   const [user, setUser] = useState<UserResponse | null>(null);
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -64,7 +62,6 @@ export default function DashboardOverview() {
           ? "Loading live school data..."
           : `Your ${roleLabel} workspace is ready. ${subtitle}`
       }
-      action={<DatePicker value={selectedDate} onChange={setSelectedDate} />}
     />
   );
 }
