@@ -19,10 +19,7 @@ export default function RoleDashboardLayout({
     <MainLayout
       sidebar={<RoleSidebar config={config} />}
       header={
-        <Header
-          userName={config.user.name}
-          userRole={config.user.role}
-        />
+        <Header />
       }
     >
       <div className="p-6">

@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { DEMO_USER } from "@/lib/constants";
 import { getInitials } from "@/lib/utils/formatters";
 import CalendarPicker from "@/components/shared/Calendar";
 import { MENU_ITEMS } from "@/lib/constants";
@@ -44,8 +43,8 @@ export default function DashboardHeader({
   userName,
   userRole,
 }: DashboardHeaderProps = {}) {
-  const [name, setName] = useState(userName ?? DEMO_USER.name);
-  const [role, setRole] = useState(userRole ?? DEMO_USER.role);
+  const [name, setName] = useState(userName ?? "");
+  const [role, setRole] = useState(userRole ?? "");
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
